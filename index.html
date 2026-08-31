@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Champions League Swiss Format Simulator 2026/27 | Predict the Table</title>
+  <meta name="description" content="Simulate the 2026/27 UEFA Champions League 36-team Swiss-format league phase. Real official results are pre-loaded — enter your own predicted scores for the rest and watch the standings, top-8 byes, and playoff spots update live.">
+  <link rel="canonical" href="https://swissformatsim.com/">
+  <meta property="og:title" content="Champions League Swiss Format Simulator 2026/27">
+  <meta property="og:description" content="Real results pre-loaded. Predict the rest. See who makes the top 8, the play-offs, and who's out.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://swissformatsim.com/">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Oswald', 'sans-serif'],
+          },
+          colors: {
+            pitch: {
+              50: '#EFF6F1', 100: '#DCEBE0',
+              500: '#0B6E4F', 600: '#0A5F45', 700: '#084A35',
+              400: '#2FBE8A', 300: '#5FD1A8',
+            },
+            gold: { 400: '#D8B84A', 500: '#C9A227', 600: '#A9861D' },
+            ink: { 50: '#F6F7F2', 100: '#EDEFE7', 800: '#1B2A22', 900: '#132119', 950: '#0D1410' },
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-display { font-family: 'Oswald', sans-serif; letter-spacing: 0.01em; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #9CAF9F; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #2A3B30; }
+    .fixture-card { transition: border-color 0.15s ease; }
+    .zone-bar { width: 4px; border-radius: 3px; flex-shrink: 0; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does the Champions League Swiss format work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "All 36 teams are split into four pots of nine by coefficient ranking. Each team plays eight matches in the league phase — two against opponents from each pot, four at home and four away. After eight matchdays, one combined 36-team table decides who advances: the top 8 go straight to the round of 16, teams 9-24 enter a knockout play-off round, and teams 25-36 are eliminated."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How are ties in the standings broken?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "In order: total points, goal difference, goals scored, goals scored away from home, total wins, then away wins. Teams still level after all of those are ranked by a head-to-head mini-league in the real competition."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-ink-50 text-ink-900 dark:bg-ink-950 dark:text-ink-50 transition-colors">
+
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 bg-ink-50/95 dark:bg-ink-950/95 backdrop-blur-0 border-b-2 border-pitch-500 dark:border-pitch-400 shadow-sm">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6">
+      <div class="flex items-center justify-between py-2.5 gap-2">
+        <a href="index.html" class="flex items-center space-x-2.5 shrink-0">
+          <div class="w-8 h-8 rounded-full bg-pitch-500 dark:bg-pitch-400 flex items-center justify-center text-ink-50 dark:text-ink-950 font-display font-bold text-sm">
+            26
+          </div>
+          <div class="leading-none">
+            <div class="font-display font-bold text-base sm:text-lg tracking-tight uppercase">
+              UCL Swiss Phase
+            </div>
+            <div class="text-[10px] text-ink-900/50 dark:text-ink-50/50 font-medium hidden sm:block">2026/27 Table Simulator</div>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center space-x-5 text-sm font-semibold">
+          <a href="index.html" class="text-pitch-600 dark:text-pitch-300 border-b-2 border-pitch-500 dark:border-pitch-400 pb-0.5">Simulator</a>
+          <a href="about.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
+        </nav>
+
+        <div class="flex items-center space-x-1.5">
+          <button id="btn-theme-toggle" aria-label="Toggle dark mode" class="p-2 rounded-full border border-ink-900/15 dark:border-ink-50/15 hover:bg-ink-900/5 dark:hover:bg-ink-50/10 transition text-sm">
+            <span id="theme-icon">🌙</span>
+          </button>
+          <button id="btn-regenerate-draw" title="Generate a hypothetical random draw" class="hidden sm:inline-flex px-2.5 py-1.5 rounded-full border border-ink-900/15 dark:border-ink-50/15 hover:bg-ink-900/5 dark:hover:bg-ink-50/10 text-xs font-semibold transition items-center space-x-1">
+            <span>🔀</span><span>New Draw</span>
+          </button>
+          <button id="btn-simulate-all" class="px-3 py-1.5 bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-xs rounded-full shadow-sm transition">
+            ⚡ Simulate
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- STATUS BANNERS -->
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 w-full mt-3 space-y-2">
+    <div id="mode-banner" class="hidden"></div>
+    <div id="data-freshness-banner" class="hidden text-[11px] sm:text-xs bg-gold-500/10 border border-gold-500/40 text-gold-600 dark:text-gold-400 rounded-lg px-3 py-2"></div>
+    <div id="draw-error-banner" class="hidden text-[11px] sm:text-xs bg-red-500/10 border border-red-500/40 text-red-600 dark:text-red-400 rounded-lg px-3 py-2"></div>
+  </div>
+
+  <!-- MOBILE VIEW TOGGLER -->
+  <div class="lg:hidden max-w-7xl mx-auto px-3 mt-3 w-full">
+    <div class="grid grid-cols-2 p-1 bg-ink-900/5 dark:bg-ink-50/5 rounded-xl border border-ink-900/10 dark:border-ink-50/10 text-xs font-bold text-center">
+      <button id="tab-btn-fixtures" class="py-2 rounded-lg bg-pitch-500 dark:bg-pitch-400 text-white dark:text-ink-950 shadow transition">
+        Matches (<span id="mobile-md-badge">MD 1</span>)
+      </button>
+      <button id="tab-btn-table" class="py-2 rounded-lg text-ink-900/60 dark:text-ink-50/60 hover:text-ink-900 dark:hover:text-ink-50 transition">
+        Standings
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 py-4 w-full flex-grow">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+      <!-- FIXTURES -->
+      <section id="section-fixtures" class="lg:col-span-7 flex flex-col space-y-3">
+
+        <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 p-2.5 rounded-2xl shadow-sm">
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-[11px] font-bold text-ink-900/50 dark:text-ink-50/50 uppercase tracking-wider">📅 Matchdays</span>
+            <span class="text-[11px] text-pitch-600 dark:text-pitch-300 font-bold" id="matches-played-counter">0 / 144 Played</span>
+          </div>
+          <div class="grid grid-cols-4 sm:grid-cols-8 gap-1.5" id="matchday-pills"></div>
+        </div>
+
+        <div class="flex items-center justify-between px-3 py-2 bg-white dark:bg-ink-900 rounded-xl border border-ink-900/10 dark:border-ink-50/10">
+          <h2 class="text-xs sm:text-sm font-bold" id="matchday-header-title">Matchday 1 (18 Fixtures)</h2>
+          <button id="btn-simulate-matchday" class="text-xs text-pitch-600 dark:text-pitch-300 hover:underline font-bold flex items-center space-x-1 transition">
+            <span>⏩</span><span>Simulate MD</span>
+          </button>
+        </div>
+
+        <div id="fixtures-list" class="space-y-2 max-h-[620px] overflow-y-auto pr-1"></div>
+
+        <div class="flex items-center gap-2">
+          <button id="btn-reset-matchday" class="px-3 py-1.5 rounded-full border border-ink-900/15 dark:border-ink-50/15 hover:bg-ink-900/5 dark:hover:bg-ink-50/10 text-xs font-semibold transition flex items-center gap-1.5">
+            <span>↺</span><span>Reset This Matchday</span>
+          </button>
+          <button id="btn-reset-all" class="px-3 py-1.5 rounded-full border border-ink-900/15 dark:border-ink-50/15 hover:bg-red-500/10 hover:border-red-500/40 hover:text-red-500 text-xs font-semibold transition flex items-center gap-1.5">
+            <span>↺</span><span>Reset All</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- STANDINGS -->
+      <section id="section-standings" class="lg:col-span-5 flex flex-col space-y-3 hidden lg:flex">
+
+        <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 p-2.5 rounded-2xl shadow-sm">
+          <div class="grid grid-cols-3 gap-1.5 text-[10px] font-bold text-center">
+            <div class="flex items-center justify-center gap-1.5 py-1.5 px-1 rounded-lg bg-pitch-500/10 text-pitch-700 dark:text-pitch-300">
+              <span class="w-1.5 h-4 rounded-sm bg-pitch-500 dark:bg-pitch-400"></span>1–8: R16
+            </div>
+            <div class="flex items-center justify-center gap-1.5 py-1.5 px-1 rounded-lg bg-blue-500/10 text-blue-700 dark:text-blue-300">
+              <span class="w-1.5 h-4 rounded-sm bg-blue-500"></span>9–24: Play-offs
+            </div>
+            <div class="flex items-center justify-center gap-1.5 py-1.5 px-1 rounded-lg bg-red-500/10 text-red-700 dark:text-red-300">
+              <span class="w-1.5 h-4 rounded-sm bg-red-500"></span>25–36: Out
+            </div>
+          </div>
+        </div>
+
+        <div id="table-export-box" class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 p-3 rounded-2xl shadow-sm flex flex-col">
+          <div class="flex items-center justify-between pb-2 border-b border-ink-900/10 dark:border-ink-50/10 mb-2">
+            <h2 class="font-display font-bold text-sm uppercase tracking-wide flex items-center gap-1.5">🏆 36-Team Standings</h2>
+            <span class="text-[10px] text-pitch-600 dark:text-pitch-300 font-semibold">Real-time tiebreakers</span>
+          </div>
+
+          <div class="grid grid-cols-12 text-[10px] font-bold text-ink-900/40 dark:text-ink-50/40 py-1.5 px-2 uppercase text-center">
+            <div class="col-span-1 text-left">#</div>
+            <div class="col-span-5 text-left">Club</div>
+            <div class="col-span-2">PL</div>
+            <div class="col-span-2">GD</div>
+            <div class="col-span-2 text-pitch-600 dark:text-pitch-300 font-black">PTS</div>
+          </div>
+
+          <div id="standings-rows" class="space-y-1 mt-1 max-h-[520px] overflow-y-auto pr-0.5"></div>
+        </div>
+
+        <!-- EXPORT / SHARE -->
+        <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 p-3 rounded-2xl shadow-sm space-y-3">
+          <button id="btn-export-img" class="w-full px-4 py-2.5 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition flex items-center justify-center gap-2">
+            <span>⬇️</span><span>Download PNG</span>
+          </button>
+          <div>
+            <div class="text-[11px] font-bold text-ink-900/50 dark:text-ink-50/50 uppercase tracking-wider mb-2">Or share directly to</div>
+            <div id="share-buttons" class="flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ON-PAGE CONTENT -->
+    <section class="mt-10 max-w-4xl mx-auto space-y-4 text-sm text-ink-900/70 dark:text-ink-50/70 leading-relaxed">
+      <h2 class="font-display font-bold text-lg uppercase">About this simulator</h2>
+      <p>This tool models the 36-team Swiss-format league phase used by the UEFA Champions League since 2024/25. Real official results are pre-loaded automatically — enter a predicted score for any remaining match, or use "Simulate," and the standings update instantly using the competition's real tiebreaker rules.</p>
+
+      <h3 class="font-display font-bold text-base uppercase pt-2">How qualification works</h3>
+      <p>Every club plays eight league-phase matches — two against opponents from each of the four seeding pots, four at home and four away. One combined table ranks all 36 teams. The top 8 advance directly to the round of 16. Teams ranked 9th through 24th enter a two-legged knockout play-off round. Teams ranked 25th to 36th are eliminated.</p>
+
+      <h3 class="font-display font-bold text-base uppercase pt-2">How ties are broken</h3>
+      <p>Level teams are separated first by points, then goal difference, then goals scored, then goals scored away from home, then total wins, then away wins.</p>
+
+      <p class="text-xs text-ink-900/40 dark:text-ink-50/40 pt-2">Team and pot data reflects the confirmed 2026/27 league-phase draw held August 27, 2026 in Monaco. The specific matchday-by-matchday fixture schedule is set to be published shortly and will sync in automatically once available.</p>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t-2 border-pitch-500 dark:border-pitch-400 mt-8 bg-white dark:bg-ink-900">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs">
+      <div class="col-span-2 sm:col-span-1">
+        <div class="font-display font-bold text-sm uppercase mb-2">UCL Swiss Phase</div>
+        <p class="text-ink-900/50 dark:text-ink-50/50 leading-relaxed">An independent, fan-made league-phase simulator. Not affiliated with or endorsed by UEFA.</p>
+      </div>
+      <div>
+        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-2">Tool</div>
+        <ul class="space-y-1.5">
+          <li><a href="index.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a></li>
+          <li><a href="about.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-2">Legal</div>
+        <ul class="space-y-1.5">
+          <li><a href="privacy.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Privacy</a></li>
+          <li><a href="terms.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Terms</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-2">Data</div>
+        <p class="text-ink-900/50 dark:text-ink-50/50 leading-relaxed">Results sync automatically from public match data as the season progresses.</p>
+      </div>
+    </div>
+    <div class="border-t border-ink-900/10 dark:border-ink-50/10 py-3 text-center text-[11px] text-ink-900/40 dark:text-ink-50/40">
+      Built for fans of the format, not for UEFA.
+    </div>
+  </footer>
+
+  <!-- Hidden always-complete render target for image export (never scrolled/clipped) -->
+  <div id="export-render-target" style="position:fixed; top:0; left:-99999px; width:480px;"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "playwright.reuseBrowser": false,
+  "playwright.env": {},
+  "testing.automaticallyOpenPeekView": "never",
+  "files.exclude": {
+    "playwright-report": true,
+    "test-results": true
+  }
+}

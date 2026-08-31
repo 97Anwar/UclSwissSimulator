@@ -1,0 +1,38 @@
+name: Update real UCL results
+
+on:
+  schedule:
+    # Every 6 hours. Adjust freely — football-data.org's free tier allows
+    # 10 requests/minute, and this workflow makes exactly 1 request per run,
+    # so even hourly would be nowhere near the limit.
+    - cron: '0 */6 * * *'
+  workflow_dispatch: {} # lets you trigger it manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  update-results:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch latest results
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+        run: node scripts/fetch-results.mjs
+
+      - name: Generate matchday/team pages from latest data
+        run: node scripts/generate-static-pages.mjs
+
+      - name: Commit updated data and pages if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/real-results.json matchday-*.html teams/ sitemap.xml
+          git diff --cached --quiet || git commit -m "chore: update real UCL results, matchday/team pages [automated]"
+          git push

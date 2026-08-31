@@ -1,0 +1,6 @@
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0b132b; }
+::-webkit-scrollbar-thumb { background: #1c2541; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #3a506b; }
+.fixture-card { transition: all 0.2s ease-in-out; }
+.fixture-card:hover { border-color: rgba(0, 240, 255, 0.4); }

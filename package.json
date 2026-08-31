@@ -1,0 +1,15 @@
+{
+  "name": "ucl-swiss-simulator",
+  "version": "2.0.0",
+  "description": "UEFA Champions League 36-team Swiss-format league phase simulator — static site, zero backend, zero hosting cost.",
+  "scripts": {
+    "dev": "npx serve .",
+    "test:unit": "node --test",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test": "npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}
