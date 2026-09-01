@@ -232,12 +232,20 @@ function hideDrawError() {
 // Rendering
 // ----------------------------------------------------------------------
 
-function renderUI() {
+// Recomputes only the standings table and the played counter. Score edits
+// go through here so the fixtures list DOM (and the input being typed in)
+// is never rebuilt mid-keystroke — that's what makes live editing work.
+function renderStandingsOnly() {
   const { sortedStandings, playedMatches } = computeStandings(TEAMS_DATA, fixtures);
 
   const counterEl = document.getElementById('matches-played-counter');
   if (counterEl) counterEl.innerText = `${playedMatches} / 144 Played`;
 
+  const standingsEl = document.getElementById('standings-rows');
+  if (standingsEl) renderStandingsTable(standingsEl, sortedStandings);
+}
+
+function renderUI() {
   const titleEl = document.getElementById('matchday-header-title');
   if (titleEl) titleEl.innerText = `Matchday ${activeMatchday} (18 Fixtures)`;
 
@@ -263,9 +271,7 @@ function renderUI() {
   }
 
   renderFixturesSection();
-
-  const standingsEl = document.getElementById('standings-rows');
-  if (standingsEl) renderStandingsTable(standingsEl, sortedStandings);
+  renderStandingsOnly();
 }
 
 function handleScoreChange(fid, side, val) {
@@ -275,48 +281,17 @@ function handleScoreChange(fid, side, val) {
     if (side === 'away') fix.awayScore = val;
     setPrediction(fid, fix.homeScore, fix.awayScore);
     persistFixtures();
-    renderUI();
+    renderStandingsOnly();
   }
 }
 
-// renderFixturesList() rebuilds every fixture card's DOM via innerHTML —
-// including whichever score input the user is actively typing in. Without
-// this focus preservation, that field's underlying DOM node is destroyed
-// and recreated on every single keystroke: the browser loses focus on it
-// immediately after, so the FIRST character appears to register (it's in
-// the JS state and shows in the rebuilt input's value) but every
-// subsequent keystroke goes nowhere since nothing is focused anymore —
-// which read as "I can't enter any value at all." This restores focus
-// (and cursor position, where the browser allows it) to the same field
-// after the rebuild, so typing multiple digits or using the native
-// up/down spinner both keep working uninterrupted.
+// Full rebuild of the fixture cards. Only called on structural changes
+// (matchday switch, simulate, reset, regenerate) — never on a live score
+// edit, so there's no input being typed in to preserve focus for.
 function renderFixturesSection() {
   const fixturesEl = document.getElementById('fixtures-list');
   if (!fixturesEl) return;
-
-  const active = document.activeElement;
-  let restoreInfo = null;
-  if (active && active.classList && active.classList.contains('score-input')) {
-    restoreInfo = {
-      fid: active.dataset.id,
-      side: active.dataset.side,
-      selectionStart: active.selectionStart,
-      selectionEnd: active.selectionEnd,
-    };
-  }
-
   renderFixturesList(fixturesEl, fixtures, activeMatchday, handleScoreChange);
-
-  if (restoreInfo) {
-    const el = fixturesEl.querySelector(`.score-input[data-id="${restoreInfo.fid}"][data-side="${restoreInfo.side}"]`);
-    if (el) {
-      el.focus();
-      // Number inputs don't support selectionStart/setSelectionRange in
-      // most browsers (Chrome throws) — focus is what actually matters
-      // here, so this is best-effort and silently no-ops where unsupported.
-      try { el.setSelectionRange(restoreInfo.selectionStart, restoreInfo.selectionEnd); } catch (e) { /* non-fatal */ }
-    }
-  }
 }
 
 function persistFixtures() {

@@ -8,6 +8,22 @@ function teamBadge(team) {
   return `<span title="Provisional — pending Aug 27 draw" class="ml-1 text-[9px] px-1 py-0.5 rounded bg-gold-500/20 text-gold-600 dark:text-gold-400 font-bold align-middle">TBD</span>`;
 }
 
+// Deterministic color per club id — stable and distinct without needing real
+// (trademarked) logos or cross-origin images that would taint the export.
+function crestColor(id) {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) | 0;
+  return `hsl(${Math.abs(hash) % 360}, 55%, 42%)`;
+}
+
+// Circular 3-letter monogram shown wherever a club crest belongs. Fully
+// inline-styled (no Tailwind/dark classes) so it renders identically on
+// screen and inside the html2canvas export.
+function teamCrest(team, size = 20) {
+  const fontSize = Math.round(size * 0.4);
+  return `<span aria-hidden="true" style="display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; vertical-align:middle; width:${size}px; height:${size}px; border-radius:50%; background:${crestColor(team.id)}; color:#fff; font-size:${fontSize}px; font-weight:700; letter-spacing:-0.02em; line-height:1;">${team.id}</span>`;
+}
+
 export function renderFixturesList(container, fixtures, activeMatchday, onScoreChange) {
   const currentFixtures = fixtures.filter(f => f.matchday === activeMatchday);
 
@@ -32,7 +48,7 @@ export function renderFixturesList(container, fixtures, activeMatchday, onScoreC
       <div class="fixture-card bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 hover:border-pitch-500/40 p-2.5 rounded-xl flex items-center justify-between text-xs">
         <div class="flex items-center space-x-2 w-5/12 justify-end text-right font-semibold">
           <span class="truncate">${home.name}${teamBadge(home)}</span>
-          <span>${home.country}</span>
+          ${teamCrest(home)}
         </div>
 
         <div class="flex flex-col items-center w-3/12">
@@ -47,7 +63,7 @@ export function renderFixturesList(container, fixtures, activeMatchday, onScoreC
         </div>
 
         <div class="flex items-center space-x-2 w-5/12 justify-start font-semibold">
-          <span>${away.country}</span>
+          ${teamCrest(away)}
           <span class="truncate">${teamBadge(away)}${away.name}</span>
         </div>
       </div>
@@ -55,14 +71,11 @@ export function renderFixturesList(container, fixtures, activeMatchday, onScoreC
   }).join('');
 
   container.querySelectorAll('.score-input').forEach(input => {
-    // Deliberately 'change' (fires on blur/Enter, and on each arrow-key
-    // press), not 'input' (fires on every keystroke). The previous version
-    // used 'input' and rebuilt the whole fixtures list on every keystroke,
-    // which fights the browser's native typing and caused digits to not
-    // visibly appear until a second field was touched. Recalculating only
-    // once the user leaves the field avoids that entirely, and matches the
-    // "type freely, then click away to see it calculate" behavior asked for.
-    input.addEventListener('change', (e) => {
+    // 'input' so the table recalculates live on every keystroke. This is
+    // safe (no more lost focus) because a score edit now only re-renders
+    // the standings table, never this fixtures list, so the field being
+    // typed in is never destroyed mid-edit.
+    input.addEventListener('input', (e) => {
       const fid = e.target.dataset.id;
       const side = e.target.dataset.side;
       const val = e.target.value === '' ? null : parseInt(e.target.value, 10);
@@ -98,7 +111,7 @@ export function renderStandingsTable(container, standings) {
         <div class="grid grid-cols-12 items-center flex-1 text-xs py-1">
           <div class="col-span-1 text-left font-bold tabular ${z.rank}">${rank}</div>
           <div class="col-span-5 text-left font-medium truncate flex items-center space-x-1.5">
-            <span>${t.country}</span>
+            ${teamCrest(t)}
             <span class="truncate">${t.name}${teamBadge(t)}</span>
           </div>
           <div class="col-span-2 text-center text-ink-900/50 dark:text-ink-50/50 tabular">${t.played}</div>
@@ -123,16 +136,17 @@ export function renderExportCard(container, standings, meta) {
     const rank = idx + 1;
     const z = zoneStyleHex(rank);
     const gdFormatted = t.gd > 0 ? `+${t.gd}` : t.gd;
+    const rowBg = idx % 2 === 0 ? '#F2F3EE' : '#FFFFFF'; // gray / white zebra striping
+    // Pure flexbox (not CSS grid) with align-items:center — html2canvas
+    // reliably vertically-centers flex children but mis-aligns grid items.
     return `
-      <div style="display:flex; align-items:stretch; gap:8px; padding:4px 8px 4px 0;">
-        <span style="width:4px; border-radius:3px; flex-shrink:0; background:${z.bar};"></span>
-        <div style="display:grid; grid-template-columns: 24px 1fr 40px 40px 44px; align-items:center; flex:1; font-size:12px; line-height:1.4;">
-          <div style="font-weight:700; line-height:1.4; color:${z.rank};">${rank}</div>
-          <div style="font-weight:600; line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.country} ${t.name}</div>
-          <div style="text-align:center; line-height:1.4; opacity:0.55;">${t.played}</div>
-          <div style="text-align:center; line-height:1.4;">${gdFormatted}</div>
-          <div style="text-align:center; line-height:1.4; font-weight:800; color:#0B6E4F;">${t.points}</div>
-        </div>
+      <div style="display:flex; align-items:center; gap:8px; padding:5px 8px 5px 0; background:${rowBg};">
+        <span style="width:4px; align-self:stretch; border-radius:3px; flex-shrink:0; background:${z.bar};"></span>
+        <div style="width:22px; flex-shrink:0; font-size:12px; font-weight:700; line-height:1.4; color:${z.rank};">${rank}</div>
+        <div style="flex:1; min-width:0; display:flex; align-items:center; gap:6px; white-space:nowrap;">${teamCrest(t, 16)}<span style="font-size:12px; font-weight:600; line-height:1.6;">${t.name}</span></div>
+        <div style="width:38px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4; opacity:0.55;">${t.played}</div>
+        <div style="width:38px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4;">${gdFormatted}</div>
+        <div style="width:42px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4; font-weight:800; color:#0B6E4F;">${t.points}</div>
       </div>
     `;
   }).join('');
@@ -153,8 +167,13 @@ export function renderExportCard(container, standings, meta) {
         <div style="font-family:'Oswald',sans-serif; font-weight:700; line-height:1.4; text-transform:uppercase; font-size:15px;">🏆 36-Team Standings</div>
         <div style="font-size:10px; line-height:1.4; color:#0B6E4F; font-weight:700;">${meta?.subtitle || 'UCL Swiss Phase 2026/27'}</div>
       </div>
-      <div style="display:grid; grid-template-columns: 24px 1fr 40px 40px 44px; font-size:9px; line-height:1.4; font-weight:700; text-transform:uppercase; opacity:0.4; padding:0 0 4px 12px;">
-        <div>#</div><div>Club</div><div style="text-align:center;">PL</div><div style="text-align:center;">GD</div><div style="text-align:center;">PTS</div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:9px; line-height:1.4; font-weight:700; text-transform:uppercase; opacity:0.4; padding:0 8px 4px 0;">
+        <span style="width:4px; flex-shrink:0;"></span>
+        <div style="width:22px; flex-shrink:0;">#</div>
+        <div style="flex:1; min-width:0;">Club</div>
+        <div style="width:38px; flex-shrink:0; text-align:center;">PL</div>
+        <div style="width:38px; flex-shrink:0; text-align:center;">GD</div>
+        <div style="width:42px; flex-shrink:0; text-align:center;">PTS</div>
       </div>
       ${rows}
       <div style="display:flex; justify-content:space-between; align-items:center; padding-top:10px; margin-top:8px; border-top:1px solid #E5E7E0; font-size:9px; line-height:1.4; opacity:0.45;">
