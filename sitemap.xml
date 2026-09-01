@@ -4,4 +4,48 @@
   <url><loc>https://swissformatsim.com/about.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://swissformatsim.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.1</priority></url>
   <url><loc>https://swissformatsim.com/terms.html</loc><changefreq>yearly</changefreq><priority>0.1</priority></url>
+  <url><loc>https://swissformatsim.com/matchday-1.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://swissformatsim.com/matchday-2.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://swissformatsim.com/matchday-3.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://swissformatsim.com/matchday-4.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://swissformatsim.com/matchday-5.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://swissformatsim.com/matchday-6.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://swissformatsim.com/matchday-7.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://swissformatsim.com/matchday-8.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://swissformatsim.com/teams/psg.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/bay.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/rma.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/bar.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/int.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/ars.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/mci.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/liv.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/atm.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/dor.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/rom.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/spo.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/por.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/bru.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/bet.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/psv.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/avl.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/mun.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/fey.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/lil.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/nap.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/rbl.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/vil.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/shk.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/gal.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/fen.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/bod.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/sla.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/stu.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/com.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/len.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/slb.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/aek.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/lsk.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/vik.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  <url><loc>https://swissformatsim.com/teams/sab.html</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
 </urlset>

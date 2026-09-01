@@ -1,7 +1,928 @@
 {
-  "generatedAt": null,
+  "generatedAt": "2026-09-01T03:08:48.878Z",
   "competition": "CL",
   "source": "football-data.org",
-  "fixtureCount": 0,
-  "fixtures": []
+  "fixtureCount": 92,
+  "fixtures": [
+    {
+      "externalId": 575323,
+      "matchday": 1,
+      "homeId": "BRU",
+      "awayId": "AVL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-08T16:45:00Z"
+    },
+    {
+      "externalId": 575325,
+      "matchday": 1,
+      "homeId": "RMA",
+      "awayId": "INT",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-08T19:00:00Z"
+    },
+    {
+      "externalId": 575327,
+      "matchday": 1,
+      "homeId": "DOR",
+      "awayId": "VIL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-08T19:00:00Z"
+    },
+    {
+      "externalId": 575329,
+      "matchday": 1,
+      "homeId": "BAR",
+      "awayId": "FEY",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-09T16:45:00Z"
+    },
+    {
+      "externalId": 575330,
+      "matchday": 1,
+      "homeId": "STU",
+      "awayId": "VIK",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-09T16:45:00Z"
+    },
+    {
+      "externalId": 575331,
+      "matchday": 1,
+      "homeId": "LIV",
+      "awayId": "ATM",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-09T19:00:00Z"
+    },
+    {
+      "externalId": 575333,
+      "matchday": 1,
+      "homeId": "NAP",
+      "awayId": "ARS",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-09T19:00:00Z"
+    },
+    {
+      "externalId": 575334,
+      "matchday": 1,
+      "homeId": "SPO",
+      "awayId": "GAL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-09T19:00:00Z"
+    },
+    {
+      "externalId": 575335,
+      "matchday": 1,
+      "homeId": "FEN",
+      "awayId": "ROM",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-10T16:45:00Z"
+    },
+    {
+      "externalId": 575337,
+      "matchday": 1,
+      "homeId": "BAY",
+      "awayId": "BOD",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-10T19:00:00Z"
+    },
+    {
+      "externalId": 575339,
+      "matchday": 1,
+      "homeId": "COM",
+      "awayId": "RBL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-09-10T19:00:00Z"
+    },
+    {
+      "externalId": 575342,
+      "matchday": 2,
+      "homeId": "SAB",
+      "awayId": "SLA",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-13T16:45:00Z"
+    },
+    {
+      "externalId": 575343,
+      "matchday": 2,
+      "homeId": "INT",
+      "awayId": "BRU",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-13T19:00:00Z"
+    },
+    {
+      "externalId": 575344,
+      "matchday": 2,
+      "homeId": "GAL",
+      "awayId": "BAR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-13T19:00:00Z"
+    },
+    {
+      "externalId": 575347,
+      "matchday": 2,
+      "homeId": "VIK",
+      "awayId": "BAY",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-13T19:00:00Z"
+    },
+    {
+      "externalId": 575348,
+      "matchday": 2,
+      "homeId": "RBL",
+      "awayId": "PSV",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-13T19:00:00Z"
+    },
+    {
+      "externalId": 575349,
+      "matchday": 2,
+      "homeId": "VIL",
+      "awayId": "NAP",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-13T19:00:00Z"
+    },
+    {
+      "externalId": 575350,
+      "matchday": 2,
+      "homeId": "LSK",
+      "awayId": "LIV",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-14T16:45:00Z"
+    },
+    {
+      "externalId": 575351,
+      "matchday": 2,
+      "homeId": "FEY",
+      "awayId": "COM",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-14T16:45:00Z"
+    },
+    {
+      "externalId": 575352,
+      "matchday": 2,
+      "homeId": "ROM",
+      "awayId": "RMA",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-14T19:00:00Z"
+    },
+    {
+      "externalId": 575354,
+      "matchday": 2,
+      "homeId": "BOD",
+      "awayId": "DOR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-14T19:00:00Z"
+    },
+    {
+      "externalId": 575355,
+      "matchday": 2,
+      "homeId": "AVL",
+      "awayId": "FEN",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-14T19:00:00Z"
+    },
+    {
+      "externalId": 575356,
+      "matchday": 2,
+      "homeId": "BET",
+      "awayId": "POR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-14T19:00:00Z"
+    },
+    {
+      "externalId": 575358,
+      "matchday": 2,
+      "homeId": "SLB",
+      "awayId": "STU",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-14T19:00:00Z"
+    },
+    {
+      "externalId": 575359,
+      "matchday": 3,
+      "homeId": "SAB",
+      "awayId": "DOR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-20T16:45:00Z"
+    },
+    {
+      "externalId": 575360,
+      "matchday": 3,
+      "homeId": "FEN",
+      "awayId": "SLA",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-20T16:45:00Z"
+    },
+    {
+      "externalId": 575362,
+      "matchday": 3,
+      "homeId": "STU",
+      "awayId": "ATM",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-20T19:00:00Z"
+    },
+    {
+      "externalId": 575363,
+      "matchday": 3,
+      "homeId": "LIV",
+      "awayId": "VIL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-20T19:00:00Z"
+    },
+    {
+      "externalId": 575364,
+      "matchday": 3,
+      "homeId": "ROM",
+      "awayId": "SLB",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-20T19:00:00Z"
+    },
+    {
+      "externalId": 575365,
+      "matchday": 3,
+      "homeId": "POR",
+      "awayId": "PSV",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-20T19:00:00Z"
+    },
+    {
+      "externalId": 575366,
+      "matchday": 3,
+      "homeId": "NAP",
+      "awayId": "BOD",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-20T19:00:00Z"
+    },
+    {
+      "externalId": 575370,
+      "matchday": 3,
+      "homeId": "RMA",
+      "awayId": "RBL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-21T19:00:00Z"
+    },
+    {
+      "externalId": 575372,
+      "matchday": 3,
+      "homeId": "BAY",
+      "awayId": "ARS",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-21T19:00:00Z"
+    },
+    {
+      "externalId": 575374,
+      "matchday": 3,
+      "homeId": "AVL",
+      "awayId": "VIK",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-21T19:00:00Z"
+    },
+    {
+      "externalId": 575375,
+      "matchday": 3,
+      "homeId": "SPO",
+      "awayId": "LSK",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-21T19:00:00Z"
+    },
+    {
+      "externalId": 575376,
+      "matchday": 3,
+      "homeId": "BET",
+      "awayId": "FEY",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-10-21T19:00:00Z"
+    },
+    {
+      "externalId": 575378,
+      "matchday": 4,
+      "homeId": "GAL",
+      "awayId": "STU",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-03T17:45:00Z"
+    },
+    {
+      "externalId": 575379,
+      "matchday": 4,
+      "homeId": "FEY",
+      "awayId": "INT",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-03T20:00:00Z"
+    },
+    {
+      "externalId": 575380,
+      "matchday": 4,
+      "homeId": "BAR",
+      "awayId": "AVL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-03T20:00:00Z"
+    },
+    {
+      "externalId": 575381,
+      "matchday": 4,
+      "homeId": "ATM",
+      "awayId": "BAY",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-03T20:00:00Z"
+    },
+    {
+      "externalId": 575385,
+      "matchday": 4,
+      "homeId": "LSK",
+      "awayId": "SLB",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-03T20:00:00Z"
+    },
+    {
+      "externalId": 575387,
+      "matchday": 4,
+      "homeId": "FEN",
+      "awayId": "LIV",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-04T17:45:00Z"
+    },
+    {
+      "externalId": 575389,
+      "matchday": 4,
+      "homeId": "SLA",
+      "awayId": "ARS",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-04T20:00:00Z"
+    },
+    {
+      "externalId": 575390,
+      "matchday": 4,
+      "homeId": "PSV",
+      "awayId": "BRU",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-04T20:00:00Z"
+    },
+    {
+      "externalId": 575391,
+      "matchday": 4,
+      "homeId": "DOR",
+      "awayId": "BET",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-04T20:00:00Z"
+    },
+    {
+      "externalId": 575392,
+      "matchday": 4,
+      "homeId": "POR",
+      "awayId": "NAP",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-04T20:00:00Z"
+    },
+    {
+      "externalId": 575394,
+      "matchday": 4,
+      "homeId": "VIK",
+      "awayId": "SAB",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-04T20:00:00Z"
+    },
+    {
+      "externalId": 575395,
+      "matchday": 5,
+      "homeId": "GAL",
+      "awayId": "AVL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-24T17:45:00Z"
+    },
+    {
+      "externalId": 575396,
+      "matchday": 5,
+      "homeId": "BOD",
+      "awayId": "LSK",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-24T17:45:00Z"
+    },
+    {
+      "externalId": 575397,
+      "matchday": 5,
+      "homeId": "RMA",
+      "awayId": "PSV",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-24T20:00:00Z"
+    },
+    {
+      "externalId": 575399,
+      "matchday": 5,
+      "homeId": "ARS",
+      "awayId": "DOR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-24T20:00:00Z"
+    },
+    {
+      "externalId": 575400,
+      "matchday": 5,
+      "homeId": "FEY",
+      "awayId": "POR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-24T20:00:00Z"
+    },
+    {
+      "externalId": 575401,
+      "matchday": 5,
+      "homeId": "SLB",
+      "awayId": "BET",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-24T20:00:00Z"
+    },
+    {
+      "externalId": 575404,
+      "matchday": 5,
+      "homeId": "SAB",
+      "awayId": "BAR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-25T17:45:00Z"
+    },
+    {
+      "externalId": 575405,
+      "matchday": 5,
+      "homeId": "SLA",
+      "awayId": "VIL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-25T17:45:00Z"
+    },
+    {
+      "externalId": 575406,
+      "matchday": 5,
+      "homeId": "INT",
+      "awayId": "STU",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-25T20:00:00Z"
+    },
+    {
+      "externalId": 575407,
+      "matchday": 5,
+      "homeId": "ATM",
+      "awayId": "VIK",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-25T20:00:00Z"
+    },
+    {
+      "externalId": 575409,
+      "matchday": 5,
+      "homeId": "BRU",
+      "awayId": "LIV",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-11-25T20:00:00Z"
+    },
+    {
+      "externalId": 575413,
+      "matchday": 6,
+      "homeId": "VIL",
+      "awayId": "SAB",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-08T17:45:00Z"
+    },
+    {
+      "externalId": 575414,
+      "matchday": 6,
+      "homeId": "VIK",
+      "awayId": "FEY",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-08T17:45:00Z"
+    },
+    {
+      "externalId": 575417,
+      "matchday": 6,
+      "homeId": "BAY",
+      "awayId": "SLA",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-08T20:00:00Z"
+    },
+    {
+      "externalId": 575418,
+      "matchday": 6,
+      "homeId": "NAP",
+      "awayId": "BRU",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-08T20:00:00Z"
+    },
+    {
+      "externalId": 575419,
+      "matchday": 6,
+      "homeId": "ROM",
+      "awayId": "SPO",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-08T20:00:00Z"
+    },
+    {
+      "externalId": 575422,
+      "matchday": 6,
+      "homeId": "BET",
+      "awayId": "COM",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-09T17:45:00Z"
+    },
+    {
+      "externalId": 575280,
+      "matchday": 6,
+      "homeId": "ARS",
+      "awayId": "RMA",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-09T20:00:00Z"
+    },
+    {
+      "externalId": 575286,
+      "matchday": 6,
+      "homeId": "DOR",
+      "awayId": "INT",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-09T20:00:00Z"
+    },
+    {
+      "externalId": 575290,
+      "matchday": 6,
+      "homeId": "PSV",
+      "awayId": "ATM",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-09T20:00:00Z"
+    },
+    {
+      "externalId": 575295,
+      "matchday": 6,
+      "homeId": "LIV",
+      "awayId": "POR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-09T20:00:00Z"
+    },
+    {
+      "externalId": 575317,
+      "matchday": 6,
+      "homeId": "LSK",
+      "awayId": "FEN",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2026-12-09T20:00:00Z"
+    },
+    {
+      "externalId": 575292,
+      "matchday": 7,
+      "homeId": "BOD",
+      "awayId": "ATM",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-19T17:45:00Z"
+    },
+    {
+      "externalId": 575318,
+      "matchday": 7,
+      "homeId": "GAL",
+      "awayId": "FEY",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-19T17:45:00Z"
+    },
+    {
+      "externalId": 575282,
+      "matchday": 7,
+      "homeId": "RMA",
+      "awayId": "LSK",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-19T20:00:00Z"
+    },
+    {
+      "externalId": 575285,
+      "matchday": 7,
+      "homeId": "INT",
+      "awayId": "LIV",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-19T20:00:00Z"
+    },
+    {
+      "externalId": 575302,
+      "matchday": 7,
+      "homeId": "STU",
+      "awayId": "BRU",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-19T20:00:00Z"
+    },
+    {
+      "externalId": 575303,
+      "matchday": 7,
+      "homeId": "AVL",
+      "awayId": "DOR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-19T20:00:00Z"
+    },
+    {
+      "externalId": 575308,
+      "matchday": 7,
+      "homeId": "POR",
+      "awayId": "SLA",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-19T20:00:00Z"
+    },
+    {
+      "externalId": 575314,
+      "matchday": 7,
+      "homeId": "FEN",
+      "awayId": "VIL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-20T17:45:00Z"
+    },
+    {
+      "externalId": 575320,
+      "matchday": 7,
+      "homeId": "SAB",
+      "awayId": "NAP",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-20T17:45:00Z"
+    },
+    {
+      "externalId": 575288,
+      "matchday": 7,
+      "homeId": "SPO",
+      "awayId": "BAR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-20T20:00:00Z"
+    },
+    {
+      "externalId": 575297,
+      "matchday": 7,
+      "homeId": "BET",
+      "awayId": "ARS",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-20T20:00:00Z"
+    },
+    {
+      "externalId": 575312,
+      "matchday": 7,
+      "homeId": "VIK",
+      "awayId": "PSV",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-20T20:00:00Z"
+    },
+    {
+      "externalId": 575287,
+      "matchday": 8,
+      "homeId": "SLB",
+      "awayId": "INT",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575289,
+      "matchday": 8,
+      "homeId": "BAR",
+      "awayId": "COM",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575291,
+      "matchday": 8,
+      "homeId": "ATM",
+      "awayId": "FEN",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575298,
+      "matchday": 8,
+      "homeId": "ARS",
+      "awayId": "SAB",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575299,
+      "matchday": 8,
+      "homeId": "BAY",
+      "awayId": "BET",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575301,
+      "matchday": 8,
+      "homeId": "BRU",
+      "awayId": "BOD",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575305,
+      "matchday": 8,
+      "homeId": "SLA",
+      "awayId": "AVL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575309,
+      "matchday": 8,
+      "homeId": "LSK",
+      "awayId": "POR",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575311,
+      "matchday": 8,
+      "homeId": "PSV",
+      "awayId": "STU",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575316,
+      "matchday": 8,
+      "homeId": "FEY",
+      "awayId": "RBL",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    },
+    {
+      "externalId": 575319,
+      "matchday": 8,
+      "homeId": "NAP",
+      "awayId": "VIK",
+      "homeScore": null,
+      "awayScore": null,
+      "status": "TIMED",
+      "utcDate": "2027-01-27T20:00:00Z"
+    }
+  ]
 }
