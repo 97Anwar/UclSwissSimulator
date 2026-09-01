@@ -3,3 +3,6 @@ playwright-report/
 test-results/
 .DS_Store
 *.log
+README.md
+TESTING.md
+tests/
