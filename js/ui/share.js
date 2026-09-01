@@ -14,14 +14,12 @@
 // with the image genuinely attached, and the person picks WhatsApp/X/
 // Instagram/etc. from there.
 //
-// Where it's NOT available (most desktop browsers), we fall back honestly:
-// download the image, and open a platform intent pre-filled with text and
-// a link, with a clear note that the image needs to be attached manually.
-// We do not pretend this fallback attaches the image — that would be a
-// silent lie about what the button does.
+// Where it's NOT available (most desktop browsers), we show no share button
+// at all and let the "Download PNG" action carry sharing — the user saves
+// the image and posts it manually. We don't fake per-platform "share" links
+// that can't actually attach the image.
 // ============================================================================
 
-const SITE_URL = 'https://swissformatsim.com';
 const SHARE_TEXT = 'My UEFA Champions League Swiss-phase predicted table 👇';
 
 export function canShareFiles() {
@@ -54,56 +52,48 @@ export function downloadBlob(blob, filename) {
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
-const PLATFORM_INTENTS = {
-  x: (text, url) => `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-  whatsapp: (text, url) => `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`,
-  reddit: (text, url) => `https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`,
-  facebook: (text, url) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-};
-
 /**
- * Renders the share button row. `getImageBlob` is called lazily (only when
- * a button is clicked) so we don't re-render the export card until needed.
+ * Renders the single native "Share Image…" button, which attaches the actual
+ * PNG via the Web Share API so the OS share sheet offers every installed app
+ * (WhatsApp, X, Instagram, Telegram, …). Where file-sharing isn't supported
+ * (most desktop browsers) nothing is rendered — "Download PNG" covers it.
+ * `getImageBlob` is called lazily (only on click) so the export card isn't
+ * rebuilt until needed.
  */
 export function renderShareButtons(container, getImageBlob) {
-  const buttons = [
-    { key: 'x', label: 'X', icon: '𝕏' },
-    { key: 'whatsapp', label: 'WhatsApp', icon: '💬' },
-    { key: 'reddit', label: 'Reddit', icon: '👽' },
-    { key: 'facebook', label: 'Facebook', icon: '📘' },
-  ];
+  if (!container) return;
 
-  container.innerHTML = buttons.map(b => `
-    <button data-platform="${b.key}" class="share-btn px-3 py-1.5 rounded-full border border-ink-900/15 dark:border-ink-50/15 hover:bg-ink-900/5 dark:hover:bg-ink-50/10 text-xs font-semibold transition flex items-center gap-1.5">
-      <span>${b.icon}</span><span>${b.label}</span>
-    </button>
-  `).join('') + `
-    <button id="btn-native-share" class="share-btn px-3 py-1.5 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 text-xs font-bold transition flex items-center gap-1.5 ${canShareFiles() ? '' : 'hidden'}">
-      <span>📤</span><span>Share Image</span>
+  if (!canShareFiles()) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = `
+    <button id="btn-native-share" class="w-full px-4 py-2.5 rounded-full border-2 border-pitch-500 dark:border-pitch-400 text-pitch-600 dark:text-pitch-300 hover:bg-pitch-500/10 dark:hover:bg-pitch-400/10 font-bold text-sm transition flex items-center justify-center gap-2">
+      <span>📤</span><span>Share Image…</span>
     </button>
   `;
 
-  const nativeBtn = container.querySelector('#btn-native-share');
-  if (nativeBtn) {
-    nativeBtn.addEventListener('click', async () => {
+  const btn = container.querySelector('#btn-native-share');
+  btn.addEventListener('click', async () => {
+    if (btn.disabled) return;
+    const original = btn.innerHTML;
+    btn.disabled = true;
+    btn.classList.add('opacity-70', 'cursor-wait');
+    btn.innerHTML = '<span>⏳</span><span>Preparing…</span>';
+    try {
       const blob = await getImageBlob();
-      if (!blob) return;
+      if (!blob) { showToast(container, "Couldn't generate the image — please try again."); return; }
       const ok = await shareViaWebShareAPI(blob, 'ucl-swiss-standings.png');
-      if (!ok) downloadBlob(blob, 'ucl-swiss-standings.png'); // last-resort fallback
-    });
-  }
-
-  container.querySelectorAll('.share-btn[data-platform]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const platform = btn.dataset.platform;
-      const blob = await getImageBlob();
-      if (blob) downloadBlob(blob, 'ucl-swiss-standings.png');
-      const intentUrl = PLATFORM_INTENTS[platform](SHARE_TEXT, SITE_URL);
-      window.open(intentUrl, '_blank', 'noopener,noreferrer');
-      if (blob) {
-        showToast(container, 'Image downloaded — attach it to your post (most platforms don\'t accept images via link).');
-      }
-    });
+      if (!ok) downloadBlob(blob, 'ucl-swiss-standings.png'); // sharing itself failed — at least save the file
+    } catch (e) {
+      console.error('Share failed:', e);
+      showToast(container, "Couldn't share the image — please try again.");
+    } finally {
+      btn.disabled = false;
+      btn.classList.remove('opacity-70', 'cursor-wait');
+      btn.innerHTML = original;
+    }
   });
 }
 

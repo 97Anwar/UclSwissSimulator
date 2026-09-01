@@ -3,7 +3,7 @@ import { generateSwissFixtures } from './engine/draw.js';
 import { simulateMatchScores } from './engine/simulator.js';
 import { computeStandings } from './engine/standings.js';
 import { renderFixturesList, renderStandingsTable, renderExportCard } from './ui/renderer.js';
-import { renderShareButtons } from './ui/share.js';
+import { renderShareButtons, downloadBlob } from './ui/share.js';
 
 const STORAGE_KEY = 'ucl_sim_v5';
 const PREDICTIONS_KEY = 'ucl_sim_predictions_v5';
@@ -326,8 +326,26 @@ async function buildExportImageBlob() {
   // cheap insurance on top of the real fix above, not a substitute for it.
   await new Promise(r => setTimeout(r, 50));
 
-  const canvas = await html2canvas(target.firstElementChild, { backgroundColor: '#FFFFFF', scale: 2 });
-  return new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+  try {
+    const canvas = await html2canvas(target.firstElementChild, { backgroundColor: '#FFFFFF', scale: 2 });
+    return await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+  } catch (e) {
+    console.error('html2canvas export failed:', e);
+    return null;
+  }
+}
+
+// Transient error note shown under the export box when image generation
+// fails (e.g. the html2canvas CDN is blocked) instead of failing silently.
+function showExportError(anchorBtn) {
+  const box = anchorBtn?.parentElement;
+  if (!box) return;
+  box.querySelector('.export-error-toast')?.remove();
+  const toast = document.createElement('div');
+  toast.className = 'export-error-toast text-[11px] text-red-600 dark:text-red-400 bg-red-500/10 rounded-lg px-2.5 py-1.5';
+  toast.textContent = "Couldn't generate the image — check your connection and try again.";
+  box.appendChild(toast);
+  setTimeout(() => toast.remove(), 6000);
 }
 
 // ----------------------------------------------------------------------
@@ -393,14 +411,20 @@ function bindEvents() {
 
   const exportBtn = document.getElementById('btn-export-img');
   if (exportBtn) exportBtn.addEventListener('click', async () => {
-    const blob = await buildExportImageBlob();
-    if (!blob) return;
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'ucl-swiss-standings.png';
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    if (exportBtn.disabled) return;
+    const original = exportBtn.innerHTML;
+    exportBtn.disabled = true;
+    exportBtn.classList.add('opacity-70', 'cursor-wait');
+    exportBtn.innerHTML = '<span>⏳</span><span>Generating…</span>';
+    try {
+      const blob = await buildExportImageBlob();
+      if (!blob) { showExportError(exportBtn); return; }
+      downloadBlob(blob, 'ucl-swiss-standings.png');
+    } finally {
+      exportBtn.disabled = false;
+      exportBtn.classList.remove('opacity-70', 'cursor-wait');
+      exportBtn.innerHTML = original;
+    }
   });
 
   const themeBtn = document.getElementById('btn-theme-toggle');
