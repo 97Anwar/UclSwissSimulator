@@ -11,7 +11,7 @@
 // https://www.football-data.org/client/register — no card required).
 // ============================================================================
 
-import { writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { join } from 'path';
 import { TEAM_NAME_ALIASES, resolveTeamId, normalizeTeamName } from '../js/data/team-aliases.js';
@@ -103,28 +103,32 @@ async function main() {
 }
 
 // Downloads each team's crest to assets/logos/{id}.png (same-origin, so the
-// PNG export stays html2canvas-safe). SVG crests are swapped to their PNG
-// sibling; any failure is non-fatal and just leaves the monogram fallback.
+// PNG export stays html2canvas-safe). Idempotent: skips logos already on disk
+// so CI doesn't re-fetch all 36 every run. Prefers a PNG raster but falls back
+// to the original URL (e.g. an SVG-only crest) so nothing is silently dropped.
 async function downloadCrests(crestById) {
   const ids = Object.keys(crestById);
   if (ids.length === 0) return;
   const logosDir = fileURLToPath(new URL('../assets/logos/', import.meta.url));
   mkdirSync(logosDir, { recursive: true });
-  let ok = 0, fail = 0;
+  let ok = 0, skip = 0, fail = 0;
   for (const id of ids) {
-    let url = crestById[id];
-    if (url.endsWith('.svg')) url = url.replace(/\.svg$/, '.png');
-    try {
-      const r = await fetch(url);
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      writeFileSync(join(logosDir, `${id.toLowerCase()}.png`), Buffer.from(await r.arrayBuffer()));
-      ok++;
-    } catch (e) {
-      console.warn(`  - crest download failed for ${id} (${url}): ${e.message}`);
-      fail++;
+    const dest = join(logosDir, `${id.toLowerCase()}.png`);
+    if (existsSync(dest)) { skip++; continue; }
+    const src = crestById[id];
+    const candidates = src.endsWith('.svg') ? [src.replace(/\.svg$/, '.png'), src] : [src];
+    let saved = false;
+    for (const url of candidates) {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        writeFileSync(dest, Buffer.from(await r.arrayBuffer()));
+        saved = true; ok++; break;
+      } catch (e) { /* try next candidate */ }
     }
+    if (!saved) { console.warn(`  - crest download failed for ${id} (${src})`); fail++; }
   }
-  console.log(`Downloaded ${ok} crest logo(s)${fail ? `, ${fail} failed` : ''} to assets/logos/.`);
+  console.log(`Crests: ${ok} downloaded, ${skip} already present${fail ? `, ${fail} failed` : ''} in assets/logos/.`);
 }
 
 main().catch(err => {
