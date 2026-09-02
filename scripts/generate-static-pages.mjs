@@ -156,7 +156,7 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
     .tabular { font-variant-numeric: tabular-nums; }
     .zone-bar { width:4px; border-radius:3px; flex-shrink:0; }
   </style>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css">
   ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
 </head>
 <body class="min-h-screen flex flex-col antialiased bg-ink-50 text-ink-900 dark:bg-ink-950 dark:text-ink-50 transition-colors">
@@ -164,15 +164,15 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
   <header class="sticky top-0 z-50 bg-ink-50/95 dark:bg-ink-950/95 border-b-2 border-pitch-500 dark:border-pitch-400 shadow-sm">
     <div class="max-w-7xl mx-auto px-3 sm:px-6">
       <div class="flex items-center justify-between py-2.5 gap-2">
-        <a href="index.html" class="flex items-center space-x-2.5 shrink-0">
+        <a href="/" class="flex items-center space-x-2.5 shrink-0">
           <div class="w-8 h-8 rounded-full bg-pitch-500 dark:bg-pitch-400 flex items-center justify-center text-ink-50 dark:text-ink-950 font-display font-bold text-sm">26</div>
           <div class="leading-none">
             <div class="font-display font-bold text-base sm:text-lg tracking-tight uppercase">UCL <span class="text-pitch-600 dark:text-pitch-300">Swiss Phase</span></div>
           </div>
         </a>
         <nav class="hidden md:flex items-center space-x-5 text-sm font-semibold">
-          <a href="index.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a>
-          <a href="about.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
+          <a href="/" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a>
+          <a href="/about.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
         </nav>
       </div>
     </div>
@@ -186,9 +186,9 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
     <div class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-ink-900/50 dark:text-ink-50/50">
       <span>Unofficial fan-made tool. Not affiliated with or endorsed by UEFA.</span>
       <nav class="flex items-center gap-4">
-        <a href="about.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
-        <a href="privacy.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Privacy</a>
-        <a href="terms.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Terms</a>
+        <a href="/about.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
+        <a href="/privacy.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Privacy</a>
+        <a href="/terms.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Terms</a>
       </nav>
     </div>
   </footer>
@@ -254,14 +254,14 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
 
     <div class="space-y-2 mb-8">${rows}</div>
 
-    <a href="index.html?md=${md}" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">
+    <a href="/?md=${md}" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">
       Open in the full simulator →
     </a>
 
     <div class="mt-10 pt-6 border-t border-ink-900/10 dark:border-ink-50/10">
       <h2 class="font-display font-bold text-sm uppercase text-ink-900/50 dark:text-ink-50/50 mb-3">Other matchdays</h2>
       <div class="flex flex-wrap gap-2">
-        ${[1,2,3,4,5,6,7,8].map(n => `<a href="matchday-${n}.html" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${n === md ? 'bg-pitch-500 dark:bg-pitch-400 text-white dark:text-ink-950' : 'bg-ink-900/5 dark:bg-ink-50/5 border border-ink-900/10 dark:border-ink-50/10 hover:bg-ink-900/10'}">MD ${n}</a>`).join('')}
+        ${[1,2,3,4,5,6,7,8].map(n => `<a href="/matchday-${n}.html" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${n === md ? 'bg-pitch-500 dark:bg-pitch-400 text-white dark:text-ink-950' : 'bg-ink-900/5 dark:bg-ink-50/5 border border-ink-900/10 dark:border-ink-50/10 hover:bg-ink-900/10'}">MD ${n}</a>`).join('')}
       </div>
     </div>
   `;
@@ -330,7 +330,7 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
     <h2 class="font-display font-bold text-base uppercase mb-3">All fixtures</h2>
     <div class="space-y-2 mb-8">${fixtureRows}</div>
 
-    <a href="index.html" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">
+    <a href="/" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">
       Open the full simulator →
     </a>
   `;
