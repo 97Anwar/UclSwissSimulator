@@ -120,6 +120,18 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
   <meta name="description" content="${escapeHtml(description)}">
   <link rel="canonical" href="${canonical}">
   <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:url" content="${canonical}">
+  <meta property="og:site_name" content="UCL Swiss Phase Simulator">
+  <meta property="og:image" content="${SITE_URL}/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtml(title)}">
+  <meta name="twitter:description" content="${escapeHtml(description)}">
+  <meta name="twitter:image" content="${SITE_URL}/og-image.png">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -189,6 +201,28 @@ function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+function breadcrumb(items) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.name, item: it.url })),
+  };
+}
+
+// Mirrors the app's teamCrest(): a club logo (local, same-origin) layered over
+// a colored monogram fallback that shows if the logo file isn't present.
+function crestColor(id) {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) | 0;
+  return `hsl(${Math.abs(hash) % 360}, 55%, 42%)`;
+}
+
+function logoImg(team, size = 22) {
+  const fontSize = Math.round(size * 0.4);
+  const file = team.id.toLowerCase();
+  return `<span aria-hidden="true" style="position:relative; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; vertical-align:middle; width:${size}px; height:${size}px; border-radius:50%; overflow:hidden; background:${crestColor(team.id)};"><span style="color:#fff; font-size:${fontSize}px; font-weight:700; letter-spacing:-0.02em; line-height:1;">${team.id}</span><img src="/assets/logos/${file}.png" alt="" width="${size}" height="${size}" loading="lazy" onerror="this.remove()" style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#fff;"></span>`;
+}
+
 function scoreCell(fixture) {
   const played = fixture.realHomeScore !== null && fixture.realAwayScore !== null;
   if (played) return `<span class="font-bold text-pitch-700 dark:text-pitch-300 tabular">${fixture.realHomeScore} – ${fixture.realAwayScore}</span>`;
@@ -198,7 +232,7 @@ function scoreCell(fixture) {
 // ---------------------------------------------------------------------------
 // Matchday page generation
 // ---------------------------------------------------------------------------
-function generateMatchdayPage(md, fixtures, standingsRows) {
+function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, lastUpdatedIso) {
   const mdFixtures = fixtures.filter(f => f.matchday === md).sort((a, b) => a.id.localeCompare(b.id));
 
   const rows = mdFixtures.map(f => {
@@ -207,15 +241,16 @@ function generateMatchdayPage(md, fixtures, standingsRows) {
     if (!home || !away) return '';
     return `
       <div class="flex items-center justify-between py-2.5 px-3 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl text-sm">
-        <span class="w-5/12 text-right font-semibold">${escapeHtml(home.name)} ${home.country}</span>
+        <span class="w-5/12 text-right font-semibold inline-flex items-center justify-end gap-2">${escapeHtml(home.name)} ${logoImg(home)}</span>
         <span class="w-2/12 text-center">${scoreCell(f)}</span>
-        <span class="w-5/12 text-left font-semibold">${away.country} ${escapeHtml(away.name)}</span>
+        <span class="w-5/12 text-left font-semibold inline-flex items-center gap-2">${logoImg(away)} ${escapeHtml(away.name)}</span>
       </div>`;
   }).join('');
 
   const bodyContent = `
     <h1 class="font-display font-bold text-2xl uppercase mb-1">Matchday ${md} — Champions League Swiss Phase 2026/27</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-6">Fixtures and results for Matchday ${md} of the 36-team league phase. Enter your own predictions or view the live simulator for the full table.</p>
+    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">Fixtures and results for Matchday ${md} of the 36-team league phase. Enter your own predictions or view the live simulator for the full table.</p>
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">Results last updated ${escapeHtml(lastUpdatedHuman)}.</p>` : '<div class="mb-6"></div>'}
 
     <div class="space-y-2 mb-8">${rows}</div>
 
@@ -236,19 +271,26 @@ function generateMatchdayPage(md, fixtures, standingsRows) {
     description: `Matchday ${md} fixtures and results for the 2026/27 UEFA Champions League 36-team Swiss-format league phase. Predict remaining matches and see live standings.`,
     canonical: `${SITE_URL}/matchday-${md}.html`,
     bodyContent,
-    jsonLd: {
-      '@context': 'https://schema.org',
-      '@type': 'SportsEvent',
-      name: `UEFA Champions League Matchday ${md} — 2026/27 League Phase`,
-      startDate: mdFixtures[0]?.utcDate || undefined,
-    },
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'SportsEvent',
+        name: `UEFA Champions League Matchday ${md} — 2026/27 League Phase`,
+        startDate: mdFixtures[0]?.utcDate || undefined,
+        ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}),
+      },
+      breadcrumb([
+        { name: 'Home', url: `${SITE_URL}/` },
+        { name: `Matchday ${md}`, url: `${SITE_URL}/matchday-${md}.html` },
+      ]),
+    ],
   });
 }
 
 // ---------------------------------------------------------------------------
 // Team page generation
 // ---------------------------------------------------------------------------
-function generateTeamPage(team, fixtures, standingsRows) {
+function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastUpdatedIso) {
   const row = standingsRows.find(r => r.id === team.id);
   const teamFixtures = fixtures
     .filter(f => f.homeId === team.id || f.awayId === team.id)
@@ -263,7 +305,7 @@ function generateTeamPage(team, fixtures, standingsRows) {
     return `
       <div class="flex items-center justify-between py-2 px-3 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-lg text-sm">
         <span class="text-ink-900/50 dark:text-ink-50/50 w-16">MD ${f.matchday}</span>
-        <span class="flex-1 font-semibold">${isHome ? 'vs' : '@'} ${escapeHtml(opponent.name)} ${opponent.country}</span>
+        <span class="flex-1 font-semibold inline-flex items-center gap-2">${isHome ? 'vs' : '@'} ${logoImg(opponent)} ${escapeHtml(opponent.name)}</span>
         <span>${scoreCell(f)}</span>
       </div>`;
   }).join('');
@@ -271,8 +313,9 @@ function generateTeamPage(team, fixtures, standingsRows) {
   const { label } = zoneLabel(row.rank);
 
   const bodyContent = `
-    <h1 class="font-display font-bold text-2xl uppercase mb-1">${escapeHtml(team.name)} ${team.country} — Champions League Swiss Phase 2026/27</h1>
+    <h1 class="font-display font-bold text-2xl uppercase mb-1 inline-flex items-center gap-2">${logoImg(team, 30)} ${escapeHtml(team.name)} — Champions League Swiss Phase 2026/27</h1>
     <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">Current standing, fixtures, and results in the 2026/27 UEFA Champions League league phase.</p>
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40">Results last updated ${escapeHtml(lastUpdatedHuman)}.</p>` : ''}
 
     <div class="my-6 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
       <div class="grid grid-cols-3 gap-4 text-center mb-4">
@@ -297,27 +340,40 @@ function generateTeamPage(team, fixtures, standingsRows) {
     description: `${team.name}'s current standing, fixtures, and results in the 2026/27 UEFA Champions League 36-team Swiss-format league phase.`,
     canonical: `${SITE_URL}/teams/${team.id.toLowerCase()}.html`,
     bodyContent,
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: `${team.name} — Champions League Swiss Phase 2026/27 Standing & Fixtures`,
+        url: `${SITE_URL}/teams/${team.id.toLowerCase()}.html`,
+        ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}),
+      },
+      breadcrumb([
+        { name: 'Home', url: `${SITE_URL}/` },
+        { name: team.name, url: `${SITE_URL}/teams/${team.id.toLowerCase()}.html` },
+      ]),
+    ],
   });
 }
 
 // ---------------------------------------------------------------------------
 // Sitemap generation (kept in sync with whatever pages actually exist)
 // ---------------------------------------------------------------------------
-function generateSitemap(matchdayCount, teamIds) {
+function generateSitemap(matchdayCount, teamIds, lastmod) {
   const urls = [
-    { loc: `${SITE_URL}/`, priority: '1.0', freq: 'daily' },
+    { loc: `${SITE_URL}/`, priority: '1.0', freq: 'daily', lastmod },
     { loc: `${SITE_URL}/about.html`, priority: '0.3', freq: 'yearly' },
     { loc: `${SITE_URL}/privacy.html`, priority: '0.1', freq: 'yearly' },
     { loc: `${SITE_URL}/terms.html`, priority: '0.1', freq: 'yearly' },
   ];
   for (let md = 1; md <= matchdayCount; md++) {
-    urls.push({ loc: `${SITE_URL}/matchday-${md}.html`, priority: '0.8', freq: 'daily' });
+    urls.push({ loc: `${SITE_URL}/matchday-${md}.html`, priority: '0.8', freq: 'daily', lastmod });
   }
   teamIds.forEach(id => {
-    urls.push({ loc: `${SITE_URL}/teams/${id.toLowerCase()}.html`, priority: '0.6', freq: 'daily' });
+    urls.push({ loc: `${SITE_URL}/teams/${id.toLowerCase()}.html`, priority: '0.6', freq: 'daily', lastmod });
   });
 
-  const body = urls.map(u => `  <url><loc>${u.loc}</loc><changefreq>${u.freq}</changefreq><priority>${u.priority}</priority></url>`).join('\n');
+  const body = urls.map(u => `  <url><loc>${u.loc}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}<changefreq>${u.freq}</changefreq><priority>${u.priority}</priority></url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
 
@@ -335,10 +391,19 @@ async function main() {
   const fixtures = fixturesToAppFormat(realJson);
   const { sortedStandings } = computeStandings(TEAMS_DATA, fixtures);
 
+  // Freshness stamp driven by the ~6-hourly results sync (real-results.json
+  // generatedAt), used for sitemap <lastmod>, schema dateModified, and the
+  // visible "Results last updated" line on every generated page.
+  const lastUpdatedIso = realJson.generatedAt || new Date().toISOString();
+  const lastmodDate = lastUpdatedIso.slice(0, 10);
+  const lastUpdatedHuman = new Date(lastUpdatedIso).toLocaleString('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
+  }) + ' UTC';
+
   // Matchday pages
   const matchdaysPresent = [...new Set(fixtures.map(f => f.matchday))].filter(Boolean).sort((a, b) => a - b);
   matchdaysPresent.forEach(md => {
-    const html = generateMatchdayPage(md, fixtures, sortedStandings);
+    const html = generateMatchdayPage(md, fixtures, sortedStandings, lastUpdatedHuman, lastUpdatedIso);
     writeFileSync(join(ROOT, `matchday-${md}.html`), html);
   });
   console.log(`Generated ${matchdaysPresent.length} matchday pages.`);
@@ -346,13 +411,13 @@ async function main() {
   // Team pages
   mkdirSync(join(ROOT, 'teams'), { recursive: true });
   TEAMS_DATA.forEach(team => {
-    const html = generateTeamPage(team, fixtures, sortedStandings);
+    const html = generateTeamPage(team, fixtures, sortedStandings, lastUpdatedHuman, lastUpdatedIso);
     writeFileSync(join(ROOT, 'teams', `${team.id.toLowerCase()}.html`), html);
   });
   console.log(`Generated ${TEAMS_DATA.length} team pages.`);
 
   // Sitemap
-  const sitemap = generateSitemap(matchdaysPresent.length, TEAMS_DATA.map(t => t.id));
+  const sitemap = generateSitemap(matchdaysPresent.length, TEAMS_DATA.map(t => t.id), lastmodDate);
   writeFileSync(join(ROOT, 'sitemap.xml'), sitemap);
   console.log('Regenerated sitemap.xml.');
 

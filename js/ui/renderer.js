@@ -8,20 +8,25 @@ function teamBadge(team) {
   return `<span title="Provisional — pending Aug 27 draw" class="ml-1 text-[9px] px-1 py-0.5 rounded bg-gold-500/20 text-gold-600 dark:text-gold-400 font-bold align-middle">TBD</span>`;
 }
 
-// Deterministic color per club id — stable and distinct without needing real
-// (trademarked) logos or cross-origin images that would taint the export.
+// Deterministic color per club id — used as the monogram fallback shown
+// until/unless a real logo PNG is present at /assets/logos/{id}.png.
 function crestColor(id) {
   let hash = 0;
   for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) | 0;
   return `hsl(${Math.abs(hash) % 360}, 55%, 42%)`;
 }
 
-// Circular 3-letter monogram shown wherever a club crest belongs. Fully
-// inline-styled (no Tailwind/dark classes) so it renders identically on
-// screen and inside the html2canvas export.
+// Circular club badge: the real logo (local, same-origin so html2canvas-safe)
+// layered over a 3-letter monogram. If the logo is missing the <img> removes
+// itself on error and the monogram shows through. Fully inline-styled so it
+// renders identically on screen and inside the export.
 function teamCrest(team, size = 20) {
   const fontSize = Math.round(size * 0.4);
-  return `<span aria-hidden="true" style="display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; vertical-align:middle; width:${size}px; height:${size}px; border-radius:50%; background:${crestColor(team.id)}; color:#fff; font-size:${fontSize}px; font-weight:700; letter-spacing:-0.02em; line-height:1;">${team.id}</span>`;
+  const file = team.id.toLowerCase();
+  return `<span aria-hidden="true" style="position:relative; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; vertical-align:middle; width:${size}px; height:${size}px; border-radius:50%; overflow:hidden; background:${crestColor(team.id)};">`
+    + `<span style="color:#fff; font-size:${fontSize}px; font-weight:700; letter-spacing:-0.02em; line-height:1;">${team.id}</span>`
+    + `<img src="/assets/logos/${file}.png" alt="" width="${size}" height="${size}" loading="lazy" onerror="this.remove()" style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#fff;">`
+    + `</span>`;
 }
 
 export function renderFixturesList(container, fixtures, activeMatchday, onScoreChange) {

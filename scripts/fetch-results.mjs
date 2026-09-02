@@ -11,7 +11,9 @@
 // https://www.football-data.org/client/register — no card required).
 // ============================================================================
 
-import { writeFileSync } from 'fs';
+import { writeFileSync, mkdirSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { join } from 'path';
 import { TEAM_NAME_ALIASES, resolveTeamId, normalizeTeamName } from '../js/data/team-aliases.js';
 
 const TOKEN = process.env.FOOTBALL_DATA_TOKEN;
@@ -47,6 +49,7 @@ async function main() {
 
   const unresolved = new Set();
   const fixtures = [];
+  const crestById = {}; // internal team id -> crest image URL from the API
 
   leaguePhase.forEach(m => {
     const homeId = resolveTeamId(m.homeTeam?.name || m.homeTeam?.shortName || '');
@@ -55,6 +58,9 @@ async function main() {
     if (!homeId) unresolved.add(m.homeTeam?.name || m.homeTeam?.shortName || 'UNKNOWN_HOME');
     if (!awayId) unresolved.add(m.awayTeam?.name || m.awayTeam?.shortName || 'UNKNOWN_AWAY');
     if (!homeId || !awayId) return; // skip fixtures we can't map cleanly rather than guess
+
+    if (m.homeTeam?.crest) crestById[homeId] = m.homeTeam.crest;
+    if (m.awayTeam?.crest) crestById[awayId] = m.awayTeam.crest;
 
     const matchday = m.matchday || null;
     const homeScore = m.score?.fullTime?.home ?? null;
@@ -89,9 +95,36 @@ async function main() {
   writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n');
   console.log(`Wrote ${fixtures.length} fixtures to ${OUTPUT_PATH.pathname}`);
 
+  await downloadCrests(crestById);
+
   if (fixtures.length === 0) {
     console.log('No league-phase fixtures available yet (matchday schedule not yet published by UEFA/football-data.org as of this run) — this is not an error, just nothing to write.');
   }
+}
+
+// Downloads each team's crest to assets/logos/{id}.png (same-origin, so the
+// PNG export stays html2canvas-safe). SVG crests are swapped to their PNG
+// sibling; any failure is non-fatal and just leaves the monogram fallback.
+async function downloadCrests(crestById) {
+  const ids = Object.keys(crestById);
+  if (ids.length === 0) return;
+  const logosDir = fileURLToPath(new URL('../assets/logos/', import.meta.url));
+  mkdirSync(logosDir, { recursive: true });
+  let ok = 0, fail = 0;
+  for (const id of ids) {
+    let url = crestById[id];
+    if (url.endsWith('.svg')) url = url.replace(/\.svg$/, '.png');
+    try {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      writeFileSync(join(logosDir, `${id.toLowerCase()}.png`), Buffer.from(await r.arrayBuffer()));
+      ok++;
+    } catch (e) {
+      console.warn(`  - crest download failed for ${id} (${url}): ${e.message}`);
+      fail++;
+    }
+  }
+  console.log(`Downloaded ${ok} crest logo(s)${fail ? `, ${fail} failed` : ''} to assets/logos/.`);
 }
 
 main().catch(err => {

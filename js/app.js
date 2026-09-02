@@ -23,6 +23,7 @@ async function init() {
   applyInitialMatchdayFromUrl();
   bindEvents();
   renderUI();
+  renderLastUpdated();
   renderShareButtons(document.getElementById('share-buttons'), buildExportImageBlob);
 }
 
@@ -216,6 +217,17 @@ function renderModeBanner() {
   }
 }
 
+// Reflects the 6-hourly results sync (real-results.json `generatedAt`) as a
+// visible freshness line on the homepage; blank until real data has synced.
+function renderLastUpdated() {
+  const el = document.getElementById('last-updated');
+  if (!el) return;
+  const iso = realDataMeta?.generatedAt;
+  if (!iso) { el.textContent = ''; return; }
+  const when = new Date(iso).toLocaleString(undefined, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  el.textContent = ` · Results last updated ${when}.`;
+}
+
 function showDrawError(message) {
   const el = document.getElementById('draw-error-banner');
   if (!el) return;
@@ -303,6 +315,23 @@ function persistFixtures() {
 // Export / share
 // ----------------------------------------------------------------------
 
+// Resolves once every <img> in root has loaded or errored; images that fail
+// (e.g. a logo file that doesn't exist yet) are removed so the monogram
+// fallback underneath them is what html2canvas captures.
+function settleImages(root) {
+  const imgs = [...root.querySelectorAll('img')];
+  return Promise.all(imgs.map(img => {
+    if (img.complete) {
+      if (img.naturalWidth === 0) img.remove();
+      return Promise.resolve();
+    }
+    return new Promise(res => {
+      img.addEventListener('load', () => res(), { once: true });
+      img.addEventListener('error', () => { img.remove(); res(); }, { once: true });
+    });
+  }));
+}
+
 async function buildExportImageBlob() {
   const target = document.getElementById('export-render-target');
   if (!target || !window.html2canvas) return null;
@@ -322,12 +351,15 @@ async function buildExportImageBlob() {
   if (document.fonts && document.fonts.ready) {
     await document.fonts.ready;
   }
+  // Wait for club logos to load (or fail) before capturing, so a missing
+  // logo falls back to its monogram instead of a blank white circle.
+  await settleImages(target);
   // Small extra buffer for layout/reflow to settle after fonts swap in —
   // cheap insurance on top of the real fix above, not a substitute for it.
   await new Promise(r => setTimeout(r, 50));
 
   try {
-    const canvas = await html2canvas(target.firstElementChild, { backgroundColor: '#FFFFFF', scale: 2 });
+    const canvas = await html2canvas(target.firstElementChild, { backgroundColor: '#FFFFFF', scale: 2, imageTimeout: 8000 });
     return await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
   } catch (e) {
     console.error('html2canvas export failed:', e);
