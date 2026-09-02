@@ -18,6 +18,22 @@ import { TEAM_NAME_ALIASES, resolveTeamId, normalizeTeamName } from '../js/data/
 
 const TOKEN = process.env.FOOTBALL_DATA_TOKEN;
 const OUTPUT_PATH = new URL('../data/real-results.json', import.meta.url);
+
+// football-data.org uses fuller club names ("... FC", "PAE AEK", "Lille OSC")
+// than the shared alias map covers. These fill the gap so their fixtures and
+// crests aren't silently skipped. resolveId() tries the shared map first.
+const EXTRA_ALIASES = {
+  'paris saint-germain fc': 'PSG',
+  'manchester city fc': 'MCI',
+  'manchester united fc': 'MUN',
+  'lille osc': 'LIL',
+  'fk shakhtar donetsk': 'SHK',
+  'racing club de lens': 'LEN',
+  'pae aek': 'AEK',
+};
+function resolveId(name) {
+  return resolveTeamId(name) || EXTRA_ALIASES[normalizeTeamName(name || '')] || null;
+}
 const COMPETITION_CODE = 'CL'; // football-data.org's code for the Champions League
 
 async function main() {
@@ -52,8 +68,8 @@ async function main() {
   const crestById = {}; // internal team id -> crest image URL from the API
 
   leaguePhase.forEach(m => {
-    const homeId = resolveTeamId(m.homeTeam?.name || m.homeTeam?.shortName || '');
-    const awayId = resolveTeamId(m.awayTeam?.name || m.awayTeam?.shortName || '');
+    const homeId = resolveId(m.homeTeam?.name || m.homeTeam?.shortName || '');
+    const awayId = resolveId(m.awayTeam?.name || m.awayTeam?.shortName || '');
 
     if (!homeId) unresolved.add(m.homeTeam?.name || m.homeTeam?.shortName || 'UNKNOWN_HOME');
     if (!awayId) unresolved.add(m.awayTeam?.name || m.awayTeam?.shortName || 'UNKNOWN_AWAY');

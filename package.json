@@ -4,6 +4,7 @@
   "description": "UEFA Champions League 36-team Swiss-format league phase simulator — static site, zero backend, zero hosting cost.",
   "scripts": {
     "dev": "npx serve .",
+    "fetch": "node --use-system-ca scripts/fetch-results.mjs",
     "test:unit": "node --test",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
