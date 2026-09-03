@@ -4,6 +4,9 @@
   <url><loc>https://swissformatsim.com/about.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://swissformatsim.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.1</priority></url>
   <url><loc>https://swissformatsim.com/terms.html</loc><changefreq>yearly</changefreq><priority>0.1</priority></url>
+  <url><loc>https://swissformatsim.com/guide/champions-league-swiss-format-explained.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://swissformatsim.com/guide/how-teams-qualify-for-the-champions-league.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://swissformatsim.com/guide/champions-league-tiebreakers-explained.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://swissformatsim.com/matchday-1.html</loc><lastmod>2026-09-02</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://swissformatsim.com/matchday-2.html</loc><lastmod>2026-09-02</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://swissformatsim.com/matchday-3.html</loc><lastmod>2026-09-02</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>

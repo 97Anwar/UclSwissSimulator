@@ -193,6 +193,7 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
         </a>
         <nav class="hidden md:flex items-center space-x-5 text-sm font-semibold">
           <a href="/" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a>
+          <a href="/guide/champions-league-swiss-format-explained.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Guides</a>
           <a href="/about.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
         </nav>
       </div>
@@ -250,6 +251,29 @@ function scoreCell(fixture) {
   return `<span class="text-ink-900/40 dark:text-ink-50/40">vs</span>`;
 }
 
+// Internal link to a club page, logo + name (crawlable link graph between clubs).
+function teamLink(team, size = 20) {
+  return `<a href="/teams/${team.id.toLowerCase()}.html" class="inline-flex items-center gap-1.5 hover:text-pitch-600 dark:hover:text-pitch-300 transition">${logoImg(team, size)}<span>${escapeHtml(team.name)}</span></a>`;
+}
+
+// A team's played results, computed from real scores only (never predictions).
+function teamResults(team, teamFixtures) {
+  const out = [];
+  for (const f of teamFixtures) {
+    if (f.realHomeScore === null || f.realAwayScore === null) continue;
+    const isHome = f.homeId === team.id;
+    const gf = isHome ? f.realHomeScore : f.realAwayScore;
+    const ga = isHome ? f.realAwayScore : f.realHomeScore;
+    out.push({ matchday: f.matchday, isHome, oppId: isHome ? f.awayId : f.homeId, gf, ga, outcome: gf > ga ? 'W' : gf < ga ? 'L' : 'D' });
+  }
+  return out;
+}
+
+function outcomeBadge(o) {
+  const cls = o === 'W' ? 'bg-pitch-500 text-white' : o === 'L' ? 'bg-red-500 text-white' : 'bg-ink-900/25 dark:bg-ink-50/25 text-ink-900 dark:text-ink-50';
+  return `<span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black ${cls}">${o}</span>`;
+}
+
 // ---------------------------------------------------------------------------
 // Matchday page generation
 // ---------------------------------------------------------------------------
@@ -262,15 +286,17 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
     if (!home || !away) return '';
     return `
       <div class="flex items-center justify-between py-2.5 px-3 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl text-sm">
-        <span class="w-5/12 text-right font-semibold inline-flex items-center justify-end gap-2">${escapeHtml(home.name)} ${logoImg(home)}</span>
+        <a href="/teams/${home.id.toLowerCase()}.html" class="w-5/12 text-right font-semibold inline-flex items-center justify-end gap-2 hover:text-pitch-600 dark:hover:text-pitch-300 transition"><span class="truncate">${escapeHtml(home.name)}</span> ${logoImg(home)}</a>
         <span class="w-2/12 text-center">${scoreCell(f)}</span>
-        <span class="w-5/12 text-left font-semibold inline-flex items-center gap-2">${logoImg(away)} ${escapeHtml(away.name)}</span>
+        <a href="/teams/${away.id.toLowerCase()}.html" class="w-5/12 text-left font-semibold inline-flex items-center gap-2 hover:text-pitch-600 dark:hover:text-pitch-300 transition">${logoImg(away)} <span class="truncate">${escapeHtml(away.name)}</span></a>
       </div>`;
   }).join('');
 
+  const playedCount = mdFixtures.filter(f => f.realHomeScore !== null && f.realAwayScore !== null).length;
+
   const bodyContent = `
     <h1 class="font-display font-bold text-2xl uppercase mb-1">Matchday ${md} — Champions League Swiss Phase 2026/27</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">Fixtures and results for Matchday ${md} of the 36-team league phase. Enter your own predictions or view the live simulator for the full table.</p>
+    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">All ${mdFixtures.length} fixtures and results for Matchday ${md} of the 2026/27 UEFA Champions League 36-team league phase. Each club plays once per matchday; ${playedCount} of ${mdFixtures.length} have been played so far. Click any club to see its full journey, or open the simulator to predict the rest.</p>
     ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">Results last updated ${escapeHtml(lastUpdatedHuman)}.</p>` : '<div class="mb-6"></div>'}
 
     <div class="space-y-2 mb-8">${rows}</div>
@@ -318,55 +344,106 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
     .sort((a, b) => a.matchday - b.matchday);
 
   const scenario = buildTeamScenario(team, row, fixtures);
+  const results = teamResults(team, teamFixtures);
+  const played = results.length;
+  const won = results.filter(r => r.outcome === 'W').length;
+  const drawn = results.filter(r => r.outcome === 'D').length;
+  const lost = results.filter(r => r.outcome === 'L').length;
+  const gf = results.reduce((s, r) => s + r.gf, 0);
+  const ga = results.reduce((s, r) => s + r.ga, 0);
+  const beaten = results.filter(r => r.outcome === 'W').map(r => teamById(r.oppId)).filter(Boolean);
+  const drewWith = results.filter(r => r.outcome === 'D').map(r => teamById(r.oppId)).filter(Boolean);
+  const lostTo = results.filter(r => r.outcome === 'L').map(r => teamById(r.oppId)).filter(Boolean);
+  const upcoming = teamFixtures.filter(f => f.realHomeScore === null || f.realAwayScore === null);
+  const form = results.slice(-5).map(r => outcomeBadge(r.outcome)).join(' ');
+  const potName = { 1: 'Pot 1 (top seeds)', 2: 'Pot 2', 3: 'Pot 3', 4: 'Pot 4' }[team.pot] || `Pot ${team.pot}`;
+  const nameList = (arr) => arr.map(t => teamLink(t, 18)).join(', ');
 
   const fixtureRows = teamFixtures.map(f => {
     const isHome = f.homeId === team.id;
     const opponent = teamById(isHome ? f.awayId : f.homeId);
     if (!opponent) return '';
+    const isPlayed = f.realHomeScore !== null && f.realAwayScore !== null;
+    let badge = '';
+    if (isPlayed) {
+      const g = isHome ? f.realHomeScore : f.realAwayScore;
+      const a = isHome ? f.realAwayScore : f.realHomeScore;
+      badge = outcomeBadge(g > a ? 'W' : g < a ? 'L' : 'D');
+    }
     return `
       <div class="flex items-center justify-between py-2 px-3 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-lg text-sm">
-        <span class="text-ink-900/50 dark:text-ink-50/50 w-16">MD ${f.matchday}</span>
-        <span class="flex-1 font-semibold inline-flex items-center gap-2">${isHome ? 'vs' : '@'} ${logoImg(opponent)} ${escapeHtml(opponent.name)}</span>
-        <span>${scoreCell(f)}</span>
+        <span class="text-ink-900/50 dark:text-ink-50/50 w-14 shrink-0">MD ${f.matchday}</span>
+        <span class="flex-1 min-w-0 font-semibold inline-flex items-center gap-1.5"><span class="text-ink-900/40 dark:text-ink-50/40 mr-1">${isHome ? 'vs' : '@'}</span>${teamLink(opponent)}</span>
+        <span class="flex items-center gap-2 shrink-0">${badge}${scoreCell(f)}</span>
       </div>`;
   }).join('');
 
   const { label } = zoneLabel(row.rank);
 
+  let journeyHtml;
+  if (played === 0) {
+    const next = upcoming[0];
+    const nextOpp = next ? teamById(next.homeId === team.id ? next.awayId : next.homeId) : null;
+    journeyHtml = `<p class="text-sm text-ink-900/70 dark:text-ink-50/70">${escapeHtml(team.name)} have not yet played a league-phase match. Their campaign begins on Matchday ${next ? next.matchday : 1}${nextOpp ? `, ${next.homeId === team.id ? 'at home to ' : 'away at '}${escapeHtml(nextOpp.name)}` : ''}. Results, form and the clubs they beat will appear here automatically as matchdays are played.</p>`;
+  } else {
+    journeyHtml = `
+      <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mb-3">Across ${played} league-phase match${played === 1 ? '' : 'es'}, ${escapeHtml(team.name)} have won ${won}, drawn ${drawn} and lost ${lost}, scoring ${gf} and conceding ${ga}. They currently sit ${ordinal(row.rank)} of 36 in the &ldquo;${label}&rdquo; zone.</p>
+      <div class="flex items-center gap-2 text-sm mb-3"><span class="text-ink-900/50 dark:text-ink-50/50 font-semibold">Recent form:</span> ${form || '&mdash;'}</div>
+      ${beaten.length ? `<p class="text-sm mb-1"><span class="font-semibold text-pitch-600 dark:text-pitch-300">Beaten:</span> ${nameList(beaten)}</p>` : ''}
+      ${drewWith.length ? `<p class="text-sm mb-1"><span class="font-semibold">Drew with:</span> ${nameList(drewWith)}</p>` : ''}
+      ${lostTo.length ? `<p class="text-sm mb-1"><span class="font-semibold text-red-500">Lost to:</span> ${nameList(lostTo)}</p>` : ''}`;
+  }
+
   const bodyContent = `
-    <h1 class="font-display font-bold text-2xl uppercase mb-1 inline-flex items-center gap-2">${logoImg(team, 30)} ${escapeHtml(team.name)} — Champions League Swiss Phase 2026/27</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">Current standing, fixtures, and results in the 2026/27 UEFA Champions League league phase.</p>
+    <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; ${escapeHtml(team.name)}</nav>
+
+    <h1 class="font-display font-bold text-2xl uppercase mb-1 inline-flex items-center gap-2">${logoImg(team, 30)} ${escapeHtml(team.name)} — Champions League 2026/27</h1>
+    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">${escapeHtml(team.name)}'s fixtures, results, current standing and league-phase journey in the 2026/27 UEFA Champions League.</p>
     ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40">Results last updated ${escapeHtml(lastUpdatedHuman)}.</p>` : ''}
 
     <div class="my-6 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
-      <div class="grid grid-cols-3 gap-4 text-center mb-4">
+      <div class="grid grid-cols-4 gap-3 text-center mb-4">
         <div><div class="text-2xl font-black text-pitch-600 dark:text-pitch-300 tabular">${row.rank}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Rank</div></div>
         <div><div class="text-2xl font-black tabular">${row.points}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Points</div></div>
         <div><div class="text-2xl font-black tabular">${row.played}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Played</div></div>
+        <div><div class="text-2xl font-black tabular">${(row.gd > 0 ? '+' : '') + row.gd}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">GD</div></div>
       </div>
       <p class="text-sm">${escapeHtml(scenario)}</p>
       <p class="text-xs text-ink-900/40 dark:text-ink-50/40 mt-2">Zone: ${label}</p>
     </div>
 
-    <h2 class="font-display font-bold text-base uppercase mb-3">All fixtures</h2>
+    <h2 class="font-display font-bold text-base uppercase mb-2">How ${escapeHtml(team.name)} got here</h2>
+    <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mb-6">${escapeHtml(team.name)} (${team.country}) qualified for the 2026/27 UEFA Champions League and was placed in ${potName} for the league-phase draw. In the 36-team Swiss-style league phase, every club plays eight different opponents — two drawn from each of the four pots — with the top eight going straight to the round of 16, teams 9th&ndash;24th entering the knockout play-offs, and 25th&ndash;36th eliminated. <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">How the league phase works &rarr;</a></p>
+
+    <h2 class="font-display font-bold text-base uppercase mb-3">${escapeHtml(team.name)}'s league-phase journey</h2>
+    <div class="mb-8">${journeyHtml}</div>
+
+    <h2 class="font-display font-bold text-base uppercase mb-3">All fixtures &amp; results</h2>
     <div class="space-y-2 mb-8">${fixtureRows}</div>
 
-    <a href="/" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">
-      Open the full simulator →
-    </a>
+    <a href="/" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">Open the full simulator &rarr;</a>
+
+    <div class="mt-10 pt-6 border-t border-ink-900/10 dark:border-ink-50/10 text-xs text-ink-900/50 dark:text-ink-50/50">
+      <span class="font-semibold uppercase tracking-wider">Guides:</span>
+      <a href="/guide/champions-league-swiss-format-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Swiss format explained</a> &middot;
+      <a href="/guide/how-teams-qualify-for-the-champions-league.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">How teams qualify</a> &middot;
+      <a href="/guide/champions-league-tiebreakers-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Tiebreakers</a>
+    </div>
   `;
 
   return pageShell({
-    title: `${team.name} — Champions League Swiss Phase 2026/27 Standing & Fixtures`,
-    description: `${team.name}'s current standing, fixtures, and results in the 2026/27 UEFA Champions League 36-team Swiss-format league phase.`,
+    title: `${team.name} Champions League 2026/27 — Fixtures, Results & Table`,
+    description: `${team.name}'s 2026/27 UEFA Champions League league-phase fixtures, results, current standing and journey — who they have played, beaten and face next in the 36-team table.`,
     canonical: `${SITE_URL}/teams/${team.id.toLowerCase()}.html`,
     bodyContent,
     jsonLd: [
       {
         '@context': 'https://schema.org',
-        '@type': 'WebPage',
-        name: `${team.name} — Champions League Swiss Phase 2026/27 Standing & Fixtures`,
+        '@type': 'SportsTeam',
+        name: team.name,
+        sport: 'Association football',
         url: `${SITE_URL}/teams/${team.id.toLowerCase()}.html`,
+        memberOf: { '@type': 'SportsOrganization', name: 'UEFA Champions League 2026/27 League Phase' },
         ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}),
       },
       breadcrumb([
@@ -378,15 +455,125 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
 }
 
 // ---------------------------------------------------------------------------
+// Evergreen guide pages (informational content hub)
+// ---------------------------------------------------------------------------
+const P = 'class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4"';
+const H2 = 'class="font-display font-bold text-lg uppercase mt-6 mb-2"';
+const GUIDE_LINKS = `
+    <div class="mt-10 pt-6 border-t border-ink-900/10 dark:border-ink-50/10 text-sm">
+      <span class="font-semibold uppercase tracking-wider text-ink-900/50 dark:text-ink-50/50 text-xs">More guides:</span>
+      <a href="/guide/champions-league-swiss-format-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Swiss format explained</a> &middot;
+      <a href="/guide/how-teams-qualify-for-the-champions-league.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">How teams qualify</a> &middot;
+      <a href="/guide/champions-league-tiebreakers-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Tiebreakers</a>
+      <div class="mt-4"><a href="/" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 text-white font-bold text-sm transition">Open the simulator &rarr;</a></div>
+    </div>`;
+
+const GUIDES = [
+  {
+    slug: 'champions-league-swiss-format-explained',
+    title: 'Champions League Swiss Format Explained (2026/27 League Phase)',
+    description: 'A clear explanation of the UEFA Champions League Swiss-style league phase: 36 teams, 8 games, one table, and how the top 8, play-off and elimination places work.',
+    h1: 'Champions League Swiss Format Explained',
+    body: `
+      <p ${P}>Since 2024/25 the UEFA Champions League has used a <strong>Swiss-style league phase</strong> in place of the old eight groups of four. For 2026/27 it again features <strong>36 clubs in a single combined table</strong>. This guide explains exactly how it works and what each position means.</p>
+      <h2 ${H2}>36 teams, one table</h2>
+      <p ${P}>All 36 qualified clubs are seeded into four pots of nine by UEFA coefficient. Instead of being split into groups, every club sits in one 36-team table and plays <strong>eight matches</strong> — two opponents from each of the four pots, four at home and four away. No club plays the same opponent twice, and a team can face at most two clubs from any one country.</p>
+      <h2 ${H2}>Eight matchdays</h2>
+      <p ${P}>The eight fixtures are spread across eight matchdays between September and January. Because it is one shared table, results elsewhere constantly change a club's ranking — which is what makes the final matchday so tense.</p>
+      <h2 ${H2}>How clubs advance</h2>
+      <p ${P}>After all matches, the single table decides everything:</p>
+      <ul class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-disc pl-5 space-y-1">
+        <li><strong>1st&ndash;8th:</strong> qualify directly for the round of 16.</li>
+        <li><strong>9th&ndash;24th:</strong> enter a two-legged knockout play-off round for the remaining round-of-16 places.</li>
+        <li><strong>25th&ndash;36th:</strong> are eliminated, with no drop into the Europa League.</li>
+      </ul>
+      <p ${P}>You can try it yourself in our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">Champions League simulator</a>: enter scores for any match and watch the 36-team table, top-8 line and play-off cut-off update live. Level teams are separated by a set order of criteria — see our <a href="/guide/champions-league-tiebreakers-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">tiebreakers guide</a>.</p>
+      ${GUIDE_LINKS}`,
+  },
+  {
+    slug: 'how-teams-qualify-for-the-champions-league',
+    title: 'How Do Teams Qualify for the Champions League? (2026/27)',
+    description: 'How the 36 Champions League teams are decided: domestic league places, association coefficients, the champions and league paths, and the European Performance Spots.',
+    h1: 'How Teams Qualify for the Champions League',
+    body: `
+      <p ${P}>The 36 clubs in the Champions League league phase reach it through a mix of automatic domestic places and summer qualifying rounds. Here is how the field is built.</p>
+      <h2 ${H2}>Domestic league places</h2>
+      <p ${P}>Most places go to clubs based on where they finish in their <strong>domestic league</strong>. How many automatic places each country gets depends on its <strong>UEFA association coefficient</strong> — a rolling five-year measure of that country's clubs in Europe. The strongest leagues (England, Spain, Italy, Germany) receive up to four automatic league-phase places, while smaller associations receive fewer, or none, and must qualify.</p>
+      <h2 ${H2}>Champions Path and League Path</h2>
+      <p ${P}>Clubs that do not qualify automatically enter <strong>qualifying rounds</strong> over the summer, split into a <strong>Champions Path</strong> (for domestic title winners of lower-ranked associations) and a <strong>League Path</strong> (for high-placed clubs from stronger associations). This keeps more national champions in the competition.</p>
+      <h2 ${H2}>The European Performance Spots</h2>
+      <p ${P}>Under the current format, the <strong>two associations whose clubs performed best across all UEFA competitions the previous season</strong> each earn one extra Champions League place — the "European Performance Spots". The reigning Champions League and Europa League winners also qualify automatically.</p>
+      <p ${P}>Once this settles, the 36 clubs are seeded into four pots and drawn into the league phase. Explore every club in the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">2026/27 simulator</a>, or read how the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">Swiss league phase</a> then plays out.</p>
+      ${GUIDE_LINKS}`,
+  },
+  {
+    slug: 'champions-league-tiebreakers-explained',
+    title: 'Champions League Tiebreakers Explained (League Phase)',
+    description: 'The exact order of tiebreakers used to rank teams level on points in the Champions League 36-team league-phase table.',
+    h1: 'Champions League Tiebreakers Explained',
+    body: `
+      <p ${P}>With 36 clubs in one table, teams often finish level on points — and a single place can be the difference between a direct round-of-16 spot, the play-offs, or elimination. UEFA separates level clubs using a fixed order of criteria.</p>
+      <h2 ${H2}>The tiebreaker order</h2>
+      <p ${P}>When two or more clubs are level on points, they are ranked by, in order:</p>
+      <ol class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-decimal pl-5 space-y-1">
+        <li>Points</li>
+        <li>Goal difference</li>
+        <li>Goals scored</li>
+        <li>Goals scored away from home</li>
+        <li>Wins</li>
+        <li>Away wins</li>
+      </ol>
+      <p ${P}>Further criteria (such as disciplinary record and UEFA coefficient) apply only if clubs are still level after all of the above. Our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> applies criteria 1&ndash;6 automatically as you enter results, so the table always ranks exactly as it would in real life.</p>
+      <h2 ${H2}>Why it matters</h2>
+      <p ${P}>Because goal difference and goals scored come so early in the order, a heavy win or a late consolation goal can swing a club several places — and across a shared 36-team table, that can decide who reaches the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">round of 16 directly versus the play-offs</a>.</p>
+      ${GUIDE_LINKS}`,
+  },
+];
+
+function generateGuidePage(g, lastUpdatedIso) {
+  const canonical = `${SITE_URL}/guide/${g.slug}.html`;
+  const bodyContent = `
+    <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Guides &rsaquo; ${escapeHtml(g.h1)}</nav>
+    <article>
+      <h1 class="font-display font-bold text-2xl sm:text-3xl uppercase mb-4">${escapeHtml(g.h1)}</h1>
+      ${g.body}
+    </article>`;
+  return pageShell({
+    title: g.title,
+    description: g.description,
+    canonical,
+    bodyContent,
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: g.h1,
+        description: g.description,
+        url: canonical,
+        mainEntityOfPage: canonical,
+        ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}),
+      },
+      breadcrumb([
+        { name: 'Home', url: `${SITE_URL}/` },
+        { name: g.h1, url: canonical },
+      ]),
+    ],
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Sitemap generation (kept in sync with whatever pages actually exist)
 // ---------------------------------------------------------------------------
-function generateSitemap(matchdayCount, teamIds, lastmod) {
+function generateSitemap(matchdayCount, teamIds, guideSlugs, lastmod) {
   const urls = [
     { loc: `${SITE_URL}/`, priority: '1.0', freq: 'daily', lastmod },
     { loc: `${SITE_URL}/about.html`, priority: '0.3', freq: 'yearly' },
     { loc: `${SITE_URL}/privacy.html`, priority: '0.1', freq: 'yearly' },
     { loc: `${SITE_URL}/terms.html`, priority: '0.1', freq: 'yearly' },
   ];
+  (guideSlugs || []).forEach(slug => {
+    urls.push({ loc: `${SITE_URL}/guide/${slug}.html`, priority: '0.5', freq: 'monthly' });
+  });
   for (let md = 1; md <= matchdayCount; md++) {
     urls.push({ loc: `${SITE_URL}/matchday-${md}.html`, priority: '0.8', freq: 'daily', lastmod });
   }
@@ -437,8 +624,15 @@ async function main() {
   });
   console.log(`Generated ${TEAMS_DATA.length} team pages.`);
 
+  // Guide pages (evergreen informational content)
+  mkdirSync(join(ROOT, 'guide'), { recursive: true });
+  GUIDES.forEach(g => {
+    writeFileSync(join(ROOT, 'guide', `${g.slug}.html`), generateGuidePage(g, lastUpdatedIso));
+  });
+  console.log(`Generated ${GUIDES.length} guide pages.`);
+
   // Sitemap
-  const sitemap = generateSitemap(matchdaysPresent.length, TEAMS_DATA.map(t => t.id), lastmodDate);
+  const sitemap = generateSitemap(matchdaysPresent.length, TEAMS_DATA.map(t => t.id), GUIDES.map(g => g.slug), lastmodDate);
   writeFileSync(join(ROOT, 'sitemap.xml'), sitemap);
   console.log('Regenerated sitemap.xml.');
 
