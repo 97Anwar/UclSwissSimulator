@@ -332,9 +332,29 @@ function settleImages(root) {
   }));
 }
 
+// html2canvas is heavy (~150KB) and only needed for image export, so it's
+// no longer loaded on every page view — it's fetched on first export.
+function ensureHtml2Canvas() {
+  if (window.html2canvas) return Promise.resolve(window.html2canvas);
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    s.onload = () => resolve(window.html2canvas);
+    s.onerror = () => reject(new Error('Failed to load html2canvas'));
+    document.head.appendChild(s);
+  });
+}
+
 async function buildExportImageBlob() {
   const target = document.getElementById('export-render-target');
-  if (!target || !window.html2canvas) return null;
+  if (!target) return null;
+  try {
+    await ensureHtml2Canvas();
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+  if (!window.html2canvas) return null;
 
   const { sortedStandings } = computeStandings(TEAMS_DATA, fixtures);
   renderExportCard(target, sortedStandings, {
