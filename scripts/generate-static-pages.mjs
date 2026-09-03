@@ -459,12 +459,25 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
 // ---------------------------------------------------------------------------
 const P = 'class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4"';
 const H2 = 'class="font-display font-bold text-lg uppercase mt-6 mb-2"';
+
+// Real pot breakdown from the dataset — powers the seeding guide and links all 36 clubs.
+const POT_GROUPS = { 1: [], 2: [], 3: [], 4: [] };
+TEAMS_DATA.forEach(t => { if (POT_GROUPS[t.pot]) POT_GROUPS[t.pot].push(t); });
+function clubChip(t) {
+  return `<a href="/teams/${t.id.toLowerCase()}.html" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 hover:border-pitch-500/50 text-xs font-semibold transition">${logoImg(t, 18)}${escapeHtml(t.name)}</a>`;
+}
+function potListHtml(pot) {
+  return `<div class="flex flex-wrap gap-2 mb-4">${POT_GROUPS[pot].map(clubChip).join('')}</div>`;
+}
+
 const GUIDE_LINKS = `
     <div class="mt-10 pt-6 border-t border-ink-900/10 dark:border-ink-50/10 text-sm">
       <span class="font-semibold uppercase tracking-wider text-ink-900/50 dark:text-ink-50/50 text-xs">More guides:</span>
-      <a href="/guide/champions-league-swiss-format-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Swiss format explained</a> &middot;
+      <a href="/guide/champions-league-swiss-format-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Swiss format</a> &middot;
       <a href="/guide/how-teams-qualify-for-the-champions-league.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">How teams qualify</a> &middot;
-      <a href="/guide/champions-league-tiebreakers-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Tiebreakers</a>
+      <a href="/guide/champions-league-tiebreakers-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Tiebreakers</a> &middot;
+      <a href="/guide/champions-league-knockout-format-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Knockout format</a> &middot;
+      <a href="/guide/champions-league-2026-27-pots-and-seeding.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Pots &amp; seeding</a>
       <div class="mt-4"><a href="/" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 text-white font-bold text-sm transition">Open the simulator &rarr;</a></div>
     </div>`;
 
@@ -526,6 +539,39 @@ const GUIDES = [
       <p ${P}>Further criteria (such as disciplinary record and UEFA coefficient) apply only if clubs are still level after all of the above. Our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> applies criteria 1&ndash;6 automatically as you enter results, so the table always ranks exactly as it would in real life.</p>
       <h2 ${H2}>Why it matters</h2>
       <p ${P}>Because goal difference and goals scored come so early in the order, a heavy win or a late consolation goal can swing a club several places — and across a shared 36-team table, that can decide who reaches the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">round of 16 directly versus the play-offs</a>.</p>
+      ${GUIDE_LINKS}`,
+  },
+  {
+    slug: 'champions-league-knockout-format-explained',
+    title: 'Champions League Knockout Stage Explained (Round of 16 & Play-offs)',
+    description: 'How the Champions League knockout stage works after the league phase: the play-off round, round of 16 seeding, and the two-legged path to the 2027 final.',
+    h1: 'Champions League Knockout Stage Explained',
+    body: `
+      <p ${P}>Once the 36-team <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">league phase</a> ends, the Champions League switches to a familiar two-legged knockout — but with a twist that rewards finishing high in the table.</p>
+      <h2 ${H2}>The knockout play-off round</h2>
+      <p ${P}>The eight clubs finishing <strong>1st&ndash;8th</strong> skip this round entirely and go straight to the round of 16. The 16 clubs finishing <strong>9th&ndash;24th</strong> contest a two-legged play-off for the remaining eight round-of-16 places. Finishing 9th&ndash;16th earns a seeding advantage: those clubs are seeded and play the second leg at home against a club that finished 17th&ndash;24th.</p>
+      <h2 ${H2}>Round of 16 and beyond</h2>
+      <p ${P}>The eight league-phase qualifiers meet the eight play-off winners in the round of 16. From there it is a standard bracket — round of 16, quarter-finals and semi-finals are all two-legged (home and away), and the <strong>final is a single match</strong> at a neutral venue. A club's league-phase ranking also shapes which side of the bracket it lands on, so those top-eight places are worth far more than just skipping a round.</p>
+      <h2 ${H2}>Why the top 8 matters so much</h2>
+      <p ${P}>Finishing in the top eight means two fewer knockout legs, a kinder seeded path, and no risk of a February exit before the round of 16 even begins. That is exactly the line our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> highlights as you predict the table.</p>
+      ${GUIDE_LINKS}`,
+  },
+  {
+    slug: 'champions-league-2026-27-pots-and-seeding',
+    title: 'Champions League 2026/27 Pots & Seeding — All 36 Teams',
+    description: 'The four seeding pots for the 2026/27 UEFA Champions League league phase, with all 36 clubs listed by pot and how UEFA coefficient seeding works.',
+    h1: 'Champions League 2026/27 Pots & Seeding',
+    body: `
+      <p ${P}>Before the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">league-phase draw</a>, the 36 clubs are seeded into four pots of nine, ranked by <strong>UEFA club coefficient</strong>. Pot 1 holds the highest-ranked sides (the reigning champions are placed in Pot 1); Pot 4 the lowest-ranked. In the draw, every club is paired with two opponents from each of the four pots — so even a Pot 1 side still has to face two other Pot 1 clubs.</p>
+      <h2 ${H2}>Pot 1</h2>
+      ${potListHtml(1)}
+      <h2 ${H2}>Pot 2</h2>
+      ${potListHtml(2)}
+      <h2 ${H2}>Pot 3</h2>
+      ${potListHtml(3)}
+      <h2 ${H2}>Pot 4</h2>
+      ${potListHtml(4)}
+      <p ${P}>Because opponents are spread across all four pots, the strongest clubs can meet early and the smallest clubs are guaranteed some heavyweight fixtures. Want to see how the matchups play out? Pick any club above, or head to the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">full simulator</a> and predict the 36-team table yourself.</p>
       ${GUIDE_LINKS}`,
   },
 ];
