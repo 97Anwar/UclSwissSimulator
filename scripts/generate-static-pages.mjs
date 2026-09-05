@@ -76,8 +76,7 @@ function zoneLabel(rank) {
 }
 
 // --- Scenario text: conservative, fact-based, no unverified permutation claims ---
-function buildTeamScenario(team, standingsRow, fixtures) {
-  const { label, zone } = zoneLabel(standingsRow.rank);
+function buildTeamScenario(team, standingsRow, fixtures, seasonStarted) {
   const played = standingsRow.played;
   const remaining = 8 - played;
 
@@ -96,6 +95,15 @@ function buildTeamScenario(team, standingsRow, fixtures) {
       : '';
   }
 
+  // Pre-season: no match has been played anywhere, so every club is level on
+  // 0 points and there is no real ranking or qualification zone to state yet.
+  if (!seasonStarted) {
+    return `The 2026/27 league phase has not kicked off yet, so ${team.name} are not ranked — ` +
+      `all 36 clubs start level on 0 points. Their eight-match league-phase schedule is set, and a live ` +
+      `position and qualification zone will appear here as soon as results come in.${nextLine}`;
+  }
+
+  const { label } = zoneLabel(standingsRow.rank);
   return `${team.name} currently sit ${ordinal(standingsRow.rank)} in the 36-team table with ` +
     `${standingsRow.points} points from ${played} match${played === 1 ? '' : 'es'} played ` +
     `(${remaining} remaining). That position is currently in the "${label}" zone.${nextLine}`;
@@ -274,6 +282,68 @@ function outcomeBadge(o) {
   return `<span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black ${cls}">${o}</span>`;
 }
 
+// Qualification-zone colour helpers (mirror the live table's zoneStyle).
+function zoneBarClass(rank) {
+  if (rank <= 8) return 'bg-pitch-500 dark:bg-pitch-400';
+  if (rank <= 24) return 'bg-blue-500';
+  return 'bg-red-500';
+}
+function zoneTextClass(rank) {
+  if (rank <= 8) return 'text-pitch-600 dark:text-pitch-300';
+  if (rank <= 24) return 'text-blue-600 dark:text-blue-300';
+  return 'text-red-500 dark:text-red-400';
+}
+
+// A full 36-row standings snapshot, styled like the live table. `seasonStarted`
+// false (no match played yet) shows "—" ranks and neutral bars instead of
+// implying a real order — same rule the simulator uses.
+function renderStandingsSnapshot(rows, seasonStarted) {
+  const body = rows.map(t => {
+    const gd = t.gd > 0 ? `+${t.gd}` : t.gd;
+    return `
+      <div class="flex items-stretch gap-2 py-1 pr-2 rounded-lg">
+        <span class="zone-bar ${seasonStarted ? zoneBarClass(t.rank) : 'bg-ink-900/15 dark:bg-ink-50/15'}"></span>
+        <div class="grid grid-cols-12 items-center flex-1 text-xs py-1">
+          <div class="col-span-1 text-left font-bold tabular ${seasonStarted ? zoneTextClass(t.rank) : 'text-ink-900/40 dark:text-ink-50/40'}">${seasonStarted ? t.rank : '&mdash;'}</div>
+          <div class="col-span-6 text-left font-medium truncate flex items-center gap-1.5">${logoImg(teamById(t.id), 18)}<a href="/teams/${t.id.toLowerCase()}.html" class="truncate hover:text-pitch-600 dark:hover:text-pitch-300 transition">${escapeHtml(t.name)}</a></div>
+          <div class="col-span-2 text-center text-ink-900/50 dark:text-ink-50/50 tabular">${t.played}</div>
+          <div class="col-span-1 text-center tabular text-[11px]">${gd}</div>
+          <div class="col-span-2 text-center font-extrabold text-pitch-600 dark:text-pitch-300 tabular">${t.points}</div>
+        </div>
+      </div>`;
+  }).join('');
+  return `
+    <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 p-3 rounded-2xl mb-6">
+      <div class="grid grid-cols-3 gap-1.5 text-[10px] font-bold text-center mb-2">
+        <div class="flex items-center justify-center gap-1.5 py-1 px-1 rounded-lg bg-pitch-500/10 text-pitch-700 dark:text-pitch-300"><span class="w-1.5 h-3.5 rounded-sm bg-pitch-500 dark:bg-pitch-400"></span>1&ndash;8: R16</div>
+        <div class="flex items-center justify-center gap-1.5 py-1 px-1 rounded-lg bg-blue-500/10 text-blue-700 dark:text-blue-300"><span class="w-1.5 h-3.5 rounded-sm bg-blue-500"></span>9&ndash;24: Play-offs</div>
+        <div class="flex items-center justify-center gap-1.5 py-1 px-1 rounded-lg bg-red-500/10 text-red-700 dark:text-red-300"><span class="w-1.5 h-3.5 rounded-sm bg-red-500"></span>25&ndash;36: Out</div>
+      </div>
+      <div class="grid grid-cols-12 text-[10px] font-bold text-ink-900/40 dark:text-ink-50/40 py-1.5 px-2 uppercase text-center border-b border-ink-900/10 dark:border-ink-50/10">
+        <div class="col-span-1 text-left">#</div>
+        <div class="col-span-6 text-left">Club</div>
+        <div class="col-span-2">Pld</div>
+        <div class="col-span-1">GD</div>
+        <div class="col-span-2 text-pitch-600 dark:text-pitch-300">Pts</div>
+      </div>
+      ${body}
+    </div>`;
+}
+
+// Which clubs crossed a qualification boundary between two standings snapshots.
+function computeZoneMovers(afterRows, prevRows) {
+  const prevRank = Object.fromEntries(prevRows.map(r => [r.id, r.rank]));
+  const intoTop8 = [], outOfTop8 = [], intoDropZone = [];
+  afterRows.forEach(r => {
+    const was = prevRank[r.id];
+    if (was === undefined) return;
+    if (r.rank <= 8 && was > 8) intoTop8.push(r);
+    if (r.rank > 8 && was <= 8) outOfTop8.push(r);
+    if (r.rank > 24 && was <= 24) intoDropZone.push(r);
+  });
+  return { intoTop8, outOfTop8, intoDropZone };
+}
+
 // ---------------------------------------------------------------------------
 // Matchday page generation
 // ---------------------------------------------------------------------------
@@ -293,12 +363,59 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
   }).join('');
 
   const playedCount = mdFixtures.filter(f => f.realHomeScore !== null && f.realAwayScore !== null).length;
+  const mdTotal = mdFixtures.length;
+  const hasResults = playedCount > 0;
+
+  // Standings as they stood after this matchday (and after the previous one,
+  // to describe what changed). computeStandings reads real results only.
+  const upToMd = fixtures.filter(f => f.matchday <= md);
+  const { sortedStandings: afterRows, seasonStarted } = computeStandings(TEAMS_DATA, upToMd);
+  const prevRows = md > 1
+    ? computeStandings(TEAMS_DATA, fixtures.filter(f => f.matchday <= md - 1)).sortedStandings
+    : null;
+
+  const mdComplete = mdTotal > 0 && playedCount === mdTotal;
+  const snapshotHeading = mdComplete
+    ? `Standings after Matchday ${md}`
+    : hasResults ? `Standings — Matchday ${md} in progress` : 'Standings so far';
+  const standingsSection = seasonStarted
+    ? `<h2 class="font-display font-bold text-base uppercase mb-2">${snapshotHeading}</h2>${renderStandingsSnapshot(afterRows, seasonStarted)}`
+    : '';
+
+  // "What changed" — only meaningful once this matchday has results to compare.
+  let moversSection = '';
+  if (prevRows && hasResults) {
+    const { intoTop8, outOfTop8, intoDropZone } = computeZoneMovers(afterRows, prevRows);
+    const line = (label, arr) => arr.length
+      ? `<p class="text-sm mb-1"><span class="font-semibold">${label}:</span> ${arr.map(r => teamLink(teamById(r.id), 18)).join(', ')}</p>`
+      : '';
+    const moverLines = [
+      line('Climbed into the top 8', intoTop8),
+      line('Dropped out of the top 8', outOfTop8),
+      line('Fell into the elimination zone', intoDropZone),
+    ].filter(Boolean).join('');
+    if (moverLines) {
+      moversSection = `<h2 class="font-display font-bold text-base uppercase mb-2">What changed on Matchday ${md}</h2><div class="mb-6">${moverLines}</div>`;
+    }
+  }
+
+  const h1 = hasResults
+    ? `Champions League Standings After Matchday ${md} — 2026/27`
+    : `Matchday ${md} — Champions League 2026/27`;
+  const intro = hasResults
+    ? `The 36-team Champions League table after Matchday ${md} of the 2026/27 league phase, plus every result. ${playedCount} of ${mdTotal} matches played — see who moved into the top 8, the play-off places and the elimination zone.`
+    : `All ${mdTotal} fixtures for Matchday ${md} of the 2026/27 UEFA Champions League 36-team league phase. Each club plays once per matchday. Click any club to see its full journey, or open the simulator to predict the rest.`;
 
   const bodyContent = `
-    <h1 class="font-display font-bold text-2xl uppercase mb-1">Matchday ${md} — Champions League Swiss Phase 2026/27</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">All ${mdFixtures.length} fixtures and results for Matchday ${md} of the 2026/27 UEFA Champions League 36-team league phase. Each club plays once per matchday; ${playedCount} of ${mdFixtures.length} have been played so far. Click any club to see its full journey, or open the simulator to predict the rest.</p>
+    <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Matchday ${md}</nav>
+    <h1 class="font-display font-bold text-2xl uppercase mb-1">${h1}</h1>
+    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">${intro}</p>
     ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">Results last updated ${escapeHtml(lastUpdatedHuman)}.</p>` : '<div class="mb-6"></div>'}
 
+    ${moversSection}
+    ${standingsSection}
+
+    <h2 class="font-display font-bold text-base uppercase mb-2">Matchday ${md} ${hasResults ? 'results' : 'fixtures'}</h2>
     <div class="space-y-2 mb-8">${rows}</div>
 
     <a href="/?md=${md}" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">
@@ -313,9 +430,16 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
     </div>
   `;
 
+  const title = hasResults
+    ? `Champions League Standings After Matchday ${md} — 2026/27 League Phase`
+    : `Matchday ${md} Fixtures & Results — Champions League 2026/27`;
+  const description = hasResults
+    ? `The Champions League 36-team standings after Matchday ${md} of the 2026/27 league phase, with every result — who's in the top 8, the play-off places and the elimination zone.`
+    : `Matchday ${md} fixtures and results for the 2026/27 UEFA Champions League 36-team league phase. Predict the remaining matches and see the live standings.`;
+
   return pageShell({
-    title: `Matchday ${md} Fixtures & Results — Champions League Swiss Phase 2026/27`,
-    description: `Matchday ${md} fixtures and results for the 2026/27 UEFA Champions League 36-team Swiss-format league phase. Predict remaining matches and see live standings.`,
+    title,
+    description,
     canonical: `${SITE_URL}/matchday-${md}.html`,
     bodyContent,
     jsonLd: [
@@ -337,13 +461,13 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
 // ---------------------------------------------------------------------------
 // Team page generation
 // ---------------------------------------------------------------------------
-function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastUpdatedIso) {
+function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastUpdatedIso, seasonStarted) {
   const row = standingsRows.find(r => r.id === team.id);
   const teamFixtures = fixtures
     .filter(f => f.homeId === team.id || f.awayId === team.id)
     .sort((a, b) => a.matchday - b.matchday);
 
-  const scenario = buildTeamScenario(team, row, fixtures);
+  const scenario = buildTeamScenario(team, row, fixtures, seasonStarted);
   const results = teamResults(team, teamFixtures);
   const played = results.length;
   const won = results.filter(r => r.outcome === 'W').length;
@@ -379,6 +503,8 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
   }).join('');
 
   const { label } = zoneLabel(row.rank);
+  const rankDisplay = seasonStarted ? row.rank : '—';
+  const zoneDisplay = seasonStarted ? label : 'Not ranked yet';
 
   let journeyHtml;
   if (played === 0) {
@@ -403,13 +529,13 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
 
     <div class="my-6 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
       <div class="grid grid-cols-4 gap-3 text-center mb-4">
-        <div><div class="text-2xl font-black text-pitch-600 dark:text-pitch-300 tabular">${row.rank}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Rank</div></div>
+        <div><div class="text-2xl font-black text-pitch-600 dark:text-pitch-300 tabular">${rankDisplay}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Rank</div></div>
         <div><div class="text-2xl font-black tabular">${row.points}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Points</div></div>
         <div><div class="text-2xl font-black tabular">${row.played}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Played</div></div>
         <div><div class="text-2xl font-black tabular">${(row.gd > 0 ? '+' : '') + row.gd}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">GD</div></div>
       </div>
       <p class="text-sm">${escapeHtml(scenario)}</p>
-      <p class="text-xs text-ink-900/40 dark:text-ink-50/40 mt-2">Zone: ${label}</p>
+      <p class="text-xs text-ink-900/40 dark:text-ink-50/40 mt-2">Zone: ${zoneDisplay}</p>
     </div>
 
     <h2 class="font-display font-bold text-base uppercase mb-2">How ${escapeHtml(team.name)} got here</h2>
@@ -527,16 +653,23 @@ const GUIDES = [
     body: `
       <p ${P}>With 36 clubs in one table, teams often finish level on points — and a single place can be the difference between a direct round-of-16 spot, the play-offs, or elimination. UEFA separates level clubs using a fixed order of criteria.</p>
       <h2 ${H2}>The tiebreaker order</h2>
-      <p ${P}>When two or more clubs are level on points, they are ranked by, in order:</p>
+      <p ${P}>UEFA separates level clubs in two stages. <strong>While the league phase is still being played</strong>, only the first five criteria are used, and any clubs still level are shown in alphabetical order:</p>
       <ol class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-decimal pl-5 space-y-1">
-        <li>Points</li>
         <li>Goal difference</li>
         <li>Goals scored</li>
         <li>Goals scored away from home</li>
         <li>Wins</li>
         <li>Away wins</li>
       </ol>
-      <p ${P}>Further criteria (such as disciplinary record and UEFA coefficient) apply only if clubs are still level after all of the above. Our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> applies criteria 1&ndash;6 automatically as you enter results, so the table always ranks exactly as it would in real life.</p>
+      <p ${P}><strong>After the final matchday</strong>, any clubs still level are then separated by five further criteria, in order:</p>
+      <ol start="6" class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-decimal pl-5 space-y-1">
+        <li>Highest collective points of a club's eight league-phase opponents</li>
+        <li>Best collective goal difference of those opponents</li>
+        <li>Most goals scored collectively by those opponents</li>
+        <li>Fewest disciplinary points</li>
+        <li>Highest UEFA club coefficient</li>
+      </ol>
+      <p ${P}>Our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> applies the goal- and result-based criteria as you enter scores, and the opponent-strength criteria once every match has been played, so the table ranks just as UEFA's would. (Disciplinary points and club coefficient aren't modelled, since they depend on data outside the scoreline.)</p>
       <h2 ${H2}>Why it matters</h2>
       <p ${P}>Because goal difference and goals scored come so early in the order, a heavy win or a late consolation goal can swing a club several places — and across a shared 36-team table, that can decide who reaches the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">round of 16 directly versus the play-offs</a>.</p>
       ${GUIDE_LINKS}`,
@@ -643,7 +776,7 @@ async function main() {
   }
 
   const fixtures = fixturesToAppFormat(realJson);
-  const { sortedStandings } = computeStandings(TEAMS_DATA, fixtures);
+  const { sortedStandings, seasonStarted } = computeStandings(TEAMS_DATA, fixtures);
 
   // Freshness stamp driven by the ~6-hourly results sync (real-results.json
   // generatedAt), used for sitemap <lastmod>, schema dateModified, and the
@@ -665,7 +798,7 @@ async function main() {
   // Team pages
   mkdirSync(join(ROOT, 'teams'), { recursive: true });
   TEAMS_DATA.forEach(team => {
-    const html = generateTeamPage(team, fixtures, sortedStandings, lastUpdatedHuman, lastUpdatedIso);
+    const html = generateTeamPage(team, fixtures, sortedStandings, lastUpdatedHuman, lastUpdatedIso, seasonStarted);
     writeFileSync(join(ROOT, 'teams', `${team.id.toLowerCase()}.html`), html);
   });
   console.log(`Generated ${TEAMS_DATA.length} team pages.`);

@@ -11,22 +11,44 @@
 //   - UEFA's political/conflict restrictions on specific pairings
 //   - The exact proprietary constraint order UEFA's own draw software uses
 //
-// APPROACH: two backtracking CSP solves, run in sequence, each wrapped in
-// an outer retry loop:
+// APPROACH: two backtracking CSP solves plus one deterministic orientation
+// pass, run in sequence, the searches wrapped in an outer retry loop:
 //   1) Pair every team with 2 opponents per pot, respecting the
-//      association cap and keeping home/away balanced to exactly 4/4.
-//   2) Given that fixed set of 144 pairings, assign each one to one of the
+//      association cap. Home/away is NOT decided here.
+//   2) Orient each of the 144 pairings home/away so every team gets exactly
+//      4 home and 4 away. Because every team has exactly 8 opponents, every
+//      vertex of the opponent graph has even degree, so each connected
+//      component is Eulerian: walking an Eulerian circuit and orienting each
+//      edge in the direction of travel guarantees in-degree == out-degree ==
+//      4 for every team. This step is deterministic and can never fail, so
+//      home/away can no longer cause a late, expensive backtrack — which is
+//      what previously gave the search a heavy runtime tail that occasionally
+//      blew the wall-clock budget.
+//   3) Given the fixed set of 144 pairings, assign each one to one of the
 //      8 matchdays so no team plays twice on the same matchday.
-// Solving both at once in a single combined search was tried first and
-// discarded — the interaction between all four rule sets made the search
-// space thrash badly (200k+ steps with no result). Splitting them into two
-// smaller, independent searches with a shared outer retry converges in
-// well under a second in practice.
+// Solving pairing + orientation + scheduling all at once in a single
+// combined search was tried first and discarded — the interaction between
+// all the rule sets made the search space thrash badly (200k+ steps with no
+// result). Splitting them converges in well under a second in practice.
 // ============================================================================
 
-const MAX_BACKTRACK_STEPS = 200000;
-const MAX_PAIRING_ATTEMPTS = 60;
-const MAX_OUTER_ATTEMPTS = 15; // covers the rare case matchday assignment fails on an otherwise-valid pairing
+// Pairing runtime is heavy-tailed: most random seeds solve in a few hundred
+// steps, but a small fraction thrash for a very long time. Rather than let an
+// unlucky seed grind on (which is what gave the whole draw its occasional
+// multi-second tail and budget-exceeded failures), abandon a pairing attempt
+// after a low step cap and restart fresh — the classic rapid-restart cure for
+// heavy-tailed backtracking search.
+const PAIRING_RESTART_STEPS = 1000;
+// The matchday assignment is an 8-edge-colouring of the (8-regular) opponent
+// graph. Most pairings are 8-edge-colourable ("Class 1") and colour almost
+// instantly, but some random pairings are "Class 2" and can't be split into 8
+// clash-free matchdays at all — no search will ever succeed on them. So cap
+// the matchday search low too: a failure just means "this pairing was Class 2,
+// throw it away and draw a fresh one," which is far cheaper than grinding a
+// doomed search to a huge step limit.
+const MATCHDAY_RESTART_STEPS = 20000;
+const MAX_PAIRING_ATTEMPTS = 2000; // bounded in practice by the shared wall-clock deadline, not this number
+const MAX_OUTER_ATTEMPTS = 400; // re-draws a fresh pairing when one turns out not to be 8-colourable; bounded by the wall-clock deadline
 const WALL_CLOCK_BUDGET_MS = 4000; // hard ceiling across ALL attempts combined — see note below
 
 // A per-attempt step cap alone isn't enough: a genuinely infeasible dataset
@@ -55,10 +77,9 @@ function solvePairingOnce(teams, deadline) {
 
   const state = {};
   teams.forEach(t => {
-    state[t.id] = { opponents: new Set(), home: 0, away: 0, potCount: { 1: 0, 2: 0, 3: 0, 4: 0 }, assocCount: {} };
+    state[t.id] = { opponents: new Set(), potCount: { 1: 0, 2: 0, 3: 0, 4: 0 }, assocCount: {} };
   });
 
-  const pairMeta = {};
   let steps = 0;
   let timedOut = false;
 
@@ -73,11 +94,6 @@ function solvePairingOnce(teams, deadline) {
       const cTeam = byId[cid];
       if ((s.assocCount[cTeam.assoc] || 0) >= 2) return false;
       if ((cs.assocCount[team.assoc] || 0) >= 2) return false;
-      // Only truly incompatible pairs get rejected: both already maxed on
-      // the SAME side (both need home, or both need away) can't play each
-      // other, since a match needs exactly one of each.
-      if (s.home >= 4 && cs.home >= 4) return false;
-      if (s.away >= 4 && cs.away >= 4) return false;
       return true;
     });
   }
@@ -105,26 +121,13 @@ function solvePairingOnce(teams, deadline) {
     const s = state[tid];
     const cs = state[cid];
 
-    // Force the side that's already capped; if neither is capped, defer to
-    // whichever side the opponent still needs; otherwise pick randomly.
-    let tHome;
-    if (s.home >= 4) tHome = false;
-    else if (s.away >= 4) tHome = true;
-    else if (cs.home >= 4) tHome = true;
-    else if (cs.away >= 4) tHome = false;
-    else tHome = Math.random() < 0.5;
-
     s.opponents.add(cid); cs.opponents.add(tid);
     s.potCount[pot] += 1; cs.potCount[team.pot] += 1;
     s.assocCount[cTeam.assoc] = (s.assocCount[cTeam.assoc] || 0) + 1;
     cs.assocCount[team.assoc] = (cs.assocCount[team.assoc] || 0) + 1;
-    if (tHome) { s.home += 1; cs.away += 1; } else { s.away += 1; cs.home += 1; }
-
-    pairMeta[[tid, cid].sort().join('|')] = tHome ? tid : cid;
-    return tHome;
   }
 
-  function undoEdge(tid, cid, pot, tHome) {
+  function undoEdge(tid, cid, pot) {
     const team = byId[tid];
     const cTeam = byId[cid];
     const s = state[tid];
@@ -133,26 +136,13 @@ function solvePairingOnce(teams, deadline) {
     s.opponents.delete(cid); cs.opponents.delete(tid);
     s.potCount[pot] -= 1; cs.potCount[team.pot] -= 1;
     s.assocCount[cTeam.assoc] -= 1; cs.assocCount[team.assoc] -= 1;
-    if (tHome) { s.home -= 1; cs.away -= 1; } else { s.away -= 1; cs.home -= 1; }
-
-    delete pairMeta[[tid, cid].sort().join('|')];
   }
 
   function backtrack() {
     if (timedOut) return false; // abort signal set deeper in the recursion — unwind immediately without exploring further candidates at this level either
 
     steps++;
-    if (steps > MAX_BACKTRACK_STEPS) { timedOut = true; return false; }
-    // Check the shared wall-clock deadline every 500 steps (cheap enough
-    // not to matter for real, fast-succeeding searches, but bounds the
-    // worst case for a genuinely infeasible dataset). Setting `timedOut`
-    // (not just returning false) is essential: a plain `return false`
-    // only tells the immediate parent "this branch failed," so its for-loop
-    // just moves on to the next candidate instead of aborting the whole
-    // search — that's what let an earlier version of this run for 15+
-    // seconds after the deadline had already passed. The shared flag makes
-    // every frame at every level bail immediately instead.
-    if (steps % 500 === 0 && Date.now() > deadline) { timedOut = true; return false; }
+    if (steps > PAIRING_RESTART_STEPS) { timedOut = true; return false; }
 
     const slot = pickMostConstrainedSlot();
     if (!slot) return true;
@@ -161,9 +151,9 @@ function solvePairingOnce(teams, deadline) {
     if (candidates.length === 0) return false;
 
     for (const cid of candidates) {
-      const tHome = applyEdge(slot.tid, cid, slot.pot);
+      applyEdge(slot.tid, cid, slot.pot);
       if (backtrack()) return true;
-      undoEdge(slot.tid, cid, slot.pot, tHome);
+      undoEdge(slot.tid, cid, slot.pot);
       if (timedOut) return false; // don't try further candidates once aborted
     }
     return false;
@@ -178,9 +168,7 @@ function solvePairingOnce(teams, deadline) {
       const key = [t.id, oid].sort().join('|');
       if (seen.has(key)) return;
       seen.add(key);
-      const homeId = pairMeta[key];
-      const awayId = homeId === t.id ? oid : t.id;
-      pairs.push({ home: homeId, away: awayId });
+      pairs.push({ a: t.id, b: oid });
     });
   });
 
@@ -194,6 +182,56 @@ function solvePairingWithRetry(teams, deadline) {
     if (result) return result;
   }
   return null;
+}
+
+// Orients the undirected opponent graph home/away so every team gets exactly
+// 4 home and 4 away. Every team has 8 opponents => every vertex has even
+// degree => each connected component is Eulerian. Tracing an Eulerian circuit
+// (iterative Hierholzer) and orienting each edge in the direction it was
+// traversed makes each vertex's out-degree equal its in-degree, i.e. 4/4.
+// Deterministic and always succeeds, so it never triggers a retry.
+function orientHomeAway(pairs, teams) {
+  const adj = {};
+  teams.forEach(t => { adj[t.id] = []; });
+  pairs.forEach((p, i) => {
+    adj[p.a].push({ to: p.b, edge: i });
+    adj[p.b].push({ to: p.a, edge: i });
+  });
+
+  const usedEdge = new Array(pairs.length).fill(false);
+  const oriented = new Array(pairs.length).fill(null);
+  const ptr = {};
+  teams.forEach(t => { ptr[t.id] = 0; });
+
+  for (const t of teams) {
+    const start = t.id;
+    while (ptr[start] < adj[start].length && usedEdge[adj[start][ptr[start]].edge]) ptr[start]++;
+    if (ptr[start] >= adj[start].length) continue;
+
+    const stack = [start];
+    const edgeStack = []; // the edge traversed to reach each vertex pushed above `start`
+    while (stack.length > 0) {
+      const v = stack[stack.length - 1];
+      while (ptr[v] < adj[v].length && usedEdge[adj[v][ptr[v]].edge]) ptr[v]++;
+      if (ptr[v] < adj[v].length) {
+        const e = adj[v][ptr[v]++];
+        usedEdge[e.edge] = true;
+        edgeStack.push({ from: v, edge: e.edge });
+        stack.push(e.to);
+      } else {
+        stack.pop();
+        const entered = edgeStack.pop();
+        if (entered) {
+          const p = pairs[entered.edge];
+          const home = entered.from;
+          const away = home === p.a ? p.b : p.a;
+          oriented[entered.edge] = { home, away };
+        }
+      }
+    }
+  }
+
+  return oriented;
 }
 
 function solveMatchdaysOnce(pairs, teams, deadline) {
@@ -233,7 +271,7 @@ function solveMatchdaysOnce(pairs, teams, deadline) {
     if (timedOut) return false;
 
     steps++;
-    if (steps > MAX_BACKTRACK_STEPS) { timedOut = true; return false; }
+    if (steps > MATCHDAY_RESTART_STEPS) { timedOut = true; return false; }
     if (steps % 500 === 0 && Date.now() > deadline) { timedOut = true; return false; }
 
     const pick = pickMostConstrainedEdge();
@@ -275,7 +313,9 @@ export function generateSwissFixtures(teamsData) {
     const pairs = solvePairingWithRetry(teamsData, deadline);
     if (!pairs) continue;
 
-    const assigned = solveMatchdaysOnce(pairs, teamsData, deadline);
+    const oriented = orientHomeAway(pairs, teamsData);
+
+    const assigned = solveMatchdaysOnce(oriented, teamsData, deadline);
     if (!assigned) continue; // pairing was fine, matchday split failed -> try a fresh pairing
 
     const fixtures = [];
@@ -286,8 +326,8 @@ export function generateSwissFixtures(teamsData) {
       fixtures.push({
         id: `M${md}_${counters[md]}`,
         matchday: md,
-        homeId: pair.home,
-        awayId: pair.away,
+        homeId: oriented[i].home,
+        awayId: oriented[i].away,
         homeScore: null,
         awayScore: null,
       });

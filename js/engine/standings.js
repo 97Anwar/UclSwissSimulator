@@ -1,21 +1,16 @@
 // ============================================================================
 // League phase standings calculator
 // ============================================================================
-// Tiebreaker order (per UEFA Champions League regulations), applied only
-// among teams still level after each prior criterion:
-//   1. Points
-//   2. Goal difference
-//   3. Goals scored
-//   4. Goals scored away from home
-//   5. Wins
-//   6. Away wins
-// If teams are still level after all 6 criteria, this build ranks them by
-// team id as a stable fallback — it does NOT implement a head-to-head
-// mini-league (rule 7 in the real regulations). That's a known, documented
-// gap, not a silent omission.
+// This module builds each team's raw record (points, goals, wins, etc.) from
+// the played fixtures, then hands ranking off to tiebreakers.js, which owns
+// the full UEFA ranking order. Keeping the football ranking rules in one
+// dedicated, independently-tested module (rather than an inline sort here)
+// means every consumer ranks identically and each criterion is testable on
+// its own.
 // ============================================================================
 
 import { getEffectiveScore } from './effective-score.js';
+import { rankTeams } from './tiebreakers.js';
 
 export function computeStandings(teamsData, fixtures) {
   const teamById = Object.fromEntries(teamsData.map(t => [t.id, t]));
@@ -57,20 +52,35 @@ export function computeStandings(teamsData, fixtures) {
 
   const rows = Object.values(table).map(r => ({ ...r, gd: r.goalsFor - r.goalsAgainst }));
 
-  rows.sort((a, b) => {
-    if (b.points !== a.points) return b.points - a.points;
-    if (b.gd !== a.gd) return b.gd - a.gd;
-    if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
-    if (b.awayGoalsFor !== a.awayGoalsFor) return b.awayGoalsFor - a.awayGoalsFor;
-    if (b.won !== a.won) return b.won - a.won;
-    if (b.awayWins !== a.awayWins) return b.awayWins - a.awayWins;
-    return a.id.localeCompare(b.id);
+  // Opponent-based criteria (UEFA tiebreakers 6-8) need each team's collective
+  // opponent totals. Build them from every league-phase fixture the team is in
+  // (both played and scheduled), summing the opponents' current records. These
+  // only actually affect ranking once the phase is complete, but computing
+  // them here keeps standings.js the single source of every ranking input.
+  const rowById = Object.fromEntries(rows.map(r => [r.id, r]));
+  const opponentsOf = {};
+  teamsData.forEach(t => { opponentsOf[t.id] = []; });
+  fixtures.forEach(f => {
+    if (opponentsOf[f.homeId]) opponentsOf[f.homeId].push(f.awayId);
+    if (opponentsOf[f.awayId]) opponentsOf[f.awayId].push(f.homeId);
+  });
+  rows.forEach(r => {
+    const opps = opponentsOf[r.id] || [];
+    r.oppPoints = opps.reduce((s, oid) => s + (rowById[oid]?.points || 0), 0);
+    r.oppGd = opps.reduce((s, oid) => s + (rowById[oid]?.gd || 0), 0);
+    r.oppGoalsFor = opps.reduce((s, oid) => s + (rowById[oid]?.goalsFor || 0), 0);
   });
 
-  // Attach rank explicitly (1-indexed) so every consumer reads the same
-  // number from the same place, rather than each caller re-deriving it
-  // from array position and risking drift.
-  rows.forEach((r, i) => { r.rank = i + 1; });
+  // The opponent-based criteria (6-8) only apply once every league-phase match
+  // has been played, per UEFA. Until then, ties past criterion 5 are broken
+  // alphabetically.
+  const complete = fixtures.length > 0 && playedMatches === fixtures.length;
+  const sortedStandings = rankTeams(rows, { complete });
 
-  return { sortedStandings: rows, playedMatches };
+  // Before a single league-phase match is played, every team is level on
+  // 0 points and any "rank"/zone is an artifact of the alphabetical fallback,
+  // not a real standing. Expose one shared flag so no consumer shows a
+  // misleading pre-season position. It flips true the instant the first
+  // real or predicted result lands.
+  return { sortedStandings, playedMatches, seasonStarted: playedMatches > 0 };
 }

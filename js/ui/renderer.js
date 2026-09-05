@@ -89,7 +89,8 @@ export function renderFixturesList(container, fixtures, activeMatchday, onScoreC
   });
 }
 
-function zoneStyle(rank) {
+function zoneStyle(rank, seasonStarted = true) {
+  if (!seasonStarted) return { bar: 'bg-ink-900/15 dark:bg-ink-50/15', rank: 'text-ink-900/40 dark:text-ink-50/40' };
   if (rank <= 8) return { bar: 'bg-pitch-500 dark:bg-pitch-400', rank: 'text-pitch-600 dark:text-pitch-300' };
   if (rank <= 24) return { bar: 'bg-blue-500', rank: 'text-blue-600 dark:text-blue-300' };
   return { bar: 'bg-red-500', rank: 'text-red-500 dark:text-red-400' };
@@ -98,23 +99,24 @@ function zoneStyle(rank) {
 // Fixed hex version for the export card, which is always rendered on a
 // solid white background regardless of the site's current theme, so it
 // can't rely on Tailwind's dark: variant.
-function zoneStyleHex(rank) {
+function zoneStyleHex(rank, seasonStarted = true) {
+  if (!seasonStarted) return { bar: '#D1D5DB', rank: '#9CA3AF' };
   if (rank <= 8) return { bar: '#0B6E4F', rank: '#0A5F45' };
   if (rank <= 24) return { bar: '#2563EB', rank: '#1D4ED8' };
   return { bar: '#EF4444', rank: '#DC2626' };
 }
 
-export function renderStandingsTable(container, standings) {
+export function renderStandingsTable(container, standings, seasonStarted = true) {
   container.innerHTML = standings.map((t, idx) => {
     const rank = idx + 1;
-    const z = zoneStyle(rank);
+    const z = zoneStyle(rank, seasonStarted);
     const gdFormatted = t.gd > 0 ? `+${t.gd}` : t.gd;
 
     return `
       <div class="flex items-stretch gap-2 py-1 pr-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
         <span class="zone-bar ${z.bar}"></span>
         <div class="grid grid-cols-12 items-center flex-1 text-xs py-1">
-          <div class="col-span-1 text-left font-bold tabular ${z.rank}">${rank}</div>
+          <div class="col-span-1 text-left font-bold tabular ${z.rank}">${seasonStarted ? rank : '—'}</div>
           <div class="col-span-5 text-left font-medium truncate flex items-center space-x-1.5">
             ${teamCrest(t)}
             <span class="truncate">${t.name}${teamBadge(t)}</span>
@@ -136,10 +138,10 @@ export function renderStandingsTable(container, standings) {
 // renders incorrectly — every color here is a flat, solid value.
 // ============================================================================
 
-export function renderExportCard(container, standings, meta) {
+export function renderExportCard(container, standings, meta, seasonStarted = true) {
   const rows = standings.map((t, idx) => {
     const rank = idx + 1;
-    const z = zoneStyleHex(rank);
+    const z = zoneStyleHex(rank, seasonStarted);
     const gdFormatted = t.gd > 0 ? `+${t.gd}` : t.gd;
     const rowBg = idx % 2 === 0 ? '#F2F3EE' : '#FFFFFF'; // gray / white zebra striping
     // Pure flexbox (not CSS grid) with align-items:center — html2canvas
@@ -147,7 +149,7 @@ export function renderExportCard(container, standings, meta) {
     return `
       <div style="display:flex; align-items:center; gap:8px; padding:5px 8px 5px 0; background:${rowBg};">
         <span style="width:4px; align-self:stretch; border-radius:3px; flex-shrink:0; background:${z.bar};"></span>
-        <div style="width:22px; flex-shrink:0; font-size:12px; font-weight:700; line-height:1.4; color:${z.rank};">${rank}</div>
+        <div style="width:22px; flex-shrink:0; font-size:12px; font-weight:700; line-height:1.4; color:${z.rank};">${seasonStarted ? rank : '—'}</div>
         <div style="flex:1; min-width:0; display:flex; align-items:center; gap:6px; white-space:nowrap;">${teamCrest(t, 16)}<span style="font-size:12px; font-weight:600; line-height:1.6;">${t.name}</span></div>
         <div style="width:38px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4; opacity:0.55;">${t.played}</div>
         <div style="width:38px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4;">${gdFormatted}</div>

@@ -248,13 +248,13 @@ function hideDrawError() {
 // go through here so the fixtures list DOM (and the input being typed in)
 // is never rebuilt mid-keystroke — that's what makes live editing work.
 function renderStandingsOnly() {
-  const { sortedStandings, playedMatches } = computeStandings(TEAMS_DATA, fixtures);
+  const { sortedStandings, playedMatches, seasonStarted } = computeStandings(TEAMS_DATA, fixtures);
 
   const counterEl = document.getElementById('matches-played-counter');
   if (counterEl) counterEl.innerText = `${playedMatches} / 144 Played`;
 
   const standingsEl = document.getElementById('standings-rows');
-  if (standingsEl) renderStandingsTable(standingsEl, sortedStandings);
+  if (standingsEl) renderStandingsTable(standingsEl, sortedStandings, seasonStarted);
 }
 
 function renderUI() {
@@ -356,10 +356,10 @@ async function buildExportImageBlob() {
   }
   if (!window.html2canvas) return null;
 
-  const { sortedStandings } = computeStandings(TEAMS_DATA, fixtures);
+  const { sortedStandings, seasonStarted } = computeStandings(TEAMS_DATA, fixtures);
   renderExportCard(target, sortedStandings, {
     subtitle: mode === 'real' ? 'Real Draw · UCL Swiss Phase 2026/27' : 'Hypothetical Draw · UCL Swiss Phase 2026/27',
-  });
+  }, seasonStarted);
 
   // Wait for the actual web fonts (Oswald/Inter) to finish loading before
   // capturing — not just a fixed delay. html2canvas measures text using

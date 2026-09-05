@@ -88,7 +88,7 @@ test('T17: wins breaks a tie after points/GD/goals/away-goals are all level', ()
   assert.ok(rankOf(sortedStandings, 'PSG') < rankOf(sortedStandings, 'INT'), `PSG (${psg.won} wins) should rank above INT (${int.won} wins) once points/GD/goals/away-goals are all level`);
 });
 
-test('T18: teams level on all 6 criteria fall back to a stable order (by team id), not a random one', () => {
+test('T18: teams level on all in-progress criteria fall back to a stable alphabetical order, not a random one', () => {
   // No fixtures played at all -> every team is 0-0-0-0pts-0GD, fully level.
   const { sortedStandings: run1 } = computeStandings(TEAMS_DATA, []);
   const { sortedStandings: run2 } = computeStandings(TEAMS_DATA, []);
@@ -96,9 +96,29 @@ test('T18: teams level on all 6 criteria fall back to a stable order (by team id
   const order2 = run2.map(t => t.id);
   assert.deepEqual(order1, order2, 'standings order for fully-level teams must be deterministic across repeated computations, not random');
 
-  // And it should specifically be alphabetical-by-id (per standings.js's documented fallback)
-  const sortedIds = [...order1].sort((a, b) => a.localeCompare(b));
-  assert.deepEqual(order1, sortedIds, 'fully-level fallback order should be sorted by team id');
+  // And it should specifically be alphabetical by club name (UEFA's documented
+  // in-progress fallback), with team id only as the final determinism tiebreak.
+  const sortedByName = [...TEAMS_DATA]
+    .sort((a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id))
+    .map(t => t.id);
+  assert.deepEqual(order1, sortedByName, 'fully-level fallback order should be alphabetical by club name');
+});
+
+test('T19: opponent-strength aggregates (UEFA tiebreakers 6-8) are computed from a team\'s league-phase opponents', () => {
+  // A plays B and C; B beats C. All three fixtures played -> phase "complete".
+  // A's collective opponent points = points(B) + points(C).
+  const fixtures = [
+    fixture('f1', 1, 'PSG', 'BAY', 1, 0), // PSG beats BAY
+    fixture('f2', 2, 'PSG', 'RMA', 1, 0), // PSG beats RMA
+    fixture('f3', 3, 'BAY', 'RMA', 1, 0), // BAY beats RMA
+  ];
+  const { sortedStandings } = computeStandings(TEAMS_DATA, fixtures);
+  const psg = sortedStandings.find(t => t.id === 'PSG');
+  const bay = sortedStandings.find(t => t.id === 'BAY');
+  const rma = sortedStandings.find(t => t.id === 'RMA');
+  // PSG's opponents here are BAY (3 pts) and RMA (0 pts) -> 3 collectively.
+  assert.equal(psg.oppPoints, bay.points + rma.points, 'PSG opponent points should equal the summed points of BAY and RMA');
+  assert.equal(psg.oppPoints, 3, 'BAY has 3 pts, RMA has 0 -> PSG opponent points = 3');
 });
 
 test('Draw result awards exactly 1 point to each side (sanity check underpinning several scenarios)', () => {
