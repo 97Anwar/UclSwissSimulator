@@ -52,6 +52,30 @@ export function downloadBlob(blob, filename) {
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
+// Share a short text verdict (e.g. a qualification result). Unlike the image
+// share, text works everywhere: the native share sheet where navigator.share
+// exists (most mobile + some desktop), otherwise a clipboard copy. Returns
+// 'shared' | 'copied' | 'failed' so the caller can show the right feedback.
+const SITE_URL = 'https://swissformatsim.com';
+
+export async function shareVerdictText(text) {
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'Champions League qualification', text, url: SITE_URL });
+      return 'shared';
+    } catch (e) {
+      if (e.name === 'AbortError') return 'shared'; // user cancelled — not an error
+      // otherwise fall through to the clipboard path
+    }
+  }
+  try {
+    await navigator.clipboard.writeText(`${text} ${SITE_URL}`);
+    return 'copied';
+  } catch (e) {
+    return 'failed';
+  }
+}
+
 /**
  * Renders the single native "Share Image…" button, which attaches the actual
  * PNG via the Web Share API so the OS share sheet offers every installed app

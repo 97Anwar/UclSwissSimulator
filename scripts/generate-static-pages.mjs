@@ -36,6 +36,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { TEAMS_DATA, DATA_IS_FINAL } from '../js/data/teams.js';
 import { computeStandings } from '../js/engine/standings.js';
+import { analyzeQualification } from '../js/engine/qualification.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -461,7 +462,50 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
 // ---------------------------------------------------------------------------
 // Team page generation
 // ---------------------------------------------------------------------------
-function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastUpdatedIso, seasonStarted) {
+
+// One line describing a club's standing in a qualification zone, chosen from
+// the engine's verdict. `pts` is the fewest further points that guarantee the
+// zone (null when already impossible or not yet guaranteeable).
+function qualZoneLine(status, pts, remaining, opts) {
+  if (status === 'clinched') return opts.clinched;
+  if (status === 'eliminated') return opts.eliminated;
+  if (pts !== null && remaining > 0) return opts.guarantee(pts, remaining);
+  return opts.possible;
+}
+
+// "Can <team> still qualify?" block, built from the deterministic engine. Only
+// rendered once the league phase has started (caller passes seasonStarted).
+function renderQualificationSection(team, qual) {
+  if (!qual) return '';
+  const { bestRank, worstRank, remaining, top8, top24, pointsToClinchTop8, pointsToClinchTop24 } = qual;
+  const rankLine = bestRank === worstRank
+    ? `${escapeHtml(team.name)} can now only finish <strong>${ordinal(bestRank)}</strong>.`
+    : `${escapeHtml(team.name)} can still finish anywhere from <strong>${ordinal(bestRank)}</strong> to <strong>${ordinal(worstRank)}</strong> in the 36-team table.`;
+
+  const top8Line = qualZoneLine(top8, pointsToClinchTop8, remaining, {
+    clinched: '<span class="text-pitch-600 dark:text-pitch-300 font-semibold">Secured</span> — through to the round of 16.',
+    eliminated: '<span class="text-red-500 font-semibold">No longer possible</span> — cannot finish in the top 8.',
+    guarantee: (n, r) => `In contention — <strong>${n} more point${n === 1 ? '' : 's'}</strong> from the remaining ${r} game${r === 1 ? '' : 's'} would guarantee a top-8 finish.`,
+    possible: 'In contention — a top-8 finish is still mathematically possible.',
+  });
+  const top24Line = qualZoneLine(top24, pointsToClinchTop24, remaining, {
+    clinched: '<span class="text-pitch-600 dark:text-pitch-300 font-semibold">Safe</span> — guaranteed at least a knockout play-off place.',
+    eliminated: '<span class="text-red-500 font-semibold">Eliminated</span> — cannot finish in the top 24 and is out of the competition.',
+    guarantee: (n, r) => `<strong>${n} more point${n === 1 ? '' : 's'}</strong> from the remaining ${r} game${r === 1 ? '' : 's'} would guarantee avoiding elimination.`,
+    possible: 'Avoiding elimination is still mathematically possible.',
+  });
+
+  return `
+    <h2 class="font-display font-bold text-base uppercase mb-3">Can ${escapeHtml(team.name)} still qualify?</h2>
+    <div class="mb-8 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl space-y-2 text-sm text-ink-900/80 dark:text-ink-50/80">
+      <p>${rankLine}</p>
+      <p><span class="font-semibold">Direct to the round of 16 (top 8):</span> ${top8Line}</p>
+      <p><span class="font-semibold">Avoiding elimination (top 24):</span> ${top24Line}</p>
+      <p class="text-xs text-ink-900/40 dark:text-ink-50/40">Based only on points still mathematically reachable — a “guarantee” holds even if every rival wins all its remaining games. Try your own results in the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a>.</p>
+    </div>`;
+}
+
+function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastUpdatedIso, seasonStarted, qual) {
   const row = standingsRows.find(r => r.id === team.id);
   const teamFixtures = fixtures
     .filter(f => f.homeId === team.id || f.awayId === team.id)
@@ -537,6 +581,8 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
       <p class="text-sm">${escapeHtml(scenario)}</p>
       <p class="text-xs text-ink-900/40 dark:text-ink-50/40 mt-2">Zone: ${zoneDisplay}</p>
     </div>
+
+    ${seasonStarted ? renderQualificationSection(team, qual) : ''}
 
     <h2 class="font-display font-bold text-base uppercase mb-2">How ${escapeHtml(team.name)} got here</h2>
     <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mb-6">${escapeHtml(team.name)} (${team.country}) qualified for the 2026/27 UEFA Champions League and was placed in ${potName} for the league-phase draw. In the 36-team Swiss-style league phase, every club plays eight different opponents — two drawn from each of the four pots — with the top eight going straight to the round of 16, teams 9th&ndash;24th entering the knockout play-offs, and 25th&ndash;36th eliminated. <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">How the league phase works &rarr;</a></p>
@@ -777,6 +823,7 @@ async function main() {
 
   const fixtures = fixturesToAppFormat(realJson);
   const { sortedStandings, seasonStarted } = computeStandings(TEAMS_DATA, fixtures);
+  const qualification = analyzeQualification(sortedStandings, fixtures);
 
   // Freshness stamp driven by the ~6-hourly results sync (real-results.json
   // generatedAt), used for sitemap <lastmod>, schema dateModified, and the
@@ -798,7 +845,7 @@ async function main() {
   // Team pages
   mkdirSync(join(ROOT, 'teams'), { recursive: true });
   TEAMS_DATA.forEach(team => {
-    const html = generateTeamPage(team, fixtures, sortedStandings, lastUpdatedHuman, lastUpdatedIso, seasonStarted);
+    const html = generateTeamPage(team, fixtures, sortedStandings, lastUpdatedHuman, lastUpdatedIso, seasonStarted, qualification[team.id]);
     writeFileSync(join(ROOT, 'teams', `${team.id.toLowerCase()}.html`), html);
   });
   console.log(`Generated ${TEAMS_DATA.length} team pages.`);

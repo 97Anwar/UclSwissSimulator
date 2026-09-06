@@ -2,8 +2,11 @@ import { TEAMS_DATA, DATA_IS_FINAL } from './data/teams.js';
 import { generateSwissFixtures } from './engine/draw.js';
 import { simulateMatchScores } from './engine/simulator.js';
 import { computeStandings } from './engine/standings.js';
-import { renderFixturesList, renderStandingsTable, renderExportCard } from './ui/renderer.js';
-import { renderShareButtons, downloadBlob } from './ui/share.js';
+import { analyzeQualification } from './engine/qualification.js';
+import { renderFixturesList, renderStandingsTable, renderExportCard, renderQualificationCard } from './ui/renderer.js';
+import { renderShareButtons, downloadBlob, shareVerdictText } from './ui/share.js';
+
+const TEAM_BY_ID = Object.fromEntries(TEAMS_DATA.map(t => [t.id, t]));
 
 const STORAGE_KEY = 'ucl_sim_v5';
 const PREDICTIONS_KEY = 'ucl_sim_predictions_v5';
@@ -15,6 +18,7 @@ let mode = 'hypothetical'; // 'real' | 'hypothetical'
 let realFixturesAvailable = false;
 let realDataMeta = null;
 let isDarkMode = false; // light is the default theme
+let selectedQualTeamId = null; // club shown in the "Can your team qualify?" calculator
 
 async function init() {
   applyStoredTheme();
@@ -22,6 +26,7 @@ async function init() {
   await loadRealDataAndBuildFixtures();
   applyInitialMatchdayFromUrl();
   bindEvents();
+  setupQualification();
   renderUI();
   renderLastUpdated();
   renderShareButtons(document.getElementById('share-buttons'), buildExportImageBlob);
@@ -255,6 +260,71 @@ function renderStandingsOnly() {
 
   const standingsEl = document.getElementById('standings-rows');
   if (standingsEl) renderStandingsTable(standingsEl, sortedStandings, seasonStarted);
+
+  renderQualificationPanel(sortedStandings);
+}
+
+// ----------------------------------------------------------------------
+// "Can your team qualify?" calculator — reads the deterministic
+// qualification engine and updates live as the user edits predictions.
+// ----------------------------------------------------------------------
+function setupQualification() {
+  const sel = document.getElementById('qual-team-select');
+  if (sel) {
+    const teams = [...TEAMS_DATA].sort((a, b) => a.name.localeCompare(b.name));
+    sel.innerHTML = '<option value="">Choose your club…</option>'
+      + teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+    sel.addEventListener('change', () => {
+      selectedQualTeamId = sel.value || null;
+      renderQualificationPanel();
+    });
+  }
+  // Clicking (or keyboard-activating) a standings row loads that club.
+  const rowsEl = document.getElementById('standings-rows');
+  if (rowsEl) {
+    rowsEl.addEventListener('click', (e) => {
+      const row = e.target.closest('[data-qual-team]');
+      if (row) selectQualTeam(row.dataset.qualTeam);
+    });
+    rowsEl.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const row = e.target.closest('[data-qual-team]');
+      if (!row) return;
+      e.preventDefault();
+      selectQualTeam(row.dataset.qualTeam);
+    });
+  }
+
+  // Share the current verdict (native share sheet, or clipboard fallback).
+  // Delegated on the result container, which survives the card re-rendering.
+  const resultEl = document.getElementById('qual-result');
+  if (resultEl) {
+    resultEl.addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-qual-share]');
+      if (!btn) return;
+      const status = resultEl.querySelector('[data-qual-share-status]');
+      const outcome = await shareVerdictText(btn.dataset.shareText);
+      if (!status) return;
+      status.textContent = outcome === 'copied' ? 'Copied to clipboard!' : outcome === 'failed' ? 'Could not share — please try again.' : '';
+      if (outcome !== '') setTimeout(() => { status.textContent = ''; }, 3000);
+    });
+  }
+}
+
+function selectQualTeam(id) {
+  selectedQualTeamId = id;
+  const sel = document.getElementById('qual-team-select');
+  if (sel) sel.value = id;
+  renderQualificationPanel();
+  document.getElementById('qual-result')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function renderQualificationPanel(sortedStandings) {
+  const resultEl = document.getElementById('qual-result');
+  if (!resultEl) return;
+  const standings = sortedStandings || computeStandings(TEAMS_DATA, fixtures).sortedStandings;
+  const analysis = analyzeQualification(standings, fixtures);
+  renderQualificationCard(resultEl, TEAM_BY_ID[selectedQualTeamId], selectedQualTeamId ? analysis[selectedQualTeamId] : null);
 }
 
 function renderUI() {

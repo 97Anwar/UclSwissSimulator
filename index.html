@@ -290,6 +290,20 @@
 
     </div>
 
+    <!-- QUALIFICATION CALCULATOR -->
+    <section id="section-qualification" class="mt-6">
+      <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-2xl p-4 sm:p-5 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+          <div>
+            <h2 class="font-display font-bold text-lg uppercase flex items-center gap-2">🎯 Can your team qualify?</h2>
+            <p class="text-xs text-ink-900/55 dark:text-ink-50/55 mt-0.5">Pick a club to see what it needs for the top 8 and to avoid elimination — the answer updates live as you predict scores.</p>
+          </div>
+          <select id="qual-team-select" aria-label="Choose a club to check qualification" class="shrink-0 bg-ink-900/5 dark:bg-ink-50/5 border border-ink-900/15 dark:border-ink-50/15 rounded-lg px-3 py-2 text-sm font-semibold outline-none focus:border-pitch-500 dark:focus:border-pitch-400"></select>
+        </div>
+        <div id="qual-result" class="pt-1"></div>
+      </div>
+    </section>
+
     <!-- ON-PAGE CONTENT -->
     <section class="mt-10 max-w-4xl mx-auto space-y-4 text-sm text-ink-900/70 dark:text-ink-50/70 leading-relaxed">
       <h2 class="font-display font-bold text-lg uppercase">About this simulator</h2>

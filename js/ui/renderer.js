@@ -113,7 +113,7 @@ export function renderStandingsTable(container, standings, seasonStarted = true)
     const gdFormatted = t.gd > 0 ? `+${t.gd}` : t.gd;
 
     return `
-      <div class="flex items-stretch gap-2 py-1 pr-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+      <div data-qual-team="${t.id}" role="button" tabindex="0" title="See ${t.name}'s qualification picture" class="flex items-stretch gap-2 py-1 pr-2 rounded-lg cursor-pointer hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
         <span class="zone-bar ${z.bar}"></span>
         <div class="grid grid-cols-12 items-center flex-1 text-xs py-1">
           <div class="col-span-1 text-left font-bold tabular ${z.rank}">${seasonStarted ? rank : '—'}</div>
@@ -128,6 +128,95 @@ export function renderStandingsTable(container, standings, seasonStarted = true)
       </div>
     `;
   }).join('');
+}
+
+// ============================================================================
+// Qualification card — the live "Can your team qualify?" calculator output.
+// Mirrors the wording of the static team-page section so the two surfaces
+// agree, and reads straight from the deterministic qualification engine.
+// ============================================================================
+
+function ordinal(n) {
+  const s = ['th', 'st', 'nd', 'rd'];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+function qualZoneLine(status, pts, remaining, opts) {
+  if (status === 'clinched') return opts.clinched;
+  if (status === 'eliminated') return opts.eliminated;
+  if (pts !== null && remaining > 0) return opts.guarantee(pts, remaining);
+  return opts.possible;
+}
+
+function zonePill(status) {
+  if (status === 'clinched') return '<span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-pitch-500/15 text-pitch-700 dark:text-pitch-300">Secured</span>';
+  if (status === 'eliminated') return '<span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400">Out</span>';
+  return '<span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-gold-500/20 text-gold-600 dark:text-gold-400">In contention</span>';
+}
+
+function escapeAttr(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Plain-text, share-friendly one-liner summarising a club's qualification
+// verdict (no HTML — this goes into a share sheet / clipboard).
+function qualShareText(team, qual) {
+  const { remaining, top8, top24, pointsToClinchTop8 } = qual;
+  const n = team.name;
+  if (top24 === 'eliminated') return `${n} are OUT of the 2026/27 Champions League. 💀 See who's still alive:`;
+  if (top8 === 'clinched') return `${n} have SECURED a top-8 finish and a direct place in the Champions League round of 16. ✅`;
+  if (top8 === 'eliminated') return `${n} can no longer finish top 8, but can still reach the Champions League knockout play-offs.`;
+  if (pointsToClinchTop8 !== null && remaining > 0) return `${n} need ${pointsToClinchTop8} more point${pointsToClinchTop8 === 1 ? '' : 's'} from their last ${remaining} game${remaining === 1 ? '' : 's'} to guarantee a Champions League top-8 spot. Can they do it?`;
+  return `Can ${n} finish in the Champions League top 8? I'm predicting the whole league phase 👇`;
+}
+
+export function renderQualificationCard(container, team, qual) {
+  if (!team || !qual) {
+    container.innerHTML = `<p class="text-sm text-ink-900/50 dark:text-ink-50/50 py-2">Choose a club above (or tap any team in the standings) to see whether it can still reach the top 8 — and exactly what it needs.</p>`;
+    return;
+  }
+  const { bestRank, worstRank, remaining, points, played, top8, top24, pointsToClinchTop8, pointsToClinchTop24 } = qual;
+  const rankLine = bestRank === worstRank
+    ? `Can only finish <strong>${ordinal(bestRank)}</strong> of 36.`
+    : `Can still finish anywhere from <strong>${ordinal(bestRank)}</strong> to <strong>${ordinal(worstRank)}</strong> of 36.`;
+  const top8Line = qualZoneLine(top8, pointsToClinchTop8, remaining, {
+    clinched: 'Secured a direct place in the round of 16.',
+    eliminated: `${team.name} can no longer finish in the top 8.`,
+    guarantee: (n, r) => `<strong>${n} more point${n === 1 ? '' : 's'}</strong> from the last ${r} game${r === 1 ? '' : 's'} would guarantee it.`,
+    possible: 'A top-8 finish is still mathematically possible.',
+  });
+  const top24Line = qualZoneLine(top24, pointsToClinchTop24, remaining, {
+    clinched: 'Guaranteed at least a knockout play-off place.',
+    eliminated: `${team.name} is out — cannot finish in the top 24.`,
+    guarantee: (n, r) => `<strong>${n} more point${n === 1 ? '' : 's'}</strong> from the last ${r} game${r === 1 ? '' : 's'} would guarantee survival.`,
+    possible: 'Avoiding elimination is still mathematically possible.',
+  });
+  container.innerHTML = `
+    <div class="flex items-center gap-2.5 mb-3">
+      ${teamCrest(team, 28)}
+      <div class="min-w-0">
+        <div class="font-display font-bold text-base uppercase leading-none truncate">${team.name}</div>
+        <div class="text-[11px] text-ink-900/50 dark:text-ink-50/50 mt-0.5">${points} pts · ${played} played · ${remaining} to play</div>
+      </div>
+    </div>
+    <p class="text-sm mb-3">${rankLine}</p>
+    <div class="grid sm:grid-cols-2 gap-2">
+      <div class="p-3 rounded-xl bg-ink-900/5 dark:bg-ink-50/5">
+        <div class="flex items-center justify-between mb-1"><span class="text-xs font-bold uppercase tracking-wide">Top 8 · Round of 16</span>${zonePill(top8)}</div>
+        <p class="text-xs text-ink-900/70 dark:text-ink-50/70">${top8Line}</p>
+      </div>
+      <div class="p-3 rounded-xl bg-ink-900/5 dark:bg-ink-50/5">
+        <div class="flex items-center justify-between mb-1"><span class="text-xs font-bold uppercase tracking-wide">Avoid elimination</span>${zonePill(top24)}</div>
+        <p class="text-xs text-ink-900/70 dark:text-ink-50/70">${top24Line}</p>
+      </div>
+    </div>
+    <div class="mt-3 flex items-center gap-2">
+      <button data-qual-share data-share-text="${escapeAttr(qualShareText(team, qual))}" class="px-3 py-1.5 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-xs transition inline-flex items-center gap-1.5">
+        <span>📤</span><span>Share this verdict</span>
+      </button>
+      <span data-qual-share-status role="status" aria-live="polite" class="text-[11px] text-pitch-600 dark:text-pitch-300 font-semibold"></span>
+    </div>`;
 }
 
 // ============================================================================
@@ -184,7 +273,7 @@ export function renderExportCard(container, standings, meta, seasonStarted = tru
       </div>
       ${rows}
       <div style="display:flex; justify-content:space-between; align-items:center; padding-top:10px; margin-top:8px; border-top:1px solid #E5E7E0; font-size:9px; line-height:1.4; opacity:0.45;">
-        <span>Generated ${stamp} · ucl-swiss-simulator</span>
+        <span>Generated ${stamp} · swissformatsim.com</span>
         <span>Unofficial fan tool — not affiliated with UEFA</span>
       </div>
     </div>
