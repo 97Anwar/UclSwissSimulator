@@ -76,6 +76,26 @@ export async function shareVerdictText(text) {
   }
 }
 
+// Share a specific URL (e.g. a shareable-prediction link). Native share sheet
+// where available, otherwise copies the URL itself to the clipboard. Returns
+// 'shared' | 'copied' | 'failed'.
+export async function shareUrl(text, url) {
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'My Champions League prediction', text, url });
+      return 'shared';
+    } catch (e) {
+      if (e.name === 'AbortError') return 'shared';
+    }
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    return 'copied';
+  } catch (e) {
+    return 'failed';
+  }
+}
+
 /**
  * Renders the single native "Share Image…" button, which attaches the actual
  * PNG via the Web Share API so the OS share sheet offers every installed app

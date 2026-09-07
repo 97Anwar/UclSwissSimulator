@@ -3,8 +3,9 @@ import { generateSwissFixtures } from './engine/draw.js';
 import { simulateMatchScores } from './engine/simulator.js';
 import { computeStandings } from './engine/standings.js';
 import { analyzeQualification } from './engine/qualification.js';
+import { encodePredictions, decodePredictions } from './engine/prediction-codec.js';
 import { renderFixturesList, renderStandingsTable, renderExportCard, renderQualificationCard } from './ui/renderer.js';
-import { renderShareButtons, downloadBlob, shareVerdictText } from './ui/share.js';
+import { renderShareButtons, downloadBlob, shareVerdictText, shareUrl } from './ui/share.js';
 
 const TEAM_BY_ID = Object.fromEntries(TEAMS_DATA.map(t => [t.id, t]));
 
@@ -19,16 +20,19 @@ let realFixturesAvailable = false;
 let realDataMeta = null;
 let isDarkMode = false; // light is the default theme
 let selectedQualTeamId = null; // club shown in the "Can your team qualify?" calculator
+let sharedPredictionLoaded = false; // true when the page opened from a ?p= shared-prediction link
 
 async function init() {
   applyStoredTheme();
   renderDataFreshnessBanner();
   await loadRealDataAndBuildFixtures();
+  applySharedPredictionFromUrl();
   applyInitialMatchdayFromUrl();
   bindEvents();
   setupQualification();
   renderUI();
   renderLastUpdated();
+  renderSharedPredictionBanner();
   renderShareButtons(document.getElementById('share-buttons'), buildExportImageBlob);
 }
 
@@ -39,6 +43,62 @@ function applyInitialMatchdayFromUrl() {
   const params = new URLSearchParams(window.location.search);
   const md = parseInt(params.get('md'), 10);
   if (md >= 1 && md <= 8) activeMatchday = md;
+}
+
+// ----------------------------------------------------------------------
+// Shareable predictions (?p=<code>)
+// ----------------------------------------------------------------------
+
+// Applies a shared prediction from the URL. Shared predictions are anchored to
+// the real draw everyone loads, so this forces real mode, overlays the decoded
+// scores as the user's own predictions, then strips ?p= so later edits don't
+// leave a stale link (the scores are saved locally regardless).
+function applySharedPredictionFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('p');
+  if (!code) return;
+
+  if (realFixturesAvailable && mode !== 'real') {
+    mode = 'real';
+    localStorage.setItem(STORAGE_KEY + '_mode', 'real');
+    fixtures = realFixturesToAppFixtures(realDataMeta);
+    renderModeBanner();
+  }
+
+  const applied = decodePredictions(code, fixtures);
+  if (applied.length) {
+    const byId = Object.fromEntries(fixtures.map(f => [f.id, f]));
+    applied.forEach(a => {
+      const f = byId[a.id];
+      if (!f) return;
+      f.homeScore = a.homeScore;
+      f.awayScore = a.awayScore;
+      setPrediction(f.id, a.homeScore, a.awayScore);
+    });
+    persistFixtures();
+    sharedPredictionLoaded = true;
+  }
+
+  params.delete('p');
+  const qs = params.toString();
+  window.history.replaceState({}, '', `${window.location.pathname}${qs ? '?' + qs : ''}`);
+}
+
+// Builds a shareable link that encodes the current predictions, or null when
+// nothing has been predicted yet.
+function buildPredictionShareUrl() {
+  const code = encodePredictions(fixtures);
+  if (!code) return null;
+  return `${window.location.origin}${window.location.pathname}?p=${code}`;
+}
+
+function renderSharedPredictionBanner() {
+  const el = document.getElementById('shared-prediction-banner');
+  if (!el) return;
+  if (!sharedPredictionLoaded) { el.classList.add('hidden'); return; }
+  el.className = 'text-[11px] sm:text-xs bg-gold-500/10 border border-gold-500/40 text-gold-600 dark:text-gold-400 rounded-lg px-3 py-2 mt-3';
+  el.innerHTML = '🔗 You\'re viewing a shared prediction. Edit any score to make it your own, then hit “Share my prediction” to pass it on.';
+  el.classList.remove('hidden');
 }
 
 function updateUrlForMatchday(md) {
@@ -529,6 +589,21 @@ function bindEvents() {
     persistFixtures();
     renderModeBanner();
     renderUI();
+  });
+
+  const sharePredBtn = document.getElementById('btn-share-prediction');
+  if (sharePredBtn) sharePredBtn.addEventListener('click', async () => {
+    const status = document.getElementById('share-prediction-status');
+    const url = buildPredictionShareUrl();
+    if (!url) {
+      if (status) { status.textContent = 'Predict at least one score first.'; setTimeout(() => { status.textContent = ''; }, 3000); }
+      return;
+    }
+    const outcome = await shareUrl('My 2026/27 Champions League prediction 👇', url);
+    if (status) {
+      status.textContent = outcome === 'copied' ? 'Link copied — paste it anywhere!' : outcome === 'failed' ? 'Could not share — please try again.' : '';
+      if (status.textContent) setTimeout(() => { status.textContent = ''; }, 4000);
+    }
   });
 
   const exportBtn = document.getElementById('btn-export-img');

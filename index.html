@@ -212,6 +212,7 @@
     <div class="mb-4">
       <h1 class="font-display font-bold text-xl sm:text-2xl uppercase tracking-tight">Champions League Simulator 2026/27</h1>
       <p class="text-xs sm:text-sm text-ink-900/60 dark:text-ink-50/60 mt-1">Predict the 36-team UEFA Champions League league-phase table — enter scores, simulate matchdays, and see who makes the top 8, the play-offs, and who's eliminated.<span id="last-updated" class="text-ink-900/45 dark:text-ink-50/45"></span></p>
+      <div id="shared-prediction-banner" class="hidden"></div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
@@ -281,6 +282,10 @@
 
         <!-- EXPORT / SHARE -->
         <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 p-3 rounded-2xl shadow-sm space-y-3">
+          <button id="btn-share-prediction" class="w-full px-4 py-2.5 rounded-full bg-gold-500 hover:bg-gold-600 text-ink-950 font-bold text-sm transition flex items-center justify-center gap-2">
+            <span>🔗</span><span>Share my prediction</span>
+          </button>
+          <p id="share-prediction-status" role="status" aria-live="polite" class="text-[11px] text-center text-pitch-600 dark:text-pitch-300 font-semibold min-h-[14px]"></p>
           <button id="btn-export-img" class="w-full px-4 py-2.5 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition flex items-center justify-center gap-2">
             <span>⬇️</span><span>Download PNG</span>
           </button>
