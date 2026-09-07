@@ -550,6 +550,27 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
   const rankDisplay = seasonStarted ? row.rank : '—';
   const zoneDisplay = seasonStarted ? label : 'Not ranked yet';
 
+  // Unique-per-team draw content: the actual eight opponents grouped by pot,
+  // with home/away. Genuinely distinct page-to-page (answers "who does X
+  // play"), so pre-season pages aren't near-identical templates.
+  const drawByPot = { 1: [], 2: [], 3: [], 4: [] };
+  const oppProse = [];
+  teamFixtures.forEach(f => {
+    const isHome = f.homeId === team.id;
+    const opp = teamById(isHome ? f.awayId : f.homeId);
+    if (!opp) return;
+    (drawByPot[opp.pot] || (drawByPot[opp.pot] = [])).push({ opp, isHome });
+    oppProse.push(`${escapeHtml(opp.name)} (${isHome ? 'home' : 'away'})`);
+  });
+  const opponentsProse = oppProse.length
+    ? oppProse.slice(0, -1).join(', ') + (oppProse.length > 1 ? ' and ' : '') + oppProse[oppProse.length - 1]
+    : '';
+  const drawByPotHtml = [1, 2, 3, 4].map(p => {
+    const items = drawByPot[p].map(({ opp, isHome }) =>
+      `${teamLink(opp, 16)} <span class="text-ink-900/40 dark:text-ink-50/40 text-xs">(${isHome ? 'H' : 'A'})</span>`).join(', ');
+    return `<div class="flex gap-2 py-1.5 border-b border-ink-900/5 dark:border-ink-50/5 last:border-0"><span class="w-16 shrink-0 text-xs font-bold uppercase text-ink-900/50 dark:text-ink-50/50 pt-0.5">Pot ${p}</span><span class="text-sm flex-1">${items || '&mdash;'}</span></div>`;
+  }).join('');
+
   let journeyHtml;
   if (played === 0) {
     const next = upcoming[0];
@@ -586,6 +607,10 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
 
     <h2 class="font-display font-bold text-base uppercase mb-2">How ${escapeHtml(team.name)} got here</h2>
     <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mb-6">${escapeHtml(team.name)} (${team.country}) qualified for the 2026/27 UEFA Champions League and was placed in ${potName} for the league-phase draw. In the 36-team Swiss-style league phase, every club plays eight different opponents — two drawn from each of the four pots — with the top eight going straight to the round of 16, teams 9th&ndash;24th entering the knockout play-offs, and 25th&ndash;36th eliminated. <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">How the league phase works &rarr;</a></p>
+
+    <h2 class="font-display font-bold text-base uppercase mb-2">Who ${escapeHtml(team.name)} play in the league phase</h2>
+    <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mb-3">${escapeHtml(team.name)}'s eight league-phase opponents are ${opponentsProse}. Two are drawn from each of the four seeding pots, with four matches at home and four away.</p>
+    <div class="mb-8 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">${drawByPotHtml}</div>
 
     <h2 class="font-display font-bold text-base uppercase mb-3">${escapeHtml(team.name)}'s league-phase journey</h2>
     <div class="mb-8">${journeyHtml}</div>
