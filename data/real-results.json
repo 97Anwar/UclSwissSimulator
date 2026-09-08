@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T16:19:17.019Z",
+  "generatedAt": "2026-09-08T20:54:28.462Z",
   "competition": "CL",
   "source": "football-data.org",
   "fixtureCount": 144,
@@ -9,9 +9,9 @@
       "matchday": 1,
       "homeId": "BRU",
       "awayId": "AVL",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "SCHEDULED",
+      "homeScore": 2,
+      "awayScore": 3,
+      "status": "FINISHED",
       "utcDate": "2026-09-08T16:45:00Z"
     },
     {
@@ -19,9 +19,9 @@
       "matchday": 1,
       "homeId": "AEK",
       "awayId": "LSK",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "SCHEDULED",
+      "homeScore": 2,
+      "awayScore": 0,
+      "status": "FINISHED",
       "utcDate": "2026-09-08T16:45:00Z"
     },
     {
@@ -29,9 +29,9 @@
       "matchday": 1,
       "homeId": "RMA",
       "awayId": "INT",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 2,
+      "awayScore": 1,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-08T19:00:00Z"
     },
     {
@@ -39,9 +39,9 @@
       "matchday": 1,
       "homeId": "POR",
       "awayId": "MCI",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 0,
+      "awayScore": 1,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-08T19:00:00Z"
     },
     {
@@ -49,9 +49,9 @@
       "matchday": 1,
       "homeId": "DOR",
       "awayId": "VIL",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 3,
+      "awayScore": 1,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-08T19:00:00Z"
     },
     {
@@ -59,9 +59,9 @@
       "matchday": 1,
       "homeId": "LIL",
       "awayId": "BET",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 2,
+      "awayScore": 3,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-08T19:00:00Z"
     },
     {
