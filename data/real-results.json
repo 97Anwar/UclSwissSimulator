@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T10:54:51.897Z",
+  "generatedAt": "2026-09-08T16:19:17.019Z",
   "competition": "CL",
   "source": "football-data.org",
   "fixtureCount": 144,
@@ -11,7 +11,7 @@
       "awayId": "AVL",
       "homeScore": null,
       "awayScore": null,
-      "status": "TIMED",
+      "status": "SCHEDULED",
       "utcDate": "2026-09-08T16:45:00Z"
     },
     {
@@ -21,7 +21,7 @@
       "awayId": "LSK",
       "homeScore": null,
       "awayScore": null,
-      "status": "TIMED",
+      "status": "SCHEDULED",
       "utcDate": "2026-09-08T16:45:00Z"
     },
     {
