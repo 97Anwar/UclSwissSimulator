@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-09T16:14:20.431Z",
+  "generatedAt": "2026-09-09T19:04:46.407Z",
   "competition": "CL",
   "source": "football-data.org",
   "fixtureCount": 144,
@@ -69,9 +69,9 @@
       "matchday": 1,
       "homeId": "BAR",
       "awayId": "FEY",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 5,
+      "awayScore": 1,
+      "status": "FINISHED",
       "utcDate": "2026-09-09T16:45:00Z"
     },
     {
@@ -79,9 +79,9 @@
       "matchday": 1,
       "homeId": "STU",
       "awayId": "VIK",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 3,
+      "awayScore": 1,
+      "status": "FINISHED",
       "utcDate": "2026-09-09T16:45:00Z"
     },
     {
