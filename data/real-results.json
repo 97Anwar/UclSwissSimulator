@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-09T19:04:46.407Z",
+  "generatedAt": "2026-09-09T20:42:31.854Z",
   "competition": "CL",
   "source": "football-data.org",
   "fixtureCount": 144,
@@ -89,9 +89,9 @@
       "matchday": 1,
       "homeId": "LIV",
       "awayId": "ATM",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 2,
+      "awayScore": 1,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-09T19:00:00Z"
     },
     {
@@ -99,9 +99,9 @@
       "matchday": 1,
       "homeId": "PSG",
       "awayId": "SLB",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 5,
+      "awayScore": 1,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-09T19:00:00Z"
     },
     {
@@ -109,9 +109,9 @@
       "matchday": 1,
       "homeId": "NAP",
       "awayId": "ARS",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 0,
+      "awayScore": 1,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-09T19:00:00Z"
     },
     {
@@ -119,9 +119,9 @@
       "matchday": 1,
       "homeId": "SPO",
       "awayId": "GAL",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 3,
+      "awayScore": 1,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-09T19:00:00Z"
     },
     {
