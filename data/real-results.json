@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10T16:05:31.713Z",
+  "generatedAt": "2026-09-10T20:37:49.679Z",
   "competition": "CL",
   "source": "football-data.org",
   "fixtureCount": 144,
@@ -129,9 +129,9 @@
       "matchday": 1,
       "homeId": "FEN",
       "awayId": "ROM",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 1,
+      "awayScore": 1,
+      "status": "FINISHED",
       "utcDate": "2026-09-10T16:45:00Z"
     },
     {
@@ -139,9 +139,9 @@
       "matchday": 1,
       "homeId": "PSV",
       "awayId": "SHK",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 1,
+      "awayScore": 1,
+      "status": "FINISHED",
       "utcDate": "2026-09-10T16:45:00Z"
     },
     {
@@ -149,9 +149,9 @@
       "matchday": 1,
       "homeId": "BAY",
       "awayId": "BOD",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 2,
+      "awayScore": 0,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-10T19:00:00Z"
     },
     {
@@ -159,9 +159,9 @@
       "matchday": 1,
       "homeId": "MUN",
       "awayId": "SAB",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 4,
+      "awayScore": 0,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-10T19:00:00Z"
     },
     {
@@ -169,9 +169,9 @@
       "matchday": 1,
       "homeId": "COM",
       "awayId": "RBL",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 3,
+      "awayScore": 1,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-10T19:00:00Z"
     },
     {
@@ -179,9 +179,9 @@
       "matchday": 1,
       "homeId": "SLA",
       "awayId": "LEN",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 1,
+      "awayScore": 0,
+      "status": "IN_PLAY",
       "utcDate": "2026-09-10T19:00:00Z"
     },
     {
