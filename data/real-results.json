@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10T20:37:49.679Z",
+  "generatedAt": "2026-09-11T03:49:34.044Z",
   "competition": "CL",
   "source": "football-data.org",
   "fixtureCount": 144,
@@ -149,9 +149,9 @@
       "matchday": 1,
       "homeId": "BAY",
       "awayId": "BOD",
-      "homeScore": 2,
+      "homeScore": 5,
       "awayScore": 0,
-      "status": "IN_PLAY",
+      "status": "FINISHED",
       "utcDate": "2026-09-10T19:00:00Z"
     },
     {
@@ -161,7 +161,7 @@
       "awayId": "SAB",
       "homeScore": 4,
       "awayScore": 0,
-      "status": "IN_PLAY",
+      "status": "FINISHED",
       "utcDate": "2026-09-10T19:00:00Z"
     },
     {
@@ -169,9 +169,9 @@
       "matchday": 1,
       "homeId": "COM",
       "awayId": "RBL",
-      "homeScore": 3,
+      "homeScore": 4,
       "awayScore": 1,
-      "status": "IN_PLAY",
+      "status": "FINISHED",
       "utcDate": "2026-09-10T19:00:00Z"
     },
     {
@@ -179,9 +179,9 @@
       "matchday": 1,
       "homeId": "SLA",
       "awayId": "LEN",
-      "homeScore": 1,
-      "awayScore": 0,
-      "status": "IN_PLAY",
+      "homeScore": 2,
+      "awayScore": 3,
+      "status": "FINISHED",
       "utcDate": "2026-09-10T19:00:00Z"
     },
     {
