@@ -11,13 +11,36 @@
 // https://www.football-data.org/client/register — no card required).
 // ============================================================================
 
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { join } from 'path';
 import { TEAM_NAME_ALIASES, resolveTeamId, normalizeTeamName } from '../js/data/team-aliases.js';
+import { isMatchdayWindow } from './update-match-schedule.mjs';
 
 const TOKEN = process.env.FOOTBALL_DATA_TOKEN;
 const OUTPUT_PATH = new URL('../data/real-results.json', import.meta.url);
+
+export function areFixturesEqual(existing = [], incoming = []) {
+  if (existing.length !== incoming.length) return false;
+  for (let i = 0; i < incoming.length; i++) {
+    const a = existing[i];
+    const b = incoming[i];
+    if (!a || !b) return false;
+    if (
+      a.externalId !== b.externalId ||
+      a.matchday !== b.matchday ||
+      a.homeId !== b.homeId ||
+      a.awayId !== b.awayId ||
+      a.homeScore !== b.homeScore ||
+      a.awayScore !== b.awayScore ||
+      a.status !== b.status ||
+      a.utcDate !== b.utcDate
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
 
 // football-data.org uses fuller club names ("... FC", "PAE AEK", "Lille OSC")
 // than the shared alias map covers. These fill the gap so their fixtures and
@@ -37,6 +60,29 @@ function resolveId(name) {
 const COMPETITION_CODE = 'CL'; // football-data.org's code for the Champions League
 
 async function main() {
+  const args = process.argv.slice(2);
+  const force = args.includes('--force');
+
+  let existingData = null;
+  if (existsSync(OUTPUT_PATH)) {
+    try {
+      existingData = JSON.parse(readFileSync(OUTPUT_PATH, 'utf8'));
+    } catch (e) {
+      existingData = null;
+    }
+  }
+
+  // If fixtures are already present on disk and --force is not passed,
+  // ensure we are within an active matchday window before querying the API.
+  if (existingData?.fixtures?.length > 0 && !force) {
+    const windowCheck = isMatchdayWindow(existingData.fixtures, new Date());
+    if (!windowCheck.isWindow) {
+      console.log(`Skipping results fetch: ${windowCheck.reason}. Use --force to bypass.`);
+      return;
+    }
+    console.log(`Matchday window active: ${windowCheck.reason}`);
+  }
+
   if (!TOKEN) {
     console.error('FOOTBALL_DATA_TOKEN is not set. Get a free key at https://www.football-data.org/client/register and add it as a GitHub Actions secret named FOOTBALL_DATA_TOKEN.');
     process.exit(1);
@@ -100,16 +146,22 @@ async function main() {
     console.warn('Add the missing spelling to TEAM_NAME_ALIASES and re-run.');
   }
 
-  const output = {
-    generatedAt: new Date().toISOString(),
-    competition: COMPETITION_CODE,
-    source: 'football-data.org',
-    fixtureCount: fixtures.length,
-    fixtures,
-  };
+  const hasChanges = !existingData?.fixtures || !areFixturesEqual(existingData.fixtures, fixtures);
 
-  writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n');
-  console.log(`Wrote ${fixtures.length} fixtures to ${OUTPUT_PATH.pathname}`);
+  if (!hasChanges && existingData?.generatedAt) {
+    console.log(`No score, status, or schedule changes detected across all ${fixtures.length} fixtures. data/real-results.json left untouched.`);
+  } else {
+    const output = {
+      generatedAt: new Date().toISOString(),
+      competition: COMPETITION_CODE,
+      source: 'football-data.org',
+      fixtureCount: fixtures.length,
+      fixtures,
+    };
+
+    writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n');
+    console.log(`Detected changes in fixtures/scores. Wrote ${fixtures.length} fixtures to ${OUTPUT_PATH.pathname}`);
+  }
 
   await downloadCrests(crestById);
 
@@ -147,7 +199,10 @@ async function downloadCrests(crestById) {
   console.log(`Crests: ${ok} downloaded, ${skip} already present${fail ? `, ${fail} failed` : ''} in assets/logos/.`);
 }
 
-main().catch(err => {
-  console.error('Unexpected error:', err);
-  process.exit(1);
-});
+const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isDirectRun) {
+  main().catch(err => {
+    console.error('Unexpected error:', err);
+    process.exit(1);
+  });
+}

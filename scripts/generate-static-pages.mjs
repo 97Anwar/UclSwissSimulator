@@ -31,12 +31,21 @@
 //   there for fast paint and crawlability, not a separate code path.
 // ============================================================================
 
-import { writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { TEAMS_DATA, DATA_IS_FINAL } from '../js/data/teams.js';
 import { computeStandings } from '../js/engine/standings.js';
 import { analyzeQualification } from '../js/engine/qualification.js';
+
+function writeFileIfChanged(filePath, content) {
+  if (existsSync(filePath)) {
+    const existing = readFileSync(filePath, 'utf8');
+    if (existing === content) return false;
+  }
+  writeFileSync(filePath, content);
+  return true;
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -863,7 +872,7 @@ async function main() {
   const matchdaysPresent = [...new Set(fixtures.map(f => f.matchday))].filter(Boolean).sort((a, b) => a - b);
   matchdaysPresent.forEach(md => {
     const html = generateMatchdayPage(md, fixtures, sortedStandings, lastUpdatedHuman, lastUpdatedIso);
-    writeFileSync(join(ROOT, `matchday-${md}.html`), html);
+    writeFileIfChanged(join(ROOT, `matchday-${md}.html`), html);
   });
   console.log(`Generated ${matchdaysPresent.length} matchday pages.`);
 
@@ -871,20 +880,20 @@ async function main() {
   mkdirSync(join(ROOT, 'teams'), { recursive: true });
   TEAMS_DATA.forEach(team => {
     const html = generateTeamPage(team, fixtures, sortedStandings, lastUpdatedHuman, lastUpdatedIso, seasonStarted, qualification[team.id]);
-    writeFileSync(join(ROOT, 'teams', `${team.id.toLowerCase()}.html`), html);
+    writeFileIfChanged(join(ROOT, 'teams', `${team.id.toLowerCase()}.html`), html);
   });
   console.log(`Generated ${TEAMS_DATA.length} team pages.`);
 
   // Guide pages (evergreen informational content)
   mkdirSync(join(ROOT, 'guide'), { recursive: true });
   GUIDES.forEach(g => {
-    writeFileSync(join(ROOT, 'guide', `${g.slug}.html`), generateGuidePage(g, lastUpdatedIso));
+    writeFileIfChanged(join(ROOT, 'guide', `${g.slug}.html`), generateGuidePage(g, lastUpdatedIso));
   });
   console.log(`Generated ${GUIDES.length} guide pages.`);
 
   // Sitemap
   const sitemap = generateSitemap(matchdaysPresent.length, TEAMS_DATA.map(t => t.id), GUIDES.map(g => g.slug), lastmodDate);
-  writeFileSync(join(ROOT, 'sitemap.xml'), sitemap);
+  writeFileIfChanged(join(ROOT, 'sitemap.xml'), sitemap);
   console.log('Regenerated sitemap.xml.');
 
   if (!DATA_IS_FINAL) {

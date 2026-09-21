@@ -131,14 +131,19 @@ This works without a live backend:
    [football-data.org](https://www.football-data.org)'s free tier (free
    forever, no card, covers the Champions League — the best fit of the
    free options; nothing with truly no rate limit covers UCL specifically).
-2. **`.github/workflows/update-scores.yml`** runs that script every 6
-   hours on GitHub's free Actions runners, and commits the result to
-   `data/real-results.json` if anything changed.
-3. Because that commit lands in your repo, your static host (Cloudflare
-   Pages / GitHub Pages / Netlify) **auto-redeploys** — no server, no
-   polling, no cost.
+2. **`.github/workflows/update-scores.yml`** runs that script automatically
+   on **UCL matchdays** (evening match completion windows: 19:15, 21:15, 22:15,
+   23:15 UTC, plus morning-after 06:00 UTC confirmation runs and a weekly
+   Monday heartbeat) on GitHub's free Actions runners, committing to
+   `data/real-results.json` only when scores or statuses actually change.
+3. Because commits only occur when results change, your static host (Cloudflare
+   Pages / GitHub Pages / Netlify) **auto-redeploys** only when necessary — no
+   server, no polling, no cost, and zero wasted non-matchday runs.
 4. The frontend just does `fetch('data/real-results.json')` on load —
    a plain static file, same as any other asset.
+5. **`npm run update:schedule`** (`scripts/update-match-schedule.mjs`) reads the
+   fixture schedule and automatically generates/updates the cron schedule in
+   `.github/workflows/update-scores.yml`.
 
 ### One-time setup (you'll need to do this, not me — it needs your own account)
 
@@ -147,9 +152,9 @@ This works without a live backend:
 2. In your GitHub repo: **Settings → Secrets and variables → Actions →
    New repository secret**, name it `FOOTBALL_DATA_TOKEN`, paste the key.
 3. Push this project to GitHub, enable Actions if prompted. The workflow
-   will run automatically on schedule, and you can also trigger it
+   will run automatically on matchdays, and you can also trigger it
    manually from the **Actions** tab any time (**Run workflow** button)
-   to test it immediately rather than waiting for the next 6-hour tick.
+   to test it immediately with `--force`.
 4. Until football-data.org has the matchday schedule, the script will
    correctly write an empty fixture list — that's expected, not a bug.
    The site falls back to a clearly-labeled hypothetical draw until real
@@ -242,12 +247,10 @@ created matchday/team pages are always reflected in it automatically.
   teams — isn't implemented; teams still level after criterion 6 are
   ranked by team ID as a stable fallback.
 - football-data.org's free tier has delayed (not truly live, second-by-
-  second) scores. Combined with the 6-hour sync schedule, this is a
-  "checks in periodically" tool, not a live scoreboard. That trade-off is
-  what keeps hosting at $0 with no server to run — tightening the
-  schedule (e.g. hourly) is a one-line change to the cron in
-  `.github/workflows/update-scores.yml` if you want fresher data, still
-  well within the free rate limit.
+  second) scores. Combined with the matchday-targeted sync schedule, this is a
+  "checks in periodically on matchdays" tool, not a live scoreboard. That trade-off is
+  what keeps hosting at $0 with no server to run — regenerating the
+  schedule is a simple `npm run update:schedule` command if fixture dates ever change.
 - If a real match's teams don't resolve via `team-aliases.js`, that
   fixture is skipped (logged, not guessed) until the alias table is
   updated — a rare one-time fix, not a recurring task.
