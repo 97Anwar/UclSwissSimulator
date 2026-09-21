@@ -121,7 +121,8 @@ export function renderStandingsTable(container, standings, seasonStarted = true)
             ${teamCrest(t)}
             <span class="truncate">${t.name}${teamBadge(t)}</span>
           </div>
-          <div class="col-span-2 text-center text-ink-900/50 dark:text-ink-50/50 tabular">${t.played}</div>
+          <div class="col-span-1 text-center text-ink-900/50 dark:text-ink-50/50 tabular">${t.played}</div>
+          <div class="col-span-1 text-center font-semibold text-pitch-700 dark:text-pitch-300 tabular">${t.won}</div>
           <div class="col-span-2 text-center tabular text-[11px]">${gdFormatted}</div>
           <div class="col-span-2 text-center font-extrabold text-pitch-600 dark:text-pitch-300 tabular">${t.points}</div>
         </div>
@@ -240,9 +241,10 @@ export function renderExportCard(container, standings, meta, seasonStarted = tru
         <span style="width:4px; align-self:stretch; border-radius:3px; flex-shrink:0; background:${z.bar};"></span>
         <div style="width:22px; flex-shrink:0; font-size:12px; font-weight:700; line-height:1.4; color:${z.rank};">${seasonStarted ? rank : '—'}</div>
         <div style="flex:1; min-width:0; display:flex; align-items:center; gap:6px; white-space:nowrap;">${teamCrest(t, 16)}<span style="font-size:12px; font-weight:600; line-height:1.6;">${t.name}</span></div>
-        <div style="width:38px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4; opacity:0.55;">${t.played}</div>
-        <div style="width:38px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4;">${gdFormatted}</div>
-        <div style="width:42px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4; font-weight:800; color:#0B6E4F;">${t.points}</div>
+        <div style="width:34px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4; opacity:0.55;">${t.played}</div>
+        <div style="width:32px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4; font-weight:700; color:#0B6E4F;">${t.won}</div>
+        <div style="width:36px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4;">${gdFormatted}</div>
+        <div style="width:40px; flex-shrink:0; text-align:center; font-size:12px; line-height:1.4; font-weight:800; color:#0B6E4F;">${t.points}</div>
       </div>
     `;
   }).join('');
@@ -267,9 +269,10 @@ export function renderExportCard(container, standings, meta, seasonStarted = tru
         <span style="width:4px; flex-shrink:0;"></span>
         <div style="width:22px; flex-shrink:0;">#</div>
         <div style="flex:1; min-width:0;">Club</div>
-        <div style="width:38px; flex-shrink:0; text-align:center;">PL</div>
-        <div style="width:38px; flex-shrink:0; text-align:center;">GD</div>
-        <div style="width:42px; flex-shrink:0; text-align:center;">PTS</div>
+        <div style="width:34px; flex-shrink:0; text-align:center;">PL</div>
+        <div style="width:32px; flex-shrink:0; text-align:center; color:#0B6E4F;">W</div>
+        <div style="width:36px; flex-shrink:0; text-align:center;">GD</div>
+        <div style="width:40px; flex-shrink:0; text-align:center;">PTS</div>
       </div>
       ${rows}
       <div style="display:flex; justify-content:space-between; align-items:center; padding-top:10px; margin-top:8px; border-top:1px solid #E5E7E0; font-size:9px; line-height:1.4; opacity:0.45;">

@@ -1,0 +1,3944 @@
+{
+  "RMA": [
+    {
+      "name": "Thibaut Courtois",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇧🇪",
+      "photo": "/assets/players/rma_thibaut_courtois.jpg"
+    },
+    {
+      "name": "Andriy Lunin",
+      "position": "Goalkeeper",
+      "number": 13,
+      "country": "🇺🇦",
+      "photo": "/assets/players/rma_andriy_lunin.jpg"
+    },
+    {
+      "name": "Dani Carvajal",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇪🇸",
+      "captain": true,
+      "photo": "/assets/players/rma_dani_carvajal.jpg"
+    },
+    {
+      "name": "Éder Militão",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇧🇷",
+      "photo": "/assets/players/rma_eder_militao.jpg"
+    },
+    {
+      "name": "David Alaba",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇦🇹",
+      "photo": "/assets/players/rma_david_alaba.jpg"
+    },
+    {
+      "name": "Antonio Rüdiger",
+      "position": "Defender",
+      "number": 22,
+      "country": "🇩🇪",
+      "photo": "/assets/players/rma_antonio_rudiger.jpg"
+    },
+    {
+      "name": "Ferland Mendy",
+      "position": "Defender",
+      "number": 23,
+      "country": "🇫🇷",
+      "photo": "/assets/players/rma_ferland_mendy.jpg"
+    },
+    {
+      "name": "Fran García",
+      "position": "Defender",
+      "number": 20,
+      "country": "🇪🇸"
+    },
+    {
+      "name": "Jude Bellingham",
+      "position": "Midfielder",
+      "number": 5,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/rma_jude_bellingham.jpg"
+    },
+    {
+      "name": "Eduardo Camavinga",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇫🇷",
+      "photo": "/assets/players/rma_eduardo_camavinga.jpg"
+    },
+    {
+      "name": "Federico Valverde",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇺🇾",
+      "photo": "/assets/players/rma_federico_valverde.jpg"
+    },
+    {
+      "name": "Luka Modrić",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇭🇷",
+      "photo": "/assets/players/rma_luka_modric.jpg"
+    },
+    {
+      "name": "Aurélien Tchouaméni",
+      "position": "Midfielder",
+      "number": 14,
+      "country": "🇫🇷",
+      "photo": "/assets/players/rma_aurelien_tchouameni.jpg"
+    },
+    {
+      "name": "Arda Güler",
+      "position": "Midfielder",
+      "number": 15,
+      "country": "🇹🇷",
+      "photo": "/assets/players/rma_arda_guler.jpg"
+    },
+    {
+      "name": "Dani Ceballos",
+      "position": "Midfielder",
+      "number": 19,
+      "country": "🇪🇸",
+      "photo": "/assets/players/rma_dani_ceballos.jpg"
+    },
+    {
+      "name": "Vinícius Júnior",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇧🇷",
+      "photo": "/assets/players/rma_vinicius_junior.jpg"
+    },
+    {
+      "name": "Kylian Mbappé",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇫🇷",
+      "photo": "/assets/players/rma_kylian_mbappe.jpg"
+    },
+    {
+      "name": "Rodrygo",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇧🇷",
+      "photo": "/assets/players/rma_rodrygo.jpg"
+    },
+    {
+      "name": "Endrick",
+      "position": "Forward",
+      "number": 16,
+      "country": "🇧🇷",
+      "photo": "/assets/players/rma_endrick.jpg"
+    },
+    {
+      "name": "Brahim Díaz",
+      "position": "Forward",
+      "number": 21,
+      "country": "🇲🇦",
+      "photo": "/assets/players/rma_brahim_diaz.jpg"
+    }
+  ],
+  "MCI": [
+    {
+      "name": "Ederson",
+      "position": "Goalkeeper",
+      "number": 31,
+      "country": "🇧🇷",
+      "photo": "/assets/players/mci_ederson.jpg"
+    },
+    {
+      "name": "Stefan Ortega",
+      "position": "Goalkeeper",
+      "number": 18,
+      "country": "🇩🇪",
+      "photo": "/assets/players/mci_stefan_ortega.jpg"
+    },
+    {
+      "name": "Kyle Walker",
+      "position": "Defender",
+      "number": 2,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "captain": true,
+      "photo": "/assets/players/mci_kyle_walker.jpg"
+    },
+    {
+      "name": "Rúben Dias",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇵🇹",
+      "photo": "/assets/players/mci_ruben_dias.jpg"
+    },
+    {
+      "name": "John Stones",
+      "position": "Defender",
+      "number": 5,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/mci_john_stones.jpg"
+    },
+    {
+      "name": "Nathan Aké",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇳🇱",
+      "photo": "/assets/players/mci_nathan_ake.jpg"
+    },
+    {
+      "name": "Joško Gvardiol",
+      "position": "Defender",
+      "number": 24,
+      "country": "🇭🇷",
+      "photo": "/assets/players/mci_josko_gvardiol.jpg"
+    },
+    {
+      "name": "Manuel Akanji",
+      "position": "Defender",
+      "number": 25,
+      "country": "🇨🇭",
+      "photo": "/assets/players/mci_manuel_akanji.jpg"
+    },
+    {
+      "name": "Rico Lewis",
+      "position": "Defender",
+      "number": 82,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/mci_rico_lewis.jpg"
+    },
+    {
+      "name": "Mateo Kovačić",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇭🇷",
+      "photo": "/assets/players/mci_mateo_kovacic.jpg"
+    },
+    {
+      "name": "Jack Grealish",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/mci_jack_grealish.jpg"
+    },
+    {
+      "name": "Kevin De Bruyne",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🇧🇪",
+      "photo": "/assets/players/mci_kevin_de_bruyne.jpg"
+    },
+    {
+      "name": "İlkay Gündoğan",
+      "position": "Midfielder",
+      "number": 19,
+      "country": "🇩🇪",
+      "photo": "/assets/players/mci_ilkay_gundogan.jpg"
+    },
+    {
+      "name": "Bernardo Silva",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇵🇹",
+      "photo": "/assets/players/mci_bernardo_silva.jpg"
+    },
+    {
+      "name": "Rodri",
+      "position": "Midfielder",
+      "number": 16,
+      "country": "🇪🇸",
+      "photo": "/assets/players/mci_rodri.jpg"
+    },
+    {
+      "name": "Phil Foden",
+      "position": "Midfielder",
+      "number": 47,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/mci_phil_foden.jpg"
+    },
+    {
+      "name": "Matheus Nunes",
+      "position": "Midfielder",
+      "number": 27,
+      "country": "🇵🇹",
+      "photo": "/assets/players/mci_matheus_nunes.jpg"
+    },
+    {
+      "name": "Erling Haaland",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇳🇴",
+      "photo": "/assets/players/mci_erling_haaland.jpg"
+    },
+    {
+      "name": "Jérémy Doku",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇧🇪",
+      "photo": "/assets/players/mci_jeremy_doku.jpg"
+    },
+    {
+      "name": "Savinho",
+      "position": "Forward",
+      "number": 26,
+      "country": "🇧🇷",
+      "photo": "/assets/players/mci_savinho.jpg"
+    }
+  ],
+  "BAR": [
+    {
+      "name": "Marc-André ter Stegen",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇩🇪",
+      "captain": true,
+      "photo": "/assets/players/bar_marc_andre_ter_stegen.jpg"
+    },
+    {
+      "name": "Iñaki Peña",
+      "position": "Goalkeeper",
+      "number": 13,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_inaki_pena.jpg"
+    },
+    {
+      "name": "Wojciech Szczęsny",
+      "position": "Goalkeeper",
+      "number": 25,
+      "country": "🇵🇱",
+      "photo": "/assets/players/bar_wojciech_szczesny.jpg"
+    },
+    {
+      "name": "Pau Cubarsí",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_pau_cubarsi.jpg"
+    },
+    {
+      "name": "Alejandro Balde",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_alejandro_balde.jpg"
+    },
+    {
+      "name": "Ronald Araújo",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇺🇾",
+      "photo": "/assets/players/bar_ronald_araujo.jpg"
+    },
+    {
+      "name": "Íñigo Martínez",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_inigo_martinez.jpg"
+    },
+    {
+      "name": "Andreas Christensen",
+      "position": "Defender",
+      "number": 15,
+      "country": "🇩🇰",
+      "photo": "/assets/players/bar_andreas_christensen.jpg"
+    },
+    {
+      "name": "Jules Koundé",
+      "position": "Defender",
+      "number": 23,
+      "country": "🇫🇷",
+      "photo": "/assets/players/bar_jules_kounde.jpg"
+    },
+    {
+      "name": "Eric García",
+      "position": "Defender",
+      "number": 24,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_eric_garcia.jpg"
+    },
+    {
+      "name": "Gavi",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_gavi.jpg"
+    },
+    {
+      "name": "Pedri",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_pedri.jpg"
+    },
+    {
+      "name": "Pablo Torre",
+      "position": "Midfielder",
+      "number": 14,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_pablo_torre.jpg"
+    },
+    {
+      "name": "Fermín López",
+      "position": "Midfielder",
+      "number": 16,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_fermin_lopez.jpg"
+    },
+    {
+      "name": "Marc Casadó",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_marc_casado.jpg"
+    },
+    {
+      "name": "Dani Olmo",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_dani_olmo.jpg"
+    },
+    {
+      "name": "Frenkie de Jong",
+      "position": "Midfielder",
+      "number": 21,
+      "country": "🇳🇱",
+      "photo": "/assets/players/bar_frenkie_de_jong.jpg"
+    },
+    {
+      "name": "Ferran Torres",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_ferran_torres.jpg"
+    },
+    {
+      "name": "Robert Lewandowski",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇵🇱",
+      "photo": "/assets/players/bar_robert_lewandowski.jpg"
+    },
+    {
+      "name": "Ansu Fati",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_ansu_fati.jpg"
+    },
+    {
+      "name": "Raphinha",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇧🇷",
+      "photo": "/assets/players/bar_raphinha.jpg"
+    },
+    {
+      "name": "Pau Víctor",
+      "position": "Forward",
+      "number": 18,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_pau_victor.jpg"
+    },
+    {
+      "name": "Lamine Yamal",
+      "position": "Forward",
+      "number": 19,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bar_lamine_yamal.jpg"
+    }
+  ],
+  "ARS": [
+    {
+      "name": "David Raya",
+      "position": "Goalkeeper",
+      "number": 22,
+      "country": "🇪🇸",
+      "photo": "/assets/players/ars_david_raya.jpg"
+    },
+    {
+      "name": "Neto",
+      "position": "Goalkeeper",
+      "number": 32,
+      "country": "🇧🇷",
+      "photo": "/assets/players/ars_neto.jpg"
+    },
+    {
+      "name": "William Saliba",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇫🇷",
+      "photo": "/assets/players/ars_william_saliba.jpg"
+    },
+    {
+      "name": "Kieran Tierney",
+      "position": "Defender",
+      "number": 3,
+      "country": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "photo": "/assets/players/ars_kieran_tierney.jpg"
+    },
+    {
+      "name": "Ben White",
+      "position": "Defender",
+      "number": 4,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/ars_ben_white.jpg"
+    },
+    {
+      "name": "Gabriel Magalhães",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇧🇷",
+      "photo": "/assets/players/ars_gabriel_magalhaes.jpg"
+    },
+    {
+      "name": "Jurriën Timber",
+      "position": "Defender",
+      "number": 12,
+      "country": "🇳🇱",
+      "photo": "/assets/players/ars_jurrien_timber.jpg"
+    },
+    {
+      "name": "Jakub Kiwior",
+      "position": "Defender",
+      "number": 15,
+      "country": "🇵🇱",
+      "photo": "/assets/players/ars_jakub_kiwior.jpg"
+    },
+    {
+      "name": "Oleksandr Zinchenko",
+      "position": "Defender",
+      "number": 17,
+      "country": "🇺🇦",
+      "photo": "/assets/players/ars_oleksandr_zinchenko.jpg"
+    },
+    {
+      "name": "Takehiro Tomiyasu",
+      "position": "Defender",
+      "number": 18,
+      "country": "🇯🇵",
+      "photo": "/assets/players/ars_takehiro_tomiyasu.jpg"
+    },
+    {
+      "name": "Riccardo Calafiori",
+      "position": "Defender",
+      "number": 33,
+      "country": "🇮🇹",
+      "photo": "/assets/players/ars_riccardo_calafiori.jpg"
+    },
+    {
+      "name": "Thomas Partey",
+      "position": "Midfielder",
+      "number": 5,
+      "country": "🇬🇭",
+      "photo": "/assets/players/ars_thomas_partey.jpg"
+    },
+    {
+      "name": "Martin Ødegaard",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇳🇴",
+      "captain": true,
+      "photo": "/assets/players/ars_martin_degaard.jpg"
+    },
+    {
+      "name": "Jorginho",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇮🇹",
+      "photo": "/assets/players/ars_jorginho.jpg"
+    },
+    {
+      "name": "Mikel Merino",
+      "position": "Midfielder",
+      "number": 23,
+      "country": "🇪🇸",
+      "photo": "/assets/players/ars_mikel_merino.jpg"
+    },
+    {
+      "name": "Kai Havertz",
+      "position": "Midfielder",
+      "number": 29,
+      "country": "🇩🇪",
+      "photo": "/assets/players/ars_kai_havertz.jpg"
+    },
+    {
+      "name": "Declan Rice",
+      "position": "Midfielder",
+      "number": 41,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/ars_declan_rice.jpg"
+    },
+    {
+      "name": "Bukayo Saka",
+      "position": "Forward",
+      "number": 7,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/ars_bukayo_saka.jpg"
+    },
+    {
+      "name": "Gabriel Jesus",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇧🇷",
+      "photo": "/assets/players/ars_gabriel_jesus.jpg"
+    },
+    {
+      "name": "Gabriel Martinelli",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇧🇷",
+      "photo": "/assets/players/ars_gabriel_martinelli.jpg"
+    },
+    {
+      "name": "Leandro Trossard",
+      "position": "Forward",
+      "number": 19,
+      "country": "🇧🇪",
+      "photo": "/assets/players/ars_leandro_trossard.jpg"
+    },
+    {
+      "name": "Raheem Sterling",
+      "position": "Forward",
+      "number": 30,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/ars_raheem_sterling.jpg"
+    }
+  ],
+  "LIV": [
+    {
+      "name": "Alisson Becker",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇧🇷",
+      "photo": "/assets/players/liv_alisson_becker.jpg"
+    },
+    {
+      "name": "Caoimhín Kelleher",
+      "position": "Goalkeeper",
+      "number": 62,
+      "country": "🇮🇪",
+      "photo": "/assets/players/liv_caoimhin_kelleher.jpg"
+    },
+    {
+      "name": "Joe Gomez",
+      "position": "Defender",
+      "number": 2,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/liv_joe_gomez.jpg"
+    },
+    {
+      "name": "Virgil van Dijk",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇳🇱",
+      "captain": true,
+      "photo": "/assets/players/liv_virgil_van_dijk.jpg"
+    },
+    {
+      "name": "Ibrahima Konaté",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇫🇷",
+      "photo": "/assets/players/liv_ibrahima_konate.jpg"
+    },
+    {
+      "name": "Kostas Tsimikas",
+      "position": "Defender",
+      "number": 21,
+      "country": "🇬🇷",
+      "photo": "/assets/players/liv_kostas_tsimikas.jpg"
+    },
+    {
+      "name": "Andy Robertson",
+      "position": "Defender",
+      "number": 26,
+      "country": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "photo": "/assets/players/liv_andy_robertson.jpg"
+    },
+    {
+      "name": "Trent Alexander-Arnold",
+      "position": "Defender",
+      "number": 66,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/liv_trent_alexander_arnold.jpg"
+    },
+    {
+      "name": "Jarell Quansah",
+      "position": "Defender",
+      "number": 78,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/liv_jarell_quansah.jpg"
+    },
+    {
+      "name": "Conor Bradley",
+      "position": "Defender",
+      "number": 84,
+      "country": "NIR",
+      "photo": "/assets/players/liv_conor_bradley.jpg"
+    },
+    {
+      "name": "Wataru Endō",
+      "position": "Midfielder",
+      "number": 3,
+      "country": "🇯🇵",
+      "photo": "/assets/players/liv_wataru_endo.jpg"
+    },
+    {
+      "name": "Dominik Szoboszlai",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇭🇺",
+      "photo": "/assets/players/liv_dominik_szoboszlai.jpg"
+    },
+    {
+      "name": "Alexis Mac Allister",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇦🇷",
+      "photo": "/assets/players/liv_alexis_mac_allister.jpg"
+    },
+    {
+      "name": "Curtis Jones",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/liv_curtis_jones.jpg"
+    },
+    {
+      "name": "Harvey Elliott",
+      "position": "Midfielder",
+      "number": 19,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/liv_harvey_elliott.jpg"
+    },
+    {
+      "name": "Ryan Gravenberch",
+      "position": "Midfielder",
+      "number": 38,
+      "country": "🇳🇱",
+      "photo": "/assets/players/liv_ryan_gravenberch.jpg"
+    },
+    {
+      "name": "Luis Díaz",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇨🇴",
+      "photo": "/assets/players/liv_luis_diaz.jpg"
+    },
+    {
+      "name": "Darwin Núñez",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇺🇾",
+      "photo": "/assets/players/liv_darwin_nunez.jpg"
+    },
+    {
+      "name": "Mohamed Salah",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇪🇬",
+      "photo": "/assets/players/liv_mohamed_salah.jpg"
+    },
+    {
+      "name": "Federico Chiesa",
+      "position": "Forward",
+      "number": 14,
+      "country": "🇮🇹",
+      "photo": "/assets/players/liv_federico_chiesa.jpg"
+    },
+    {
+      "name": "Cody Gakpo",
+      "position": "Forward",
+      "number": 18,
+      "country": "🇳🇱",
+      "photo": "/assets/players/liv_cody_gakpo.jpg"
+    },
+    {
+      "name": "Diogo Jota",
+      "position": "Forward",
+      "number": 20,
+      "country": "🇵🇹",
+      "photo": "/assets/players/liv_diogo_jota.jpg"
+    }
+  ],
+  "BAY": [
+    {
+      "name": "Manuel Neuer",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇩🇪",
+      "captain": true,
+      "photo": "/assets/players/bay_manuel_neuer.jpg"
+    },
+    {
+      "name": "Daniel Peretz",
+      "position": "Goalkeeper",
+      "number": 18,
+      "country": "🇮🇱",
+      "photo": "/assets/players/bay_daniel_peretz.jpg"
+    },
+    {
+      "name": "Sven Ulreich",
+      "position": "Goalkeeper",
+      "number": 26,
+      "country": "🇩🇪",
+      "photo": "/assets/players/bay_sven_ulreich.jpg"
+    },
+    {
+      "name": "Dayot Upamecano",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇫🇷",
+      "photo": "/assets/players/bay_dayot_upamecano.jpg"
+    },
+    {
+      "name": "Kim Min-jae",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇰🇷",
+      "photo": "/assets/players/bay_kim_min_jae.jpg"
+    },
+    {
+      "name": "Eric Dier",
+      "position": "Defender",
+      "number": 15,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/bay_eric_dier.jpg"
+    },
+    {
+      "name": "Hiroki Ito",
+      "position": "Defender",
+      "number": 21,
+      "country": "🇯🇵",
+      "photo": "/assets/players/bay_hiroki_ito.jpg"
+    },
+    {
+      "name": "Raphaël Guerreiro",
+      "position": "Defender",
+      "number": 22,
+      "country": "🇵🇹",
+      "photo": "/assets/players/bay_raphael_guerreiro.jpg"
+    },
+    {
+      "name": "Sacha Boey",
+      "position": "Defender",
+      "number": 23,
+      "country": "🇫🇷",
+      "photo": "/assets/players/bay_sacha_boey.jpg"
+    },
+    {
+      "name": "Joshua Kimmich",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇩🇪",
+      "photo": "/assets/players/bay_joshua_kimmich.jpg"
+    },
+    {
+      "name": "Leon Goretzka",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇩🇪",
+      "photo": "/assets/players/bay_leon_goretzka.jpg"
+    },
+    {
+      "name": "João Palhinha",
+      "position": "Midfielder",
+      "number": 16,
+      "country": "🇵🇹",
+      "photo": "/assets/players/bay_joao_palhinha.jpg"
+    },
+    {
+      "name": "Michael Olise",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🇫🇷",
+      "photo": "/assets/players/bay_michael_olise.jpg"
+    },
+    {
+      "name": "Alphonso Davies",
+      "position": "Midfielder",
+      "number": 19,
+      "country": "🇨🇦",
+      "photo": "/assets/players/bay_alphonso_davies.jpg"
+    },
+    {
+      "name": "Konrad Laimer",
+      "position": "Midfielder",
+      "number": 27,
+      "country": "🇦🇹",
+      "photo": "/assets/players/bay_konrad_laimer.jpg"
+    },
+    {
+      "name": "Jamal Musiala",
+      "position": "Midfielder",
+      "number": 42,
+      "country": "🇩🇪",
+      "photo": "/assets/players/bay_jamal_musiala.jpg"
+    },
+    {
+      "name": "Aleksandar Pavlović",
+      "position": "Midfielder",
+      "number": 45,
+      "country": "🇩🇪",
+      "photo": "/assets/players/bay_aleksandar_pavlovic.jpg"
+    },
+    {
+      "name": "Serge Gnabry",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇩🇪",
+      "photo": "/assets/players/bay_serge_gnabry.jpg"
+    },
+    {
+      "name": "Harry Kane",
+      "position": "Forward",
+      "number": 9,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/bay_harry_kane.jpg"
+    },
+    {
+      "name": "Leroy Sané",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇩🇪",
+      "photo": "/assets/players/bay_leroy_sane.jpg"
+    },
+    {
+      "name": "Kingsley Coman",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇫🇷",
+      "photo": "/assets/players/bay_kingsley_coman.jpg"
+    },
+    {
+      "name": "Mathys Tel",
+      "position": "Forward",
+      "number": 39,
+      "country": "🇫🇷",
+      "photo": "/assets/players/bay_mathys_tel.jpg"
+    },
+    {
+      "name": "Thomas Müller",
+      "position": "Forward",
+      "number": 25,
+      "country": "🇩🇪",
+      "photo": "/assets/players/bay_thomas_muller.jpg"
+    }
+  ],
+  "PSG": [
+    {
+      "name": "Gianluigi Donnarumma",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇮🇹",
+      "photo": "/assets/players/psg_gianluigi_donnarumma.jpg"
+    },
+    {
+      "name": "Matvey Safonov",
+      "position": "Goalkeeper",
+      "number": 39,
+      "country": "🇷🇺",
+      "photo": "/assets/players/psg_matvey_safonov.jpg"
+    },
+    {
+      "name": "Achraf Hakimi",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇲🇦",
+      "photo": "/assets/players/psg_achraf_hakimi.jpg"
+    },
+    {
+      "name": "Presnel Kimpembe",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇫🇷",
+      "photo": "/assets/players/psg_presnel_kimpembe.jpg"
+    },
+    {
+      "name": "Marquinhos",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇧🇷",
+      "captain": true,
+      "photo": "/assets/players/psg_marquinhos.jpg"
+    },
+    {
+      "name": "Lucas Hernandez",
+      "position": "Defender",
+      "number": 21,
+      "country": "🇫🇷",
+      "photo": "/assets/players/psg_lucas_hernandez.jpg"
+    },
+    {
+      "name": "Nuno Mendes",
+      "position": "Defender",
+      "number": 25,
+      "country": "🇵🇹",
+      "photo": "/assets/players/psg_nuno_mendes.jpg"
+    },
+    {
+      "name": "Lucas Beraldo",
+      "position": "Defender",
+      "number": 35,
+      "country": "🇧🇷",
+      "photo": "/assets/players/psg_lucas_beraldo.jpg"
+    },
+    {
+      "name": "Willian Pacho",
+      "position": "Defender",
+      "number": 51,
+      "country": "🇪🇨",
+      "photo": "/assets/players/psg_willian_pacho.jpg"
+    },
+    {
+      "name": "Fabián Ruiz",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇪🇸",
+      "photo": "/assets/players/psg_fabian_ruiz.jpg"
+    },
+    {
+      "name": "Vitinha",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🇵🇹",
+      "photo": "/assets/players/psg_vitinha.jpg"
+    },
+    {
+      "name": "Lee Kang-in",
+      "position": "Midfielder",
+      "number": 19,
+      "country": "🇰🇷",
+      "photo": "/assets/players/psg_lee_kang_in.jpg"
+    },
+    {
+      "name": "Senny Mayulu",
+      "position": "Midfielder",
+      "number": 24,
+      "country": "🇫🇷",
+      "photo": "/assets/players/psg_senny_mayulu.jpg"
+    },
+    {
+      "name": "Warren Zaïre-Emery",
+      "position": "Midfielder",
+      "number": 33,
+      "country": "🇫🇷",
+      "photo": "/assets/players/psg_warren_zaire_emery.jpg"
+    },
+    {
+      "name": "João Neves",
+      "position": "Midfielder",
+      "number": 87,
+      "country": "🇵🇹",
+      "photo": "/assets/players/psg_joao_neves.jpg"
+    },
+    {
+      "name": "Gonçalo Ramos",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇵🇹",
+      "photo": "/assets/players/psg_goncalo_ramos.jpg"
+    },
+    {
+      "name": "Ousmane Dembélé",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇫🇷",
+      "photo": "/assets/players/psg_ousmane_dembele.jpg"
+    },
+    {
+      "name": "Marco Asensio",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇪🇸",
+      "photo": "/assets/players/psg_marco_asensio.jpg"
+    },
+    {
+      "name": "Désiré Doué",
+      "position": "Forward",
+      "number": 14,
+      "country": "🇫🇷",
+      "photo": "/assets/players/psg_desire_doue.jpg"
+    },
+    {
+      "name": "Randal Kolo Muani",
+      "position": "Forward",
+      "number": 23,
+      "country": "🇫🇷",
+      "photo": "/assets/players/psg_randal_kolo_muani.jpg"
+    },
+    {
+      "name": "Bradley Barcola",
+      "position": "Forward",
+      "number": 29,
+      "country": "🇫🇷",
+      "photo": "/assets/players/psg_bradley_barcola.jpg"
+    }
+  ],
+  "INT": [
+    {
+      "name": "Yann Sommer",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇨🇭",
+      "photo": "/assets/players/int_yann_sommer.jpg"
+    },
+    {
+      "name": "Josep Martínez",
+      "position": "Goalkeeper",
+      "number": 13,
+      "country": "🇪🇸",
+      "photo": "/assets/players/int_josep_martinez.jpg"
+    },
+    {
+      "name": "Stefan de Vrij",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇳🇱",
+      "photo": "/assets/players/int_stefan_de_vrij.jpg"
+    },
+    {
+      "name": "Francesco Acerbi",
+      "position": "Defender",
+      "number": 15,
+      "country": "🇮🇹",
+      "photo": "/assets/players/int_francesco_acerbi.jpg"
+    },
+    {
+      "name": "Benjamin Pavard",
+      "position": "Defender",
+      "number": 28,
+      "country": "🇫🇷",
+      "photo": "/assets/players/int_benjamin_pavard.jpg"
+    },
+    {
+      "name": "Carlos Augusto",
+      "position": "Defender",
+      "number": 30,
+      "country": "🇧🇷",
+      "photo": "/assets/players/int_carlos_augusto.jpg"
+    },
+    {
+      "name": "Yann Bisseck",
+      "position": "Defender",
+      "number": 31,
+      "country": "🇩🇪",
+      "photo": "/assets/players/int_yann_bisseck.jpg"
+    },
+    {
+      "name": "Federico Dimarco",
+      "position": "Defender",
+      "number": 32,
+      "country": "🇮🇹",
+      "photo": "/assets/players/int_federico_dimarco.jpg"
+    },
+    {
+      "name": "Matteo Darmian",
+      "position": "Defender",
+      "number": 36,
+      "country": "🇮🇹",
+      "photo": "/assets/players/int_matteo_darmian.jpg"
+    },
+    {
+      "name": "Alessandro Bastoni",
+      "position": "Defender",
+      "number": 95,
+      "country": "🇮🇹",
+      "photo": "/assets/players/int_alessandro_bastoni.jpg"
+    },
+    {
+      "name": "Denzel Dumfries",
+      "position": "Midfielder",
+      "number": 2,
+      "country": "🇳🇱",
+      "photo": "/assets/players/int_denzel_dumfries.jpg"
+    },
+    {
+      "name": "Piotr Zieliński",
+      "position": "Midfielder",
+      "number": 7,
+      "country": "🇵🇱",
+      "photo": "/assets/players/int_piotr_zielinski.jpg"
+    },
+    {
+      "name": "Davide Frattesi",
+      "position": "Midfielder",
+      "number": 16,
+      "country": "🇮🇹",
+      "photo": "/assets/players/int_davide_frattesi.jpg"
+    },
+    {
+      "name": "Hakan Çalhanoğlu",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇹🇷",
+      "photo": "/assets/players/int_hakan_calhanoglu.jpg"
+    },
+    {
+      "name": "Kristjan Asllani",
+      "position": "Midfielder",
+      "number": 21,
+      "country": "🇦🇱",
+      "photo": "/assets/players/int_kristjan_asllani.jpg"
+    },
+    {
+      "name": "Henrikh Mkhitaryan",
+      "position": "Midfielder",
+      "number": 22,
+      "country": "🇦🇲",
+      "photo": "/assets/players/int_henrikh_mkhitaryan.jpg"
+    },
+    {
+      "name": "Nicolò Barella",
+      "position": "Midfielder",
+      "number": 23,
+      "country": "🇮🇹",
+      "photo": "/assets/players/int_nicolo_barella.jpg"
+    },
+    {
+      "name": "Marcus Thuram",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇫🇷",
+      "photo": "/assets/players/int_marcus_thuram.jpg"
+    },
+    {
+      "name": "Lautaro Martínez",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇦🇷",
+      "captain": true,
+      "photo": "/assets/players/int_lautaro_martinez.jpg"
+    },
+    {
+      "name": "Mehdi Taremi",
+      "position": "Forward",
+      "number": 99,
+      "country": "🇮🇷",
+      "photo": "/assets/players/int_mehdi_taremi.jpg"
+    }
+  ],
+  "ATM": [
+    {
+      "name": "Jan Oblak",
+      "position": "Goalkeeper",
+      "number": 13,
+      "country": "🇸🇮",
+      "captain": true,
+      "photo": "/assets/players/atm_jan_oblak.jpg"
+    },
+    {
+      "name": "Juan Musso",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇦🇷",
+      "photo": "/assets/players/atm_juan_musso.jpg"
+    },
+    {
+      "name": "José María Giménez",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇺🇾",
+      "photo": "/assets/players/atm_jose_maria_gimenez.jpg"
+    },
+    {
+      "name": "César Azpilicueta",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇪🇸",
+      "photo": "/assets/players/atm_cesar_azpilicueta.jpg"
+    },
+    {
+      "name": "Clément Lenglet",
+      "position": "Defender",
+      "number": 15,
+      "country": "🇫🇷",
+      "photo": "/assets/players/atm_clement_lenglet.jpg"
+    },
+    {
+      "name": "Nahuel Molina",
+      "position": "Defender",
+      "number": 16,
+      "country": "🇦🇷",
+      "photo": "/assets/players/atm_nahuel_molina.jpg"
+    },
+    {
+      "name": "Axel Witsel",
+      "position": "Defender",
+      "number": 20,
+      "country": "🇧🇪",
+      "photo": "/assets/players/atm_axel_witsel.jpg"
+    },
+    {
+      "name": "Javi Galán",
+      "position": "Defender",
+      "number": 21,
+      "country": "🇪🇸",
+      "photo": "/assets/players/atm_javi_galan.jpg"
+    },
+    {
+      "name": "Reinildo Mandava",
+      "position": "Defender",
+      "number": 23,
+      "country": "🇲🇿",
+      "photo": "/assets/players/atm_reinildo_mandava.jpg"
+    },
+    {
+      "name": "Robin Le Normand",
+      "position": "Defender",
+      "number": 24,
+      "country": "🇪🇸",
+      "photo": "/assets/players/atm_robin_le_normand.jpg"
+    },
+    {
+      "name": "Conor Gallagher",
+      "position": "Midfielder",
+      "number": 4,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/atm_conor_gallagher.jpg"
+    },
+    {
+      "name": "Rodrigo De Paul",
+      "position": "Midfielder",
+      "number": 5,
+      "country": "🇦🇷",
+      "photo": "/assets/players/atm_rodrigo_de_paul.jpg"
+    },
+    {
+      "name": "Koke",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇪🇸",
+      "photo": "/assets/players/atm_koke.jpg"
+    },
+    {
+      "name": "Pablo Barrios",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇪🇸",
+      "photo": "/assets/players/atm_pablo_barrios.jpg"
+    },
+    {
+      "name": "Marcos Llorente",
+      "position": "Midfielder",
+      "number": 14,
+      "country": "🇪🇸",
+      "photo": "/assets/players/atm_marcos_llorente.jpg"
+    },
+    {
+      "name": "Rodrigo Riquelme",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🇪🇸",
+      "photo": "/assets/players/atm_rodrigo_riquelme.jpg"
+    },
+    {
+      "name": "Antoine Griezmann",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇫🇷",
+      "photo": "/assets/players/atm_antoine_griezmann.jpg"
+    },
+    {
+      "name": "Alexander Sørloth",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇳🇴",
+      "photo": "/assets/players/atm_alexander_s_rloth.jpg"
+    },
+    {
+      "name": "Ángel Correa",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇦🇷",
+      "photo": "/assets/players/atm_angel_correa.jpg"
+    },
+    {
+      "name": "Julián Álvarez",
+      "position": "Forward",
+      "number": 19,
+      "country": "🇦🇷",
+      "photo": "/assets/players/atm_julian_alvarez.jpg"
+    },
+    {
+      "name": "Giuliano Simeone",
+      "position": "Forward",
+      "number": 22,
+      "country": "🇦🇷",
+      "photo": "/assets/players/atm_giuliano_simeone.jpg"
+    }
+  ],
+  "DOR": [
+    {
+      "name": "Gregor Kobel",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇨🇭",
+      "photo": "/assets/players/dor_gregor_kobel.jpg"
+    },
+    {
+      "name": "Alexander Meyer",
+      "position": "Goalkeeper",
+      "number": 33,
+      "country": "🇩🇪",
+      "photo": "/assets/players/dor_alexander_meyer.jpg"
+    },
+    {
+      "name": "Yan Couto",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇧🇷",
+      "photo": "/assets/players/dor_yan_couto.jpg"
+    },
+    {
+      "name": "Waldemar Anton",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇩🇪",
+      "photo": "/assets/players/dor_waldemar_anton.jpg"
+    },
+    {
+      "name": "Nico Schlotterbeck",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇩🇪",
+      "photo": "/assets/players/dor_nico_schlotterbeck.jpg"
+    },
+    {
+      "name": "Ramy Bensebaini",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇩🇿",
+      "photo": "/assets/players/dor_ramy_bensebaini.jpg"
+    },
+    {
+      "name": "Niklas Süle",
+      "position": "Defender",
+      "number": 25,
+      "country": "🇩🇪",
+      "photo": "/assets/players/dor_niklas_sule.jpg"
+    },
+    {
+      "name": "Julian Ryerson",
+      "position": "Defender",
+      "number": 26,
+      "country": "🇳🇴",
+      "photo": "/assets/players/dor_julian_ryerson.jpg"
+    },
+    {
+      "name": "Felix Nmecha",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇩🇪",
+      "photo": "/assets/players/dor_felix_nmecha.jpg"
+    },
+    {
+      "name": "Julian Brandt",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇩🇪",
+      "photo": "/assets/players/dor_julian_brandt.jpg"
+    },
+    {
+      "name": "Pascal Groß",
+      "position": "Midfielder",
+      "number": 13,
+      "country": "🇩🇪",
+      "photo": "/assets/players/dor_pascal_gro.jpg"
+    },
+    {
+      "name": "Marcel Sabitzer",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇦🇹",
+      "photo": "/assets/players/dor_marcel_sabitzer.jpg"
+    },
+    {
+      "name": "Emre Can",
+      "position": "Midfielder",
+      "number": 23,
+      "country": "🇩🇪",
+      "captain": true,
+      "photo": "/assets/players/dor_emre_can.jpg"
+    },
+    {
+      "name": "Giovanni Reyna",
+      "position": "Midfielder",
+      "number": 7,
+      "country": "🇺🇸",
+      "photo": "/assets/players/dor_giovanni_reyna.jpg"
+    },
+    {
+      "name": "Serhou Guirassy",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇬🇳",
+      "photo": "/assets/players/dor_serhou_guirassy.jpg"
+    },
+    {
+      "name": "Maximilian Beier",
+      "position": "Forward",
+      "number": 14,
+      "country": "🇩🇪",
+      "photo": "/assets/players/dor_maximilian_beier.jpg"
+    },
+    {
+      "name": "Julien Duranville",
+      "position": "Forward",
+      "number": 16,
+      "country": "🇧🇪"
+    },
+    {
+      "name": "Donyell Malen",
+      "position": "Forward",
+      "number": 21,
+      "country": "🇳🇱",
+      "photo": "/assets/players/dor_donyell_malen.jpg"
+    },
+    {
+      "name": "Karim Adeyemi",
+      "position": "Forward",
+      "number": 27,
+      "country": "🇩🇪",
+      "photo": "/assets/players/dor_karim_adeyemi.jpg"
+    },
+    {
+      "name": "Jamie Gittens",
+      "position": "Forward",
+      "number": 43,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/dor_jamie_gittens.jpg"
+    }
+  ],
+  "AVL": [
+    {
+      "name": "Emiliano Martínez",
+      "position": "Goalkeeper",
+      "number": 23,
+      "country": "🇦🇷",
+      "photo": "/assets/players/avl_emiliano_martinez.jpg"
+    },
+    {
+      "name": "Robin Olsen",
+      "position": "Goalkeeper",
+      "number": 25,
+      "country": "🇸🇪",
+      "photo": "/assets/players/avl_robin_olsen.jpg"
+    },
+    {
+      "name": "Matty Cash",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇵🇱",
+      "photo": "/assets/players/avl_matty_cash.jpg"
+    },
+    {
+      "name": "Diego Carlos",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇧🇷",
+      "photo": "/assets/players/avl_diego_carlos.jpg"
+    },
+    {
+      "name": "Ezri Konsa",
+      "position": "Defender",
+      "number": 4,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/avl_ezri_konsa.jpg"
+    },
+    {
+      "name": "Tyrone Mings",
+      "position": "Defender",
+      "number": 5,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/avl_tyrone_mings.jpg"
+    },
+    {
+      "name": "Lucas Digne",
+      "position": "Defender",
+      "number": 12,
+      "country": "🇫🇷",
+      "photo": "/assets/players/avl_lucas_digne.jpg"
+    },
+    {
+      "name": "Pau Torres",
+      "position": "Defender",
+      "number": 14,
+      "country": "🇪🇸",
+      "photo": "/assets/players/avl_pau_torres.jpg"
+    },
+    {
+      "name": "Ian Maatsen",
+      "position": "Defender",
+      "number": 22,
+      "country": "🇳🇱",
+      "photo": "/assets/players/avl_ian_maatsen.jpg"
+    },
+    {
+      "name": "Ross Barkley",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/avl_ross_barkley.jpg"
+    },
+    {
+      "name": "John McGinn",
+      "position": "Midfielder",
+      "number": 7,
+      "country": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "captain": true,
+      "photo": "/assets/players/avl_john_mcginn.jpg"
+    },
+    {
+      "name": "Youri Tielemans",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇧🇪",
+      "photo": "/assets/players/avl_youri_tielemans.jpg"
+    },
+    {
+      "name": "Emiliano Buendía",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇦🇷",
+      "photo": "/assets/players/avl_emiliano_buendia.jpg"
+    },
+    {
+      "name": "Amadou Onana",
+      "position": "Midfielder",
+      "number": 24,
+      "country": "🇧🇪",
+      "photo": "/assets/players/avl_amadou_onana.jpg"
+    },
+    {
+      "name": "Boubacar Kamara",
+      "position": "Midfielder",
+      "number": 44,
+      "country": "🇫🇷",
+      "photo": "/assets/players/avl_boubacar_kamara.jpg"
+    },
+    {
+      "name": "Morgan Rogers",
+      "position": "Midfielder",
+      "number": 27,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/avl_morgan_rogers.jpg"
+    },
+    {
+      "name": "Ollie Watkins",
+      "position": "Forward",
+      "number": 11,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/avl_ollie_watkins.jpg"
+    },
+    {
+      "name": "Jhon Durán",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇨🇴",
+      "photo": "/assets/players/avl_jhon_duran.jpg"
+    },
+    {
+      "name": "Leon Bailey",
+      "position": "Forward",
+      "number": 31,
+      "country": "🇯🇲",
+      "photo": "/assets/players/avl_leon_bailey.jpg"
+    }
+  ],
+  "MUN": [
+    {
+      "name": "André Onana",
+      "position": "Goalkeeper",
+      "number": 24,
+      "country": "🇨🇲",
+      "photo": "/assets/players/mun_andre_onana.jpg"
+    },
+    {
+      "name": "Altay Bayındır",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇹🇷",
+      "photo": "/assets/players/mun_altay_bay_nd_r.jpg"
+    },
+    {
+      "name": "Victor Lindelöf",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇸🇪",
+      "photo": "/assets/players/mun_victor_lindelof.jpg"
+    },
+    {
+      "name": "Noussair Mazraoui",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇲🇦",
+      "photo": "/assets/players/mun_noussair_mazraoui.jpg"
+    },
+    {
+      "name": "Matthijs de Ligt",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇳🇱",
+      "photo": "/assets/players/mun_matthijs_de_ligt.jpg"
+    },
+    {
+      "name": "Harry Maguire",
+      "position": "Defender",
+      "number": 5,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/mun_harry_maguire.jpg"
+    },
+    {
+      "name": "Lisandro Martínez",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇦🇷",
+      "photo": "/assets/players/mun_lisandro_martinez.jpg"
+    },
+    {
+      "name": "Tyrell Malacia",
+      "position": "Defender",
+      "number": 12,
+      "country": "🇳🇱",
+      "photo": "/assets/players/mun_tyrell_malacia.jpg"
+    },
+    {
+      "name": "Leny Yoro",
+      "position": "Defender",
+      "number": 15,
+      "country": "🇫🇷",
+      "photo": "/assets/players/mun_leny_yoro.jpg"
+    },
+    {
+      "name": "Luke Shaw",
+      "position": "Defender",
+      "number": 23,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/mun_luke_shaw.jpg"
+    },
+    {
+      "name": "Diogo Dalot",
+      "position": "Defender",
+      "number": 20,
+      "country": "🇵🇹",
+      "photo": "/assets/players/mun_diogo_dalot.jpg"
+    },
+    {
+      "name": "Mason Mount",
+      "position": "Midfielder",
+      "number": 7,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/mun_mason_mount.jpg"
+    },
+    {
+      "name": "Bruno Fernandes",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇵🇹",
+      "captain": true,
+      "photo": "/assets/players/mun_bruno_fernandes.jpg"
+    },
+    {
+      "name": "Christian Eriksen",
+      "position": "Midfielder",
+      "number": 14,
+      "country": "🇩🇰",
+      "photo": "/assets/players/mun_christian_eriksen.jpg"
+    },
+    {
+      "name": "Casemiro",
+      "position": "Midfielder",
+      "number": 18,
+      "country": "🇧🇷",
+      "photo": "/assets/players/mun_casemiro.jpg"
+    },
+    {
+      "name": "Manuel Ugarte",
+      "position": "Midfielder",
+      "number": 25,
+      "country": "🇺🇾",
+      "photo": "/assets/players/mun_manuel_ugarte.jpg"
+    },
+    {
+      "name": "Kobbie Mainoo",
+      "position": "Midfielder",
+      "number": 37,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/mun_kobbie_mainoo.jpg"
+    },
+    {
+      "name": "Rasmus Højlund",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇩🇰",
+      "photo": "/assets/players/mun_rasmus_h_jlund.jpg"
+    },
+    {
+      "name": "Marcus Rashford",
+      "position": "Forward",
+      "number": 10,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/mun_marcus_rashford.jpg"
+    },
+    {
+      "name": "Joshua Zirkzee",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇳🇱",
+      "photo": "/assets/players/mun_joshua_zirkzee.jpg"
+    },
+    {
+      "name": "Amad Diallo",
+      "position": "Forward",
+      "number": 16,
+      "country": "🇨🇮",
+      "photo": "/assets/players/mun_amad_diallo.jpg"
+    },
+    {
+      "name": "Alejandro Garnacho",
+      "position": "Forward",
+      "number": 17,
+      "country": "🇦🇷",
+      "photo": "/assets/players/mun_alejandro_garnacho.jpg"
+    },
+    {
+      "name": "Antony",
+      "position": "Forward",
+      "number": 21,
+      "country": "🇧🇷",
+      "photo": "/assets/players/mun_antony.jpg"
+    }
+  ],
+  "ROM": [
+    {
+      "name": "Mile Svilar",
+      "position": "Goalkeeper",
+      "number": 99,
+      "country": "🇷🇸",
+      "photo": "/assets/players/rom_mile_svilar.jpg"
+    },
+    {
+      "name": "Gianluca Mancini",
+      "position": "Defender",
+      "number": 23,
+      "country": "🇮🇹",
+      "photo": "/assets/players/rom_gianluca_mancini.jpg"
+    },
+    {
+      "name": "Evan Ndicka",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇨🇮",
+      "photo": "/assets/players/rom_evan_ndicka.jpg"
+    },
+    {
+      "name": "Angeliño",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇪🇸",
+      "photo": "/assets/players/rom_angelino.jpg"
+    },
+    {
+      "name": "Zeki Çelik",
+      "position": "Defender",
+      "number": 19,
+      "country": "🇹🇷",
+      "photo": "/assets/players/rom_zeki_celik.jpg"
+    },
+    {
+      "name": "Bryan Cristante",
+      "position": "Midfielder",
+      "number": 4,
+      "country": "🇮🇹",
+      "photo": "/assets/players/rom_bryan_cristante.jpg"
+    },
+    {
+      "name": "Lorenzo Pellegrini",
+      "position": "Midfielder",
+      "number": 7,
+      "country": "🇮🇹",
+      "captain": true,
+      "photo": "/assets/players/rom_lorenzo_pellegrini.jpg"
+    },
+    {
+      "name": "Manu Koné",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🇫🇷",
+      "photo": "/assets/players/rom_manu_kone.jpg"
+    },
+    {
+      "name": "Enzo Le Fée",
+      "position": "Midfielder",
+      "number": 28,
+      "country": "🇫🇷",
+      "photo": "/assets/players/rom_enzo_le_fee.jpg"
+    },
+    {
+      "name": "Paulo Dybala",
+      "position": "Forward",
+      "number": 21,
+      "country": "🇦🇷",
+      "photo": "/assets/players/rom_paulo_dybala.jpg"
+    },
+    {
+      "name": "Artem Dovbyk",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇺🇦",
+      "photo": "/assets/players/rom_artem_dovbyk.jpg"
+    },
+    {
+      "name": "Matías Soulé",
+      "position": "Forward",
+      "number": 18,
+      "country": "🇦🇷",
+      "photo": "/assets/players/rom_matias_soule.jpg"
+    },
+    {
+      "name": "Stephan El Shaarawy",
+      "position": "Forward",
+      "number": 92,
+      "country": "🇮🇹",
+      "photo": "/assets/players/rom_stephan_el_shaarawy.jpg"
+    }
+  ],
+  "SPO": [
+    {
+      "name": "Franco Israel",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇺🇾",
+      "photo": "/assets/players/spo_franco_israel.jpg"
+    },
+    {
+      "name": "Gonçalo Inácio",
+      "position": "Defender",
+      "number": 25,
+      "country": "🇵🇹",
+      "photo": "/assets/players/spo_goncalo_inacio.jpg"
+    },
+    {
+      "name": "Ousmane Diomande",
+      "position": "Defender",
+      "number": 26,
+      "country": "🇨🇮",
+      "photo": "/assets/players/spo_ousmane_diomande.jpg"
+    },
+    {
+      "name": "Zeno Debast",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇧🇪",
+      "photo": "/assets/players/spo_zeno_debast.jpg"
+    },
+    {
+      "name": "Nuno Santos",
+      "position": "Defender",
+      "number": 11,
+      "country": "🇵🇹",
+      "photo": "/assets/players/spo_nuno_santos.jpg"
+    },
+    {
+      "name": "Morten Hjulmand",
+      "position": "Midfielder",
+      "number": 42,
+      "country": "🇩🇰",
+      "captain": true,
+      "photo": "/assets/players/spo_morten_hjulmand.jpg"
+    },
+    {
+      "name": "Hidemasa Morita",
+      "position": "Midfielder",
+      "number": 5,
+      "country": "🇯🇵",
+      "photo": "/assets/players/spo_hidemasa_morita.jpg"
+    },
+    {
+      "name": "Daniel Bragança",
+      "position": "Midfielder",
+      "number": 23,
+      "country": "🇵🇹",
+      "photo": "/assets/players/spo_daniel_braganca.jpg"
+    },
+    {
+      "name": "Viktor Gyökeres",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇸🇪",
+      "photo": "/assets/players/spo_viktor_gyokeres.jpg"
+    },
+    {
+      "name": "Francisco Trincão",
+      "position": "Forward",
+      "number": 17,
+      "country": "🇵🇹",
+      "photo": "/assets/players/spo_francisco_trincao.jpg"
+    },
+    {
+      "name": "Pedro Gonçalves",
+      "position": "Forward",
+      "number": 8,
+      "country": "🇵🇹",
+      "photo": "/assets/players/spo_pedro_goncalves.jpg"
+    },
+    {
+      "name": "Geovany Quenda",
+      "position": "Forward",
+      "number": 57,
+      "country": "🇵🇹",
+      "photo": "/assets/players/spo_geovany_quenda.jpg"
+    }
+  ],
+  "POR": [
+    {
+      "name": "Diogo Costa",
+      "position": "Goalkeeper",
+      "number": 99,
+      "country": "🇵🇹",
+      "captain": true,
+      "photo": "/assets/players/por_diogo_costa.jpg"
+    },
+    {
+      "name": "Nehuén Pérez",
+      "position": "Defender",
+      "number": 24,
+      "country": "🇦🇷",
+      "photo": "/assets/players/por_nehuen_perez.jpg"
+    },
+    {
+      "name": "Zé Pedro",
+      "position": "Defender",
+      "number": 97,
+      "country": "🇵🇹",
+      "photo": "/assets/players/por_ze_pedro.jpg"
+    },
+    {
+      "name": "João Mário",
+      "position": "Defender",
+      "number": 23,
+      "country": "🇵🇹",
+      "photo": "/assets/players/por_joao_mario.jpg"
+    },
+    {
+      "name": "Francisco Moura",
+      "position": "Defender",
+      "number": 74,
+      "country": "🇵🇹",
+      "photo": "/assets/players/por_francisco_moura.jpg"
+    },
+    {
+      "name": "Alan Varela",
+      "position": "Midfielder",
+      "number": 22,
+      "country": "🇦🇷",
+      "photo": "/assets/players/por_alan_varela.jpg"
+    },
+    {
+      "name": "Stephen Eustáquio",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇨🇦",
+      "photo": "/assets/players/por_stephen_eustaquio.jpg"
+    },
+    {
+      "name": "Nico González",
+      "position": "Midfielder",
+      "number": 16,
+      "country": "🇪🇸",
+      "photo": "/assets/players/por_nico_gonzalez.jpg"
+    },
+    {
+      "name": "Iván Jaime",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🇪🇸",
+      "photo": "/assets/players/por_ivan_jaime.jpg"
+    },
+    {
+      "name": "Galeno",
+      "position": "Forward",
+      "number": 13,
+      "country": "🇧🇷",
+      "photo": "/assets/players/por_galeno.jpg"
+    },
+    {
+      "name": "Pepê",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇧🇷",
+      "photo": "/assets/players/por_pepe.jpg"
+    },
+    {
+      "name": "Samu Omorodion",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇪🇸",
+      "photo": "/assets/players/por_samu_omorodion.jpg"
+    }
+  ],
+  "BRU": [
+    {
+      "name": "Simon Mignolet",
+      "position": "Goalkeeper",
+      "number": 22,
+      "country": "🇧🇪",
+      "photo": "/assets/players/bru_simon_mignolet.jpg"
+    },
+    {
+      "name": "Brandon Mechele",
+      "position": "Defender",
+      "number": 44,
+      "country": "🇧🇪",
+      "photo": "/assets/players/bru_brandon_mechele.jpg"
+    },
+    {
+      "name": "Zaid Romero",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇦🇷",
+      "photo": "/assets/players/bru_zaid_romero.jpg"
+    },
+    {
+      "name": "Maxim De Cuyper",
+      "position": "Defender",
+      "number": 55,
+      "country": "🇧🇪",
+      "photo": "/assets/players/bru_maxim_de_cuyper.jpg"
+    },
+    {
+      "name": "Joaquin Seys",
+      "position": "Defender",
+      "number": 65,
+      "country": "🇧🇪",
+      "photo": "/assets/players/bru_joaquin_seys.jpg"
+    },
+    {
+      "name": "Hans Vanaken",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇧🇪",
+      "captain": true,
+      "photo": "/assets/players/bru_hans_vanaken.jpg"
+    },
+    {
+      "name": "Raphael Onyedika",
+      "position": "Midfielder",
+      "number": 15,
+      "country": "🇳🇬",
+      "photo": "/assets/players/bru_raphael_onyedika.jpg"
+    },
+    {
+      "name": "Ardon Jashari",
+      "position": "Midfielder",
+      "number": 30,
+      "country": "🇨🇭",
+      "photo": "/assets/players/bru_ardon_jashari.jpg"
+    },
+    {
+      "name": "Andreas Skov Olsen",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇩🇰"
+    },
+    {
+      "name": "Ferran Jutglà",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bru_ferran_jutgla.jpg"
+    },
+    {
+      "name": "Christos Tzolis",
+      "position": "Forward",
+      "number": 8,
+      "country": "🇬🇷",
+      "photo": "/assets/players/bru_christos_tzolis.jpg"
+    },
+    {
+      "name": "Gustaf Nilsson",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇸🇪",
+      "photo": "/assets/players/bru_gustaf_nilsson.jpg"
+    }
+  ],
+  "BET": [
+    {
+      "name": "Rui Silva",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇵🇹",
+      "photo": "/assets/players/bet_rui_silva.jpg"
+    },
+    {
+      "name": "Diego Llorente",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bet_diego_llorente.jpg"
+    },
+    {
+      "name": "Marc Bartra",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bet_marc_bartra.jpg"
+    },
+    {
+      "name": "Romain Perraud",
+      "position": "Defender",
+      "number": 15,
+      "country": "🇫🇷",
+      "photo": "/assets/players/bet_romain_perraud.jpg"
+    },
+    {
+      "name": "Héctor Bellerín",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bet_hector_bellerin.jpg"
+    },
+    {
+      "name": "William Carvalho",
+      "position": "Midfielder",
+      "number": 14,
+      "country": "🇵🇹",
+      "photo": "/assets/players/bet_william_carvalho.jpg"
+    },
+    {
+      "name": "Marc Roca",
+      "position": "Midfielder",
+      "number": 21,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bet_marc_roca.jpg"
+    },
+    {
+      "name": "Pablo Fornals",
+      "position": "Midfielder",
+      "number": 18,
+      "country": "🇪🇸",
+      "photo": "/assets/players/bet_pablo_fornals.jpg"
+    },
+    {
+      "name": "Giovani Lo Celso",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇦🇷",
+      "photo": "/assets/players/bet_giovani_lo_celso.jpg"
+    },
+    {
+      "name": "Isco",
+      "position": "Midfielder",
+      "number": 22,
+      "country": "🇪🇸",
+      "captain": true,
+      "photo": "/assets/players/bet_isco.jpg"
+    },
+    {
+      "name": "Chimy Ávila",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇦🇷",
+      "photo": "/assets/players/bet_chimy_avila.jpg"
+    },
+    {
+      "name": "Vitor Roque",
+      "position": "Forward",
+      "number": 8,
+      "country": "🇧🇷",
+      "photo": "/assets/players/bet_vitor_roque.jpg"
+    },
+    {
+      "name": "Abde Ezzalzouli",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇲🇦",
+      "photo": "/assets/players/bet_abde_ezzalzouli.jpg"
+    }
+  ],
+  "PSV": [
+    {
+      "name": "Walter Benítez",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇦🇷",
+      "photo": "/assets/players/psv_walter_benitez.jpg"
+    },
+    {
+      "name": "Olivier Boscagli",
+      "position": "Defender",
+      "number": 18,
+      "country": "🇫🇷",
+      "photo": "/assets/players/psv_olivier_boscagli.jpg"
+    },
+    {
+      "name": "Ryan Flamingo",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇳🇱",
+      "photo": "/assets/players/psv_ryan_flamingo.jpg"
+    },
+    {
+      "name": "Mauro Júnior",
+      "position": "Defender",
+      "number": 17,
+      "country": "🇧🇷",
+      "photo": "/assets/players/psv_mauro_junior.jpg"
+    },
+    {
+      "name": "Rick Karsdorp",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇳🇱",
+      "photo": "/assets/players/psv_rick_karsdorp.jpg"
+    },
+    {
+      "name": "Jerdy Schouten",
+      "position": "Midfielder",
+      "number": 22,
+      "country": "🇳🇱",
+      "photo": "/assets/players/psv_jerdy_schouten.jpg"
+    },
+    {
+      "name": "Joey Veerman",
+      "position": "Midfielder",
+      "number": 23,
+      "country": "🇳🇱",
+      "photo": "/assets/players/psv_joey_veerman.jpg"
+    },
+    {
+      "name": "Guus Til",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇳🇱",
+      "photo": "/assets/players/psv_guus_til.jpg"
+    },
+    {
+      "name": "Ismael Saibari",
+      "position": "Midfielder",
+      "number": 34,
+      "country": "🇲🇦",
+      "photo": "/assets/players/psv_ismael_saibari.jpg"
+    },
+    {
+      "name": "Luuk de Jong",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇳🇱",
+      "captain": true,
+      "photo": "/assets/players/psv_luuk_de_jong.jpg"
+    },
+    {
+      "name": "Noa Lang",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇳🇱",
+      "photo": "/assets/players/psv_noa_lang.jpg"
+    },
+    {
+      "name": "Johan Bakayoko",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇧🇪",
+      "photo": "/assets/players/psv_johan_bakayoko.jpg"
+    },
+    {
+      "name": "Malik Tillman",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇺🇸",
+      "photo": "/assets/players/psv_malik_tillman.jpg"
+    }
+  ],
+  "FEY": [
+    {
+      "name": "Timon Wellenreuther",
+      "position": "Goalkeeper",
+      "number": 22,
+      "country": "🇩🇪",
+      "photo": "/assets/players/fey_timon_wellenreuther.jpg"
+    },
+    {
+      "name": "David Hancko",
+      "position": "Defender",
+      "number": 33,
+      "country": "🇸🇰",
+      "photo": "/assets/players/fey_david_hancko.jpg"
+    },
+    {
+      "name": "Gernot Trauner",
+      "position": "Defender",
+      "number": 18,
+      "country": "🇦🇹",
+      "captain": true,
+      "photo": "/assets/players/fey_gernot_trauner.jpg"
+    },
+    {
+      "name": "Quilindschy Hartman",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇳🇱",
+      "photo": "/assets/players/fey_quilindschy_hartman.jpg"
+    },
+    {
+      "name": "Jordan Lotomba",
+      "position": "Defender",
+      "number": 30,
+      "country": "🇨🇭",
+      "photo": "/assets/players/fey_jordan_lotomba.jpg"
+    },
+    {
+      "name": "Quinten Timber",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇳🇱",
+      "photo": "/assets/players/fey_quinten_timber.jpg"
+    },
+    {
+      "name": "Calvin Stengs",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇳🇱",
+      "photo": "/assets/players/fey_calvin_stengs.jpg"
+    },
+    {
+      "name": "Hwang In-beom",
+      "position": "Midfielder",
+      "number": 4,
+      "country": "🇰🇷",
+      "photo": "/assets/players/fey_hwang_in_beom.jpg"
+    },
+    {
+      "name": "Antoni Milambo",
+      "position": "Midfielder",
+      "number": 27,
+      "country": "🇳🇱",
+      "photo": "/assets/players/fey_antoni_milambo.jpg"
+    },
+    {
+      "name": "Santiago Giménez",
+      "position": "Forward",
+      "number": 29,
+      "country": "🇲🇽",
+      "photo": "/assets/players/fey_santiago_gimenez.jpg"
+    },
+    {
+      "name": "Igor Paixão",
+      "position": "Forward",
+      "number": 14,
+      "country": "🇧🇷",
+      "photo": "/assets/players/fey_igor_paixao.jpg"
+    },
+    {
+      "name": "Ayase Ueda",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇯🇵",
+      "photo": "/assets/players/fey_ayase_ueda.jpg"
+    }
+  ],
+  "LIL": [
+    {
+      "name": "Lucas Chevalier",
+      "position": "Goalkeeper",
+      "number": 30,
+      "country": "🇫🇷",
+      "photo": "/assets/players/lil_lucas_chevalier.jpg"
+    },
+    {
+      "name": "Bafodé Diakité",
+      "position": "Defender",
+      "number": 18,
+      "country": "🇫🇷",
+      "photo": "/assets/players/lil_bafode_diakite.jpg"
+    },
+    {
+      "name": "Alexsandro",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇧🇷",
+      "photo": "/assets/players/lil_alexsandro.jpg"
+    },
+    {
+      "name": "Tiago Santos",
+      "position": "Defender",
+      "number": 22,
+      "country": "🇵🇹",
+      "photo": "/assets/players/lil_tiago_santos.jpg"
+    },
+    {
+      "name": "Gabriel Gudmundsson",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇸🇪",
+      "photo": "/assets/players/lil_gabriel_gudmundsson.jpg"
+    },
+    {
+      "name": "Benjamin André",
+      "position": "Midfielder",
+      "number": 21,
+      "country": "🇫🇷",
+      "captain": true,
+      "photo": "/assets/players/lil_benjamin_andre.jpg"
+    },
+    {
+      "name": "Angel Gomes",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "photo": "/assets/players/lil_angel_gomes.jpg"
+    },
+    {
+      "name": "Hákon Arnar Haraldsson",
+      "position": "Midfielder",
+      "number": 7,
+      "country": "🇮🇸",
+      "photo": "/assets/players/lil_hakon_arnar_haraldsson.jpg"
+    },
+    {
+      "name": "Edon Zhegrova",
+      "position": "Forward",
+      "number": 23,
+      "country": "🇽🇰",
+      "photo": "/assets/players/lil_edon_zhegrova.jpg"
+    },
+    {
+      "name": "Jonathan David",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇨🇦",
+      "photo": "/assets/players/lil_jonathan_david.jpg"
+    },
+    {
+      "name": "Rémy Cabella",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇫🇷",
+      "photo": "/assets/players/lil_remy_cabella.jpg"
+    },
+    {
+      "name": "Osame Sahraoui",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇲🇦",
+      "photo": "/assets/players/lil_osame_sahraoui.jpg"
+    }
+  ],
+  "NAP": [
+    {
+      "name": "Alex Meret",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇮🇹",
+      "photo": "/assets/players/nap_alex_meret.jpg"
+    },
+    {
+      "name": "Giovanni Di Lorenzo",
+      "position": "Defender",
+      "number": 22,
+      "country": "🇮🇹",
+      "captain": true,
+      "photo": "/assets/players/nap_giovanni_di_lorenzo.jpg"
+    },
+    {
+      "name": "Amir Rrahmani",
+      "position": "Defender",
+      "number": 13,
+      "country": "🇽🇰",
+      "photo": "/assets/players/nap_amir_rrahmani.jpg"
+    },
+    {
+      "name": "Alessandro Buongiorno",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇮🇹",
+      "photo": "/assets/players/nap_alessandro_buongiorno.jpg"
+    },
+    {
+      "name": "Mathías Olivera",
+      "position": "Defender",
+      "number": 17,
+      "country": "🇺🇾",
+      "photo": "/assets/players/nap_mathias_olivera.jpg"
+    },
+    {
+      "name": "Stanislav Lobotka",
+      "position": "Midfielder",
+      "number": 68,
+      "country": "🇸🇰",
+      "photo": "/assets/players/nap_stanislav_lobotka.jpg"
+    },
+    {
+      "name": "André-Frank Zambo Anguissa",
+      "position": "Midfielder",
+      "number": 99,
+      "country": "🇨🇲",
+      "photo": "/assets/players/nap_andre_frank_zambo_anguissa.jpg"
+    },
+    {
+      "name": "Scott McTominay",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "photo": "/assets/players/nap_scott_mctominay.jpg"
+    },
+    {
+      "name": "Billy Gilmour",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "photo": "/assets/players/nap_billy_gilmour.jpg"
+    },
+    {
+      "name": "Khvicha Kvaratskhelia",
+      "position": "Forward",
+      "number": 77,
+      "country": "🇬🇪",
+      "photo": "/assets/players/nap_khvicha_kvaratskhelia.jpg"
+    },
+    {
+      "name": "Romelu Lukaku",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇧🇪",
+      "photo": "/assets/players/nap_romelu_lukaku.jpg"
+    },
+    {
+      "name": "Matteo Politano",
+      "position": "Forward",
+      "number": 21,
+      "country": "🇮🇹",
+      "photo": "/assets/players/nap_matteo_politano.jpg"
+    },
+    {
+      "name": "Giacomo Raspadori",
+      "position": "Forward",
+      "number": 81,
+      "country": "🇮🇹",
+      "photo": "/assets/players/nap_giacomo_raspadori.jpg"
+    }
+  ],
+  "RBL": [
+    {
+      "name": "Péter Gulácsi",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇭🇺",
+      "photo": "/assets/players/rbl_peter_gulacsi.jpg"
+    },
+    {
+      "name": "Willi Orbán",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇭🇺",
+      "captain": true,
+      "photo": "/assets/players/rbl_willi_orban.jpg"
+    },
+    {
+      "name": "Castello Lukeba",
+      "position": "Defender",
+      "number": 23,
+      "country": "🇫🇷",
+      "photo": "/assets/players/rbl_castello_lukeba.jpg"
+    },
+    {
+      "name": "David Raum",
+      "position": "Defender",
+      "number": 22,
+      "country": "🇩🇪",
+      "photo": "/assets/players/rbl_david_raum.jpg"
+    },
+    {
+      "name": "Benjamin Henrichs",
+      "position": "Defender",
+      "number": 39,
+      "country": "🇩🇪",
+      "photo": "/assets/players/rbl_benjamin_henrichs.jpg"
+    },
+    {
+      "name": "Xavi Simons",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇳🇱",
+      "photo": "/assets/players/rbl_xavi_simons.jpg"
+    },
+    {
+      "name": "Amadou Haidara",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇲🇱",
+      "photo": "/assets/players/rbl_amadou_haidara.jpg"
+    },
+    {
+      "name": "Kevin Kampl",
+      "position": "Midfielder",
+      "number": 44,
+      "country": "🇸🇮",
+      "photo": "/assets/players/rbl_kevin_kampl.jpg"
+    },
+    {
+      "name": "Christoph Baumgartner",
+      "position": "Midfielder",
+      "number": 14,
+      "country": "🇦🇹",
+      "photo": "/assets/players/rbl_christoph_baumgartner.jpg"
+    },
+    {
+      "name": "Benjamin Šeško",
+      "position": "Forward",
+      "number": 30,
+      "country": "🇸🇮",
+      "photo": "/assets/players/rbl_benjamin_sesko.jpg"
+    },
+    {
+      "name": "Loïs Openda",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇧🇪",
+      "photo": "/assets/players/rbl_lois_openda.jpg"
+    },
+    {
+      "name": "Yussuf Poulsen",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇩🇰",
+      "photo": "/assets/players/rbl_yussuf_poulsen.jpg"
+    }
+  ],
+  "VIL": [
+    {
+      "name": "Diego Conde",
+      "position": "Goalkeeper",
+      "number": 13,
+      "country": "🇪🇸",
+      "photo": "/assets/players/vil_diego_conde.jpg"
+    },
+    {
+      "name": "Raúl Albiol",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇪🇸",
+      "captain": true,
+      "photo": "/assets/players/vil_raul_albiol.jpg"
+    },
+    {
+      "name": "Logan Costa",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇨🇻",
+      "photo": "/assets/players/vil_logan_costa.jpg"
+    },
+    {
+      "name": "Sergi Cardona",
+      "position": "Defender",
+      "number": 23,
+      "country": "🇪🇸"
+    },
+    {
+      "name": "Kiko Femenía",
+      "position": "Defender",
+      "number": 17,
+      "country": "🇪🇸",
+      "photo": "/assets/players/vil_kiko_femenia.jpg"
+    },
+    {
+      "name": "Dani Parejo",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇪🇸",
+      "photo": "/assets/players/vil_dani_parejo.jpg"
+    },
+    {
+      "name": "Santi Comesaña",
+      "position": "Midfielder",
+      "number": 14,
+      "country": "🇪🇸",
+      "photo": "/assets/players/vil_santi_comesana.jpg"
+    },
+    {
+      "name": "Álex Baena",
+      "position": "Midfielder",
+      "number": 16,
+      "country": "🇪🇸",
+      "photo": "/assets/players/vil_alex_baena.jpg"
+    },
+    {
+      "name": "Pape Gueye",
+      "position": "Midfielder",
+      "number": 18,
+      "country": "🇸🇳",
+      "photo": "/assets/players/vil_pape_gueye.jpg"
+    },
+    {
+      "name": "Gerard Moreno",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇪🇸",
+      "photo": "/assets/players/vil_gerard_moreno.jpg"
+    },
+    {
+      "name": "Ayoze Pérez",
+      "position": "Forward",
+      "number": 22,
+      "country": "🇪🇸",
+      "photo": "/assets/players/vil_ayoze_perez.jpg"
+    },
+    {
+      "name": "Thierno Barry",
+      "position": "Forward",
+      "number": 15,
+      "country": "🇫🇷"
+    },
+    {
+      "name": "Nicolas Pépé",
+      "position": "Forward",
+      "number": 19,
+      "country": "🇨🇮",
+      "photo": "/assets/players/vil_nicolas_pepe.jpg"
+    }
+  ],
+  "SHK": [
+    {
+      "name": "Dmytro Riznyk",
+      "position": "Goalkeeper",
+      "number": 31,
+      "country": "🇺🇦",
+      "photo": "/assets/players/shk_dmytro_riznyk.jpg"
+    },
+    {
+      "name": "Mykola Matviyenko",
+      "position": "Defender",
+      "number": 22,
+      "country": "🇺🇦",
+      "captain": true,
+      "photo": "/assets/players/shk_mykola_matviyenko.jpg"
+    },
+    {
+      "name": "Valeriy Bondar",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇺🇦",
+      "photo": "/assets/players/shk_valeriy_bondar.jpg"
+    },
+    {
+      "name": "Pedro Henrique",
+      "position": "Defender",
+      "number": 13,
+      "country": "🇧🇷",
+      "photo": "/assets/players/shk_pedro_henrique.jpg"
+    },
+    {
+      "name": "Yukhym Konoplya",
+      "position": "Defender",
+      "number": 26,
+      "country": "🇺🇦",
+      "photo": "/assets/players/shk_yukhym_konoplya.jpg"
+    },
+    {
+      "name": "Taras Stepanenko",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇺🇦",
+      "photo": "/assets/players/shk_taras_stepanenko.jpg"
+    },
+    {
+      "name": "Georgiy Sudakov",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇺🇦",
+      "photo": "/assets/players/shk_georgiy_sudakov.jpg"
+    },
+    {
+      "name": "Artem Bondarenko",
+      "position": "Midfielder",
+      "number": 21,
+      "country": "🇺🇦",
+      "photo": "/assets/players/shk_artem_bondarenko.jpg"
+    },
+    {
+      "name": "Marlon Gomes",
+      "position": "Midfielder",
+      "number": 30,
+      "country": "🇧🇷",
+      "photo": "/assets/players/shk_marlon_gomes.jpg"
+    },
+    {
+      "name": "Danylo Sikan",
+      "position": "Forward",
+      "number": 14,
+      "country": "🇺🇦",
+      "photo": "/assets/players/shk_danylo_sikan.jpg"
+    },
+    {
+      "name": "Kevin",
+      "position": "Forward",
+      "number": 37,
+      "country": "🇧🇷",
+      "photo": "/assets/players/shk_kevin.jpg"
+    },
+    {
+      "name": "Pedrinho",
+      "position": "Forward",
+      "number": 38,
+      "country": "🇧🇷",
+      "photo": "/assets/players/shk_pedrinho.jpg"
+    },
+    {
+      "name": "Eguinaldo",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇧🇷",
+      "photo": "/assets/players/shk_eguinaldo.jpg"
+    }
+  ],
+  "GAL": [
+    {
+      "name": "Fernando Muslera",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇺🇾",
+      "captain": true,
+      "photo": "/assets/players/gal_fernando_muslera.jpg"
+    },
+    {
+      "name": "Davinson Sánchez",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇨🇴",
+      "photo": "/assets/players/gal_davinson_sanchez.jpg"
+    },
+    {
+      "name": "Abdülkerim Bardakcı",
+      "position": "Defender",
+      "number": 42,
+      "country": "🇹🇷",
+      "photo": "/assets/players/gal_abdulkerim_bardakc.jpg"
+    },
+    {
+      "name": "Ismail Jakobs",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇸🇳",
+      "photo": "/assets/players/gal_ismail_jakobs.jpg"
+    },
+    {
+      "name": "Kaan Ayhan",
+      "position": "Defender",
+      "number": 23,
+      "country": "🇹🇷",
+      "photo": "/assets/players/gal_kaan_ayhan.jpg"
+    },
+    {
+      "name": "Lucas Torreira",
+      "position": "Midfielder",
+      "number": 34,
+      "country": "🇺🇾",
+      "photo": "/assets/players/gal_lucas_torreira.jpg"
+    },
+    {
+      "name": "Gabriel Sara",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇧🇷",
+      "photo": "/assets/players/gal_gabriel_sara.jpg"
+    },
+    {
+      "name": "Dries Mertens",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇧🇪",
+      "photo": "/assets/players/gal_dries_mertens.jpg"
+    },
+    {
+      "name": "Hakim Ziyech",
+      "position": "Midfielder",
+      "number": 22,
+      "country": "🇲🇦",
+      "photo": "/assets/players/gal_hakim_ziyech.jpg"
+    },
+    {
+      "name": "Mauro Icardi",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇦🇷",
+      "photo": "/assets/players/gal_mauro_icardi.jpg"
+    },
+    {
+      "name": "Victor Osimhen",
+      "position": "Forward",
+      "number": 45,
+      "country": "🇳🇬",
+      "photo": "/assets/players/gal_victor_osimhen.jpg"
+    },
+    {
+      "name": "Barış Alper Yılmaz",
+      "position": "Forward",
+      "number": 53,
+      "country": "🇹🇷",
+      "photo": "/assets/players/gal_bar_s_alper_y_lmaz.jpg"
+    },
+    {
+      "name": "Michy Batshuayi",
+      "position": "Forward",
+      "number": 44,
+      "country": "🇧🇪",
+      "photo": "/assets/players/gal_michy_batshuayi.jpg"
+    }
+  ],
+  "FEN": [
+    {
+      "name": "Dominik Livaković",
+      "position": "Goalkeeper",
+      "number": 40,
+      "country": "🇭🇷",
+      "photo": "/assets/players/fen_dominik_livakovic.jpg"
+    },
+    {
+      "name": "Alexander Djiku",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇬🇭",
+      "photo": "/assets/players/fen_alexander_djiku.jpg"
+    },
+    {
+      "name": "Çağlar Söyüncü",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇹🇷",
+      "photo": "/assets/players/fen_caglar_soyuncu.jpg"
+    },
+    {
+      "name": "Jayden Oosterwolde",
+      "position": "Defender",
+      "number": 24,
+      "country": "🇳🇱",
+      "photo": "/assets/players/fen_jayden_oosterwolde.jpg"
+    },
+    {
+      "name": "Mert Müldür",
+      "position": "Defender",
+      "number": 16,
+      "country": "🇹🇷",
+      "photo": "/assets/players/fen_mert_muldur.jpg"
+    },
+    {
+      "name": "Fred",
+      "position": "Midfielder",
+      "number": 13,
+      "country": "🇧🇷",
+      "photo": "/assets/players/fen_fred.jpg"
+    },
+    {
+      "name": "Sofyan Amrabat",
+      "position": "Midfielder",
+      "number": 34,
+      "country": "🇲🇦",
+      "photo": "/assets/players/fen_sofyan_amrabat.jpg"
+    },
+    {
+      "name": "Sebastian Szymański",
+      "position": "Midfielder",
+      "number": 53,
+      "country": "🇵🇱",
+      "photo": "/assets/players/fen_sebastian_szymanski.jpg"
+    },
+    {
+      "name": "İrfan Can Kahveci",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🇹🇷",
+      "photo": "/assets/players/fen_irfan_can_kahveci.jpg"
+    },
+    {
+      "name": "Dušan Tadić",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇷🇸",
+      "captain": true,
+      "photo": "/assets/players/fen_dusan_tadic.jpg"
+    },
+    {
+      "name": "Edin Džeko",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇧🇦",
+      "photo": "/assets/players/fen_edin_dzeko.jpg"
+    },
+    {
+      "name": "Youssef En-Nesyri",
+      "position": "Forward",
+      "number": 19,
+      "country": "🇲🇦",
+      "photo": "/assets/players/fen_youssef_en_nesyri.jpg"
+    },
+    {
+      "name": "Allan Saint-Maximin",
+      "position": "Forward",
+      "number": 97,
+      "country": "🇫🇷",
+      "photo": "/assets/players/fen_allan_saint_maximin.jpg"
+    }
+  ],
+  "BOD": [
+    {
+      "name": "Nikita Haikin",
+      "position": "Goalkeeper",
+      "number": 12,
+      "country": "🇷🇺",
+      "photo": "/assets/players/bod_nikita_haikin.jpg"
+    },
+    {
+      "name": "Jostein Gundersen",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇳🇴",
+      "photo": "/assets/players/bod_jostein_gundersen.jpg"
+    },
+    {
+      "name": "Odin Bjørtuft",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇳🇴",
+      "photo": "/assets/players/bod_odin_bj_rtuft.jpg"
+    },
+    {
+      "name": "Fredrik Bjørkan",
+      "position": "Defender",
+      "number": 15,
+      "country": "🇳🇴",
+      "photo": "/assets/players/bod_fredrik_bj_rkan.jpg"
+    },
+    {
+      "name": "Fredrik Sjøvold",
+      "position": "Defender",
+      "number": 20,
+      "country": "🇳🇴",
+      "photo": "/assets/players/bod_fredrik_sj_vold.jpg"
+    },
+    {
+      "name": "Patrick Berg",
+      "position": "Midfielder",
+      "number": 7,
+      "country": "🇳🇴",
+      "captain": true,
+      "photo": "/assets/players/bod_patrick_berg.jpg"
+    },
+    {
+      "name": "Håkon Evjen",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇳🇴",
+      "photo": "/assets/players/bod_hakon_evjen.jpg"
+    },
+    {
+      "name": "Ulrik Saltnes",
+      "position": "Midfielder",
+      "number": 14,
+      "country": "🇳🇴",
+      "photo": "/assets/players/bod_ulrik_saltnes.jpg"
+    },
+    {
+      "name": "Jens Petter Hauge",
+      "position": "Forward",
+      "number": 23,
+      "country": "🇳🇴",
+      "photo": "/assets/players/bod_jens_petter_hauge.jpg"
+    },
+    {
+      "name": "Kasper Høgh",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇩🇰"
+    },
+    {
+      "name": "Philip Zinckernagel",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇩🇰",
+      "photo": "/assets/players/bod_philip_zinckernagel.jpg"
+    }
+  ],
+  "SLA": [
+    {
+      "name": "Antonín Kinský",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇨🇿"
+    },
+    {
+      "name": "Tomáš Holeš",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇨🇿",
+      "captain": true,
+      "photo": "/assets/players/sla_tomas_holes.jpg"
+    },
+    {
+      "name": "David Zima",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇨🇿",
+      "photo": "/assets/players/sla_david_zima.jpg"
+    },
+    {
+      "name": "Jan Bořil",
+      "position": "Defender",
+      "number": 18,
+      "country": "🇨🇿",
+      "photo": "/assets/players/sla_jan_boril.jpg"
+    },
+    {
+      "name": "David Douděra",
+      "position": "Defender",
+      "number": 21,
+      "country": "🇨🇿",
+      "photo": "/assets/players/sla_david_doudera.jpg"
+    },
+    {
+      "name": "Lukáš Provod",
+      "position": "Midfielder",
+      "number": 17,
+      "country": "🇨🇿",
+      "photo": "/assets/players/sla_lukas_provod.jpg"
+    },
+    {
+      "name": "Oscar Dorley",
+      "position": "Midfielder",
+      "number": 19,
+      "country": "🇱🇷"
+    },
+    {
+      "name": "Christos Zafeiris",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇬🇷"
+    },
+    {
+      "name": "Lukáš Masopust",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇨🇿",
+      "photo": "/assets/players/sla_lukas_masopust.jpg"
+    },
+    {
+      "name": "Mojmír Chytil",
+      "position": "Forward",
+      "number": 13,
+      "country": "🇨🇿",
+      "photo": "/assets/players/sla_mojmir_chytil.jpg"
+    },
+    {
+      "name": "Tomáš Chorý",
+      "position": "Forward",
+      "number": 25,
+      "country": "🇨🇿",
+      "photo": "/assets/players/sla_tomas_chory.jpg"
+    },
+    {
+      "name": "Ivan Schranz",
+      "position": "Forward",
+      "number": 26,
+      "country": "🇸🇰",
+      "photo": "/assets/players/sla_ivan_schranz.jpg"
+    }
+  ],
+  "STU": [
+    {
+      "name": "Alexander Nübel",
+      "position": "Goalkeeper",
+      "number": 33,
+      "country": "🇩🇪",
+      "photo": "/assets/players/stu_alexander_nubel.jpg"
+    },
+    {
+      "name": "Jeff Chabot",
+      "position": "Defender",
+      "number": 24,
+      "country": "🇩🇪",
+      "photo": "/assets/players/stu_jeff_chabot.jpg"
+    },
+    {
+      "name": "Anthony Rouault",
+      "position": "Defender",
+      "number": 29,
+      "country": "🇫🇷",
+      "photo": "/assets/players/stu_anthony_rouault.jpg"
+    },
+    {
+      "name": "Maximilian Mittelstädt",
+      "position": "Defender",
+      "number": 7,
+      "country": "🇩🇪",
+      "photo": "/assets/players/stu_maximilian_mittelstadt.jpg"
+    },
+    {
+      "name": "Josha Vagnoman",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇩🇪",
+      "photo": "/assets/players/stu_josha_vagnoman.jpg"
+    },
+    {
+      "name": "Atakan Karazor",
+      "position": "Midfielder",
+      "number": 16,
+      "country": "🇩🇪",
+      "captain": true,
+      "photo": "/assets/players/stu_atakan_karazor.jpg"
+    },
+    {
+      "name": "Angelo Stiller",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇩🇪",
+      "photo": "/assets/players/stu_angelo_stiller.jpg"
+    },
+    {
+      "name": "Enzo Millot",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇫🇷",
+      "photo": "/assets/players/stu_enzo_millot.jpg"
+    },
+    {
+      "name": "Fabian Rieder",
+      "position": "Midfielder",
+      "number": 32,
+      "country": "🇨🇭"
+    },
+    {
+      "name": "Chris Führich",
+      "position": "Forward",
+      "number": 27,
+      "country": "🇩🇪",
+      "photo": "/assets/players/stu_chris_fuhrich.jpg"
+    },
+    {
+      "name": "Deniz Undav",
+      "position": "Forward",
+      "number": 26,
+      "country": "🇩🇪",
+      "photo": "/assets/players/stu_deniz_undav.jpg"
+    },
+    {
+      "name": "Ermedin Demirović",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇧🇦"
+    },
+    {
+      "name": "El Bilal Touré",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇲🇱",
+      "photo": "/assets/players/stu_el_bilal_toure.jpg"
+    }
+  ],
+  "COM": [
+    {
+      "name": "Emil Audero",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇮🇹",
+      "photo": "/assets/players/com_emil_audero.jpg"
+    },
+    {
+      "name": "Pepe Reina",
+      "position": "Goalkeeper",
+      "number": 25,
+      "country": "🇪🇸",
+      "photo": "/assets/players/com_pepe_reina.jpg"
+    },
+    {
+      "name": "Alberto Moreno",
+      "position": "Defender",
+      "number": 18,
+      "country": "🇪🇸",
+      "photo": "/assets/players/com_alberto_moreno.jpg"
+    },
+    {
+      "name": "Raphaël Varane",
+      "position": "Defender",
+      "number": 19,
+      "country": "🇫🇷",
+      "photo": "/assets/players/com_raphael_varane.jpg"
+    },
+    {
+      "name": "Alberto Dossena",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇮🇹",
+      "photo": "/assets/players/com_alberto_dossena.jpg"
+    },
+    {
+      "name": "Ignace Van der Brempt",
+      "position": "Defender",
+      "number": 77,
+      "country": "🇧🇪",
+      "photo": "/assets/players/com_ignace_van_der_brempt.jpg"
+    },
+    {
+      "name": "Sergi Roberto",
+      "position": "Midfielder",
+      "number": 20,
+      "country": "🇪🇸",
+      "captain": true,
+      "photo": "/assets/players/com_sergi_roberto.jpg"
+    },
+    {
+      "name": "Máximo Perrone",
+      "position": "Midfielder",
+      "number": 22,
+      "country": "🇦🇷",
+      "photo": "/assets/players/com_maximo_perrone.jpg"
+    },
+    {
+      "name": "Gabriel Strefezza",
+      "position": "Midfielder",
+      "number": 7,
+      "country": "🇧🇷",
+      "photo": "/assets/players/com_gabriel_strefezza.jpg"
+    },
+    {
+      "name": "Nico Paz",
+      "position": "Midfielder",
+      "number": 79,
+      "country": "🇦🇷",
+      "photo": "/assets/players/com_nico_paz.jpg"
+    },
+    {
+      "name": "Andrea Belotti",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇮🇹",
+      "photo": "/assets/players/com_andrea_belotti.jpg"
+    },
+    {
+      "name": "Patrick Cutrone",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇮🇹",
+      "photo": "/assets/players/com_patrick_cutrone.jpg"
+    },
+    {
+      "name": "Alieu Fadera",
+      "position": "Forward",
+      "number": 16,
+      "country": "🇬🇲",
+      "photo": "/assets/players/com_alieu_fadera.jpg"
+    }
+  ],
+  "LEN": [
+    {
+      "name": "Brice Samba",
+      "position": "Goalkeeper",
+      "number": 30,
+      "country": "🇫🇷",
+      "captain": true,
+      "photo": "/assets/players/len_brice_samba.jpg"
+    },
+    {
+      "name": "Facundo Medina",
+      "position": "Defender",
+      "number": 14,
+      "country": "🇦🇷",
+      "photo": "/assets/players/len_facundo_medina.jpg"
+    },
+    {
+      "name": "Kevin Danso",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇦🇹",
+      "photo": "/assets/players/len_kevin_danso.jpg"
+    },
+    {
+      "name": "Jonathan Gradit",
+      "position": "Defender",
+      "number": 24,
+      "country": "🇫🇷",
+      "photo": "/assets/players/len_jonathan_gradit.jpg"
+    },
+    {
+      "name": "Deiver Machado",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇨🇴",
+      "photo": "/assets/players/len_deiver_machado.jpg"
+    },
+    {
+      "name": "Przemysław Frankowski",
+      "position": "Defender",
+      "number": 29,
+      "country": "🇵🇱",
+      "photo": "/assets/players/len_przemys_aw_frankowski.jpg"
+    },
+    {
+      "name": "Andy Diouf",
+      "position": "Midfielder",
+      "number": 18,
+      "country": "🇫🇷",
+      "photo": "/assets/players/len_andy_diouf.jpg"
+    },
+    {
+      "name": "Adrien Thomasson",
+      "position": "Midfielder",
+      "number": 28,
+      "country": "🇫🇷",
+      "photo": "/assets/players/len_adrien_thomasson.jpg"
+    },
+    {
+      "name": "Angelo Fulgini",
+      "position": "Midfielder",
+      "number": 11,
+      "country": "🇫🇷",
+      "photo": "/assets/players/len_angelo_fulgini.jpg"
+    },
+    {
+      "name": "Florian Sotoca",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇫🇷",
+      "photo": "/assets/players/len_florian_sotoca.jpg"
+    },
+    {
+      "name": "Wesley Saïd",
+      "position": "Forward",
+      "number": 22,
+      "country": "🇫🇷",
+      "photo": "/assets/players/len_wesley_said.jpg"
+    },
+    {
+      "name": "M'Bala Nzola",
+      "position": "Forward",
+      "number": 8,
+      "country": "🇦🇴",
+      "photo": "/assets/players/len_m_bala_nzola.jpg"
+    }
+  ],
+  "SLB": [
+    {
+      "name": "Dominik Takáč",
+      "position": "Goalkeeper",
+      "number": 71,
+      "country": "🇸🇰",
+      "photo": "/assets/players/slb_dominik_takac.jpg"
+    },
+    {
+      "name": "Guram Kashia",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇬🇪",
+      "photo": "/assets/players/slb_guram_kashia.jpg"
+    },
+    {
+      "name": "Kenan Bajrić",
+      "position": "Defender",
+      "number": 12,
+      "country": "🇸🇮",
+      "photo": "/assets/players/slb_kenan_bajric.jpg"
+    },
+    {
+      "name": "Kevin Wimmer",
+      "position": "Defender",
+      "number": 6,
+      "country": "🇦🇹",
+      "photo": "/assets/players/slb_kevin_wimmer.jpg"
+    },
+    {
+      "name": "César Blackman",
+      "position": "Defender",
+      "number": 28,
+      "country": "🇵🇦",
+      "photo": "/assets/players/slb_cesar_blackman.jpg"
+    },
+    {
+      "name": "Juraj Kucka",
+      "position": "Midfielder",
+      "number": 33,
+      "country": "🇸🇰",
+      "photo": "/assets/players/slb_juraj_kucka.jpg"
+    },
+    {
+      "name": "Danylo Ignatenko",
+      "position": "Midfielder",
+      "number": 26,
+      "country": "🇺🇦",
+      "photo": "/assets/players/slb_danylo_ignatenko.jpg"
+    },
+    {
+      "name": "Tigran Barseghyan",
+      "position": "Midfielder",
+      "number": 11,
+      "country": "🇦🇲",
+      "photo": "/assets/players/slb_tigran_barseghyan.jpg"
+    },
+    {
+      "name": "Vladimír Weiss",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇸🇰",
+      "captain": true,
+      "photo": "/assets/players/slb_vladimir_weiss.jpg"
+    },
+    {
+      "name": "David Strelec",
+      "position": "Forward",
+      "number": 13,
+      "country": "🇸🇰",
+      "photo": "/assets/players/slb_david_strelec.jpg"
+    },
+    {
+      "name": "Marko Tolić",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇭🇷",
+      "photo": "/assets/players/slb_marko_tolic.jpg"
+    },
+    {
+      "name": "Róbert Mak",
+      "position": "Forward",
+      "number": 21,
+      "country": "🇸🇰",
+      "photo": "/assets/players/slb_robert_mak.jpg"
+    }
+  ],
+  "AEK": [
+    {
+      "name": "Thomas Strakosha",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇦🇱",
+      "photo": "/assets/players/aek_thomas_strakosha.jpg"
+    },
+    {
+      "name": "Domagoj Vida",
+      "position": "Defender",
+      "number": 21,
+      "country": "🇭🇷",
+      "captain": true,
+      "photo": "/assets/players/aek_domagoj_vida.jpg"
+    },
+    {
+      "name": "Harold Moukoudi",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇨🇲",
+      "photo": "/assets/players/aek_harold_moukoudi.jpg"
+    },
+    {
+      "name": "Ehsan Hajsafi",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇮🇷",
+      "photo": "/assets/players/aek_ehsan_hajsafi.jpg"
+    },
+    {
+      "name": "Lazaros Rota",
+      "position": "Defender",
+      "number": 12,
+      "country": "🇬🇷",
+      "photo": "/assets/players/aek_lazaros_rota.jpg"
+    },
+    {
+      "name": "Damian Szymański",
+      "position": "Midfielder",
+      "number": 4,
+      "country": "🇵🇱",
+      "photo": "/assets/players/aek_damian_szymanski.jpg"
+    },
+    {
+      "name": "Jens Jønsson",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇩🇰",
+      "photo": "/assets/players/aek_jens_j_nsson.jpg"
+    },
+    {
+      "name": "Orbelín Pineda",
+      "position": "Midfielder",
+      "number": 13,
+      "country": "🇲🇽",
+      "photo": "/assets/players/aek_orbelin_pineda.jpg"
+    },
+    {
+      "name": "Mijat Gaćinović",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇷🇸",
+      "photo": "/assets/players/aek_mijat_gacinovic.jpg"
+    },
+    {
+      "name": "Erik Lamela",
+      "position": "Forward",
+      "number": 19,
+      "country": "🇦🇷",
+      "photo": "/assets/players/aek_erik_lamela.jpg"
+    },
+    {
+      "name": "Levi García",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇹🇹",
+      "photo": "/assets/players/aek_levi_garcia.jpg"
+    },
+    {
+      "name": "Anthony Martial",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇫🇷",
+      "photo": "/assets/players/aek_anthony_martial.jpg"
+    },
+    {
+      "name": "Niclas Eliasson",
+      "position": "Forward",
+      "number": 11,
+      "country": "🇸🇪",
+      "photo": "/assets/players/aek_niclas_eliasson.jpg"
+    }
+  ],
+  "LSK": [
+    {
+      "name": "Jörg Siebenhandl",
+      "position": "Goalkeeper",
+      "number": 28,
+      "country": "🇦🇹",
+      "photo": "/assets/players/lsk_jorg_siebenhandl.jpg"
+    },
+    {
+      "name": "Philipp Ziereis",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇩🇪",
+      "photo": "/assets/players/lsk_philipp_ziereis.jpg"
+    },
+    {
+      "name": "Hrvoje Smolčić",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇭🇷"
+    },
+    {
+      "name": "George Bello",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇺🇸",
+      "photo": "/assets/players/lsk_george_bello.jpg"
+    },
+    {
+      "name": "Filip Stojković",
+      "position": "Defender",
+      "number": 22,
+      "country": "🇲🇪",
+      "photo": "/assets/players/lsk_filip_stojkovic.jpg"
+    },
+    {
+      "name": "Sascha Horvath",
+      "position": "Midfielder",
+      "number": 18,
+      "country": "🇦🇹",
+      "photo": "/assets/players/lsk_sascha_horvath.jpg"
+    },
+    {
+      "name": "Valon Berisha",
+      "position": "Midfielder",
+      "number": 14,
+      "country": "🇽🇰",
+      "photo": "/assets/players/lsk_valon_berisha.jpg"
+    },
+    {
+      "name": "Robert Žulj",
+      "position": "Midfielder",
+      "number": 10,
+      "country": "🇦🇹",
+      "captain": true,
+      "photo": "/assets/players/lsk_robert_zulj.jpg"
+    },
+    {
+      "name": "Branko Jovičić",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇷🇸",
+      "photo": "/assets/players/lsk_branko_jovicic.jpg"
+    },
+    {
+      "name": "Marin Ljubičić",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇭🇷",
+      "photo": "/assets/players/lsk_marin_ljubicic.jpg"
+    },
+    {
+      "name": "Moses Usor",
+      "position": "Forward",
+      "number": 17,
+      "country": "🇳🇬",
+      "photo": "/assets/players/lsk_moses_usor.jpg"
+    },
+    {
+      "name": "Lenny Pintor",
+      "position": "Forward",
+      "number": 29,
+      "country": "🇫🇷",
+      "photo": "/assets/players/lsk_lenny_pintor.jpg"
+    }
+  ],
+  "VIK": [
+    {
+      "name": "Arild Østbø",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇳🇴",
+      "photo": "/assets/players/vik_arild_stb.jpg"
+    },
+    {
+      "name": "Sondre Langås",
+      "position": "Defender",
+      "number": 4,
+      "country": "🇳🇴",
+      "photo": "/assets/players/vik_sondre_langas.jpg"
+    },
+    {
+      "name": "Gianni Stensness",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇦🇺",
+      "photo": "/assets/players/vik_gianni_stensness.jpg"
+    },
+    {
+      "name": "Jost Urbančič",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇸🇮",
+      "photo": "/assets/players/vik_jost_urbancic.jpg"
+    },
+    {
+      "name": "Viljar Vevatne",
+      "position": "Defender",
+      "number": 18,
+      "country": "🇳🇴",
+      "photo": "/assets/players/vik_viljar_vevatne.jpg"
+    },
+    {
+      "name": "Joe Bell",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇳🇿",
+      "photo": "/assets/players/vik_joe_bell.jpg"
+    },
+    {
+      "name": "Sander Svendsen",
+      "position": "Midfielder",
+      "number": 11,
+      "country": "🇳🇴",
+      "photo": "/assets/players/vik_sander_svendsen.jpg"
+    },
+    {
+      "name": "Kristoffer Løkberg",
+      "position": "Midfielder",
+      "number": 24,
+      "country": "🇳🇴",
+      "photo": "/assets/players/vik_kristoffer_l_kberg.jpg"
+    },
+    {
+      "name": "Zlatko Tripić",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇳🇴",
+      "captain": true,
+      "photo": "/assets/players/vik_zlatko_tripic.jpg"
+    },
+    {
+      "name": "Lars-Jørgen Salvesen",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇳🇴",
+      "photo": "/assets/players/vik_lars_j_rgen_salvesen.jpg"
+    },
+    {
+      "name": "Peter Christiansen",
+      "position": "Forward",
+      "number": 20,
+      "country": "🇩🇰",
+      "photo": "/assets/players/vik_peter_christiansen.jpg"
+    }
+  ],
+  "SAB": [
+    {
+      "name": "Yusif Imanov",
+      "position": "Goalkeeper",
+      "number": 1,
+      "country": "🇦🇿"
+    },
+    {
+      "name": "Sofian Chakla",
+      "position": "Defender",
+      "number": 5,
+      "country": "🇲🇦",
+      "photo": "/assets/players/sab_sofian_chakla.jpg"
+    },
+    {
+      "name": "Jon Irazabal",
+      "position": "Defender",
+      "number": 3,
+      "country": "🇪🇸",
+      "photo": "/assets/players/sab_jon_irazabal.jpg"
+    },
+    {
+      "name": "Bojan Letić",
+      "position": "Defender",
+      "number": 17,
+      "country": "🇧🇦",
+      "photo": "/assets/players/sab_bojan_letic.jpg"
+    },
+    {
+      "name": "Amin Seydiyev",
+      "position": "Defender",
+      "number": 2,
+      "country": "🇦🇿"
+    },
+    {
+      "name": "Elvin Camalov",
+      "position": "Midfielder",
+      "number": 6,
+      "country": "🇦🇿",
+      "captain": true
+    },
+    {
+      "name": "Ayaz Guliyev",
+      "position": "Midfielder",
+      "number": 8,
+      "country": "🇷🇺",
+      "photo": "/assets/players/sab_ayaz_guliyev.jpg"
+    },
+    {
+      "name": "Kaheem Parris",
+      "position": "Midfielder",
+      "number": 77,
+      "country": "🇯🇲",
+      "photo": "/assets/players/sab_kaheem_parris.jpg"
+    },
+    {
+      "name": "Joy-Lance Mickels",
+      "position": "Forward",
+      "number": 10,
+      "country": "🇩🇪",
+      "photo": "/assets/players/sab_joy_lance_mickels.jpg"
+    },
+    {
+      "name": "Pavol Šafranko",
+      "position": "Forward",
+      "number": 9,
+      "country": "🇸🇰",
+      "photo": "/assets/players/sab_pavol_safranko.jpg"
+    },
+    {
+      "name": "Namiq Ələsgərov",
+      "position": "Forward",
+      "number": 7,
+      "country": "🇦🇿"
+    }
+  ]
+}

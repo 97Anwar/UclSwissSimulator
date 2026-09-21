@@ -51,6 +51,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const SITE_URL = 'https://swissformatsim.com';
 
+function loadSquadsData() {
+  try {
+    const raw = readFileSync(join(ROOT, 'data/squads.json'), 'utf8');
+    return JSON.parse(raw);
+  } catch (e) {
+    return {};
+  }
+}
+const SQUADS_DATA = loadSquadsData();
+
 async function loadRealResultsAsync() {
   const { readFileSync } = await import('fs');
   try {
@@ -315,9 +325,10 @@ function renderStandingsSnapshot(rows, seasonStarted) {
         <span class="zone-bar ${seasonStarted ? zoneBarClass(t.rank) : 'bg-ink-900/15 dark:bg-ink-50/15'}"></span>
         <div class="grid grid-cols-12 items-center flex-1 text-xs py-1">
           <div class="col-span-1 text-left font-bold tabular ${seasonStarted ? zoneTextClass(t.rank) : 'text-ink-900/40 dark:text-ink-50/40'}">${seasonStarted ? t.rank : '&mdash;'}</div>
-          <div class="col-span-6 text-left font-medium truncate flex items-center gap-1.5">${logoImg(teamById(t.id), 18)}<a href="/teams/${t.id.toLowerCase()}.html" class="truncate hover:text-pitch-600 dark:hover:text-pitch-300 transition">${escapeHtml(t.name)}</a></div>
-          <div class="col-span-2 text-center text-ink-900/50 dark:text-ink-50/50 tabular">${t.played}</div>
-          <div class="col-span-1 text-center tabular text-[11px]">${gd}</div>
+          <div class="col-span-5 text-left font-medium truncate flex items-center gap-1.5">${logoImg(teamById(t.id), 18)}<a href="/teams/${t.id.toLowerCase()}.html" class="truncate hover:text-pitch-600 dark:hover:text-pitch-300 transition">${escapeHtml(t.name)}</a></div>
+          <div class="col-span-1 text-center text-ink-900/50 dark:text-ink-50/50 tabular">${t.played}</div>
+          <div class="col-span-1 text-center font-semibold text-pitch-700 dark:text-pitch-300 tabular">${t.won}</div>
+          <div class="col-span-2 text-center tabular text-[11px]">${gd}</div>
           <div class="col-span-2 text-center font-extrabold text-pitch-600 dark:text-pitch-300 tabular">${t.points}</div>
         </div>
       </div>`;
@@ -331,9 +342,10 @@ function renderStandingsSnapshot(rows, seasonStarted) {
       </div>
       <div class="grid grid-cols-12 text-[10px] font-bold text-ink-900/40 dark:text-ink-50/40 py-1.5 px-2 uppercase text-center border-b border-ink-900/10 dark:border-ink-50/10">
         <div class="col-span-1 text-left">#</div>
-        <div class="col-span-6 text-left">Club</div>
-        <div class="col-span-2">Pld</div>
-        <div class="col-span-1">GD</div>
+        <div class="col-span-5 text-left">Club</div>
+        <div class="col-span-1">Pld</div>
+        <div class="col-span-1 font-semibold text-pitch-600 dark:text-pitch-300">W</div>
+        <div class="col-span-2">GD</div>
         <div class="col-span-2 text-pitch-600 dark:text-pitch-300">Pts</div>
       </div>
       ${body}
@@ -505,13 +517,92 @@ function renderQualificationSection(team, qual) {
   });
 
   return `
-    <h2 class="font-display font-bold text-base uppercase mb-3">Can ${escapeHtml(team.name)} still qualify?</h2>
+    <h2 id="qualification" class="font-display font-bold text-base uppercase mb-3">Can ${escapeHtml(team.name)} still qualify?</h2>
     <div class="mb-8 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl space-y-2 text-sm text-ink-900/80 dark:text-ink-50/80">
       <p>${rankLine}</p>
       <p><span class="font-semibold">Direct to the round of 16 (top 8):</span> ${top8Line}</p>
       <p><span class="font-semibold">Avoiding elimination (top 24):</span> ${top24Line}</p>
       <p class="text-xs text-ink-900/40 dark:text-ink-50/40">Based only on points still mathematically reachable — a “guarantee” holds even if every rival wins all its remaining games. Try your own results in the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a>.</p>
     </div>`;
+}
+
+function playerAvatar(player, teamId, size = 36, teamName = '') {
+  const initials = (player.name || '')
+    .split(' ')
+    .filter(Boolean)
+    .map(n => n[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase() || 'P';
+  const fontSize = Math.round(size * 0.36);
+  const bg = crestColor(player.name + teamId);
+  const photo = player.photo ? escapeHtml(player.photo) : null;
+  const altText = `${escapeHtml(player.name)}${teamName ? ` - ${escapeHtml(teamName)}` : ''} ${escapeHtml(player.position)}`;
+  return `<span style="position:relative; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:${size}px; height:${size}px; border-radius:50%; overflow:hidden; background:${bg};"><span aria-hidden="true" style="color:#fff; font-size:${fontSize}px; font-weight:700; line-height:1;">${initials}</span>${photo ? `<img src="${photo}" alt="${altText}" width="${size}" height="${size}" loading="lazy" onerror="this.remove()" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">` : ''}</span>`;
+}
+
+const SQUAD_POSITION_GROUPS = [
+  { role: 'Goalkeeper', label: 'Goalkeepers', icon: '🧤' },
+  { role: 'Defender',   label: 'Defenders',   icon: '🛡️' },
+  { role: 'Midfielder', label: 'Midfielders', icon: '⚙️' },
+  { role: 'Forward',    label: 'Forwards',    icon: '⚡' },
+];
+
+function renderSquadSection(team) {
+  const squad = SQUADS_DATA[team.id] || [];
+  if (!squad.length) return '';
+
+  const captain = squad.find(p => p.captain);
+  const gkCount = squad.filter(p => p.position === 'Goalkeeper').length;
+  const defCount = squad.filter(p => p.position === 'Defender').length;
+  const midCount = squad.filter(p => p.position === 'Midfielder').length;
+  const fwdCount = squad.filter(p => p.position === 'Forward').length;
+
+  const captainProse = captain ? `, captained by ${escapeHtml(captain.name)}` : '';
+  const compositionProse = `The roster features ${gkCount} goalkeeper${gkCount === 1 ? '' : 's'}, ${defCount} defender${defCount === 1 ? '' : 's'}, ${midCount} midfielder${midCount === 1 ? '' : 's'}, and ${fwdCount} forward${fwdCount === 1 ? '' : 's'}.`;
+
+  const groupsHtml = SQUAD_POSITION_GROUPS.map(({ role, label, icon }) => {
+    const players = squad.filter(p => p.position === role);
+    if (!players.length) return '';
+
+    const cards = players.map(player => `
+      <li class="flex items-center gap-3 p-2.5 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
+        ${playerAvatar(player, team.id, 36, team.name)}
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-1.5 leading-tight">
+            <span class="font-semibold text-sm truncate text-ink-900 dark:text-ink-50">${escapeHtml(player.name)}</span>
+            ${player.captain ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wide bg-pitch-500/15 dark:bg-pitch-400/20 text-pitch-700 dark:text-pitch-300" title="Team Captain">C</span>` : ''}
+          </div>
+          <div class="flex items-center gap-1.5 text-xs text-ink-900/50 dark:text-ink-50/50 mt-0.5">
+            ${player.number ? `<span class="font-bold tabular">#${player.number}</span> &middot;` : ''}
+            <span>${escapeHtml(player.position)}</span>
+            ${player.country ? `<span title="${escapeHtml(player.country)}">${player.country}</span>` : ''}
+          </div>
+        </div>
+      </li>
+    `).join('');
+
+    return `
+      <div class="mb-6 last:mb-0">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-ink-900/50 dark:text-ink-50/50 mb-2.5 flex items-center gap-1.5">
+          <span aria-hidden="true">${icon}</span> ${label} (${players.length})
+        </h3>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5" role="list">
+          ${cards}
+        </ul>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <section id="squad" aria-labelledby="squad-heading" class="mb-8">
+      <h2 id="squad-heading" class="font-display font-bold text-base uppercase mb-2">${escapeHtml(team.name)} playing squad</h2>
+      <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mb-4">The ${escapeHtml(team.name)} confirmed squad for the 2026/27 UEFA Champions League league phase features ${squad.length} registered players${captainProse}. ${compositionProse}</p>
+      <div class="p-4 bg-ink-900/[0.02] dark:bg-ink-50/[0.02] border border-ink-900/10 dark:border-ink-50/10 rounded-2xl">
+        ${groupsHtml}
+      </div>
+    </section>
+  `;
 }
 
 function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastUpdatedIso, seasonStarted, qual) {
@@ -535,6 +626,8 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
   const form = results.slice(-5).map(r => outcomeBadge(r.outcome)).join(' ');
   const potName = { 1: 'Pot 1 (top seeds)', 2: 'Pot 2', 3: 'Pot 3', 4: 'Pot 4' }[team.pot] || `Pot ${team.pot}`;
   const nameList = (arr) => arr.map(t => teamLink(t, 18)).join(', ');
+  const squad = SQUADS_DATA[team.id] || [];
+  const squadHtml = renderSquadSection(team);
 
   const fixtureRows = teamFixtures.map(f => {
     const isHome = f.homeId === team.id;
@@ -598,13 +691,23 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
     <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; ${escapeHtml(team.name)}</nav>
 
     <h1 class="font-display font-bold text-2xl uppercase mb-1 inline-flex items-center gap-2">${logoImg(team, 30)} ${escapeHtml(team.name)} — Champions League 2026/27</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">${escapeHtml(team.name)}'s fixtures, results, current standing and league-phase journey in the 2026/27 UEFA Champions League.</p>
+    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">${escapeHtml(team.name)}'s confirmed playing squad, fixtures, results, current standing and league-phase journey in the 2026/27 UEFA Champions League.</p>
     ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40">Results last updated ${escapeHtml(lastUpdatedHuman)}.</p>` : ''}
 
-    <div class="my-6 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
-      <div class="grid grid-cols-4 gap-3 text-center mb-4">
+    <nav class="flex flex-wrap gap-2 my-4 text-xs font-semibold" aria-label="Page sections">
+      <a href="#standing" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Standing</a>
+      ${seasonStarted ? `<a href="#qualification" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Qualification</a>` : ''}
+      <a href="#opponents" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Opponents</a>
+      <a href="#journey" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Form &amp; Journey</a>
+      <a href="#squad" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Squad</a>
+      <a href="#fixtures" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Fixtures</a>
+    </nav>
+
+    <div id="standing" class="my-6 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
+      <div class="grid grid-cols-5 gap-2 text-center mb-4">
         <div><div class="text-2xl font-black text-pitch-600 dark:text-pitch-300 tabular">${rankDisplay}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Rank</div></div>
         <div><div class="text-2xl font-black tabular">${row.points}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Points</div></div>
+        <div><div class="text-2xl font-black tabular">${row.won}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Won</div></div>
         <div><div class="text-2xl font-black tabular">${row.played}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Played</div></div>
         <div><div class="text-2xl font-black tabular">${(row.gd > 0 ? '+' : '') + row.gd}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">GD</div></div>
       </div>
@@ -614,17 +717,19 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
 
     ${seasonStarted ? renderQualificationSection(team, qual) : ''}
 
-    <h2 class="font-display font-bold text-base uppercase mb-2">How ${escapeHtml(team.name)} got here</h2>
+    <h2 id="how-they-got-here" class="font-display font-bold text-base uppercase mb-2">How ${escapeHtml(team.name)} got here</h2>
     <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mb-6">${escapeHtml(team.name)} (${team.country}) qualified for the 2026/27 UEFA Champions League and was placed in ${potName} for the league-phase draw. In the 36-team Swiss-style league phase, every club plays eight different opponents — two drawn from each of the four pots — with the top eight going straight to the round of 16, teams 9th&ndash;24th entering the knockout play-offs, and 25th&ndash;36th eliminated. <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">How the league phase works &rarr;</a></p>
 
-    <h2 class="font-display font-bold text-base uppercase mb-2">Who ${escapeHtml(team.name)} play in the league phase</h2>
+    <h2 id="opponents" class="font-display font-bold text-base uppercase mb-2">Who ${escapeHtml(team.name)} play in the league phase</h2>
     <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mb-3">${escapeHtml(team.name)}'s eight league-phase opponents are ${opponentsProse}. Two are drawn from each of the four seeding pots, with four matches at home and four away.</p>
     <div class="mb-8 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">${drawByPotHtml}</div>
 
-    <h2 class="font-display font-bold text-base uppercase mb-3">${escapeHtml(team.name)}'s league-phase journey</h2>
+    <h2 id="journey" class="font-display font-bold text-base uppercase mb-3">${escapeHtml(team.name)}'s league-phase journey</h2>
     <div class="mb-8">${journeyHtml}</div>
 
-    <h2 class="font-display font-bold text-base uppercase mb-3">All fixtures &amp; results</h2>
+    ${squadHtml}
+
+    <h2 id="fixtures" class="font-display font-bold text-base uppercase mb-3">All fixtures &amp; results</h2>
     <div class="space-y-2 mb-8">${fixtureRows}</div>
 
     <a href="/" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">Open the full simulator &rarr;</a>
@@ -638,8 +743,8 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
   `;
 
   return pageShell({
-    title: `${team.name} Champions League 2026/27 — Fixtures, Results & Table`,
-    description: `${team.name}'s 2026/27 UEFA Champions League league-phase fixtures, results, current standing and journey — who they have played, beaten and face next in the 36-team table.`,
+    title: `${team.name} Champions League 2026/27 — Squad, Fixtures & Table`,
+    description: `${team.name}'s 2026/27 UEFA Champions League squad, fixtures, results, table standing and qualification outlook in the 36-team Swiss format.`,
     canonical: `${SITE_URL}/teams/${team.id.toLowerCase()}.html`,
     bodyContent,
     jsonLd: [
@@ -649,8 +754,19 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
         name: team.name,
         sport: 'Association football',
         url: `${SITE_URL}/teams/${team.id.toLowerCase()}.html`,
+        logo: `${SITE_URL}/assets/logos/${team.id.toLowerCase()}.png`,
+        image: `${SITE_URL}/assets/logos/${team.id.toLowerCase()}.png`,
         memberOf: { '@type': 'SportsOrganization', name: 'UEFA Champions League 2026/27 League Phase' },
         ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}),
+        ...(squad.length ? {
+          athlete: squad.map(p => ({
+            '@type': 'Person',
+            name: p.name,
+            jobTitle: p.captain ? `${p.position} (Captain)` : p.position,
+            ...(p.photo ? { image: `${SITE_URL}${p.photo}` } : {}),
+            knowsAbout: 'UEFA Champions League',
+          }))
+        } : {}),
       },
       breadcrumb([
         { name: 'Home', url: `${SITE_URL}/` },
@@ -837,7 +953,7 @@ function generateSitemap(matchdayCount, teamIds, guideSlugs, lastmod) {
     urls.push({ loc: `${SITE_URL}/matchday-${md}.html`, priority: '0.8', freq: 'daily', lastmod });
   }
   teamIds.forEach(id => {
-    urls.push({ loc: `${SITE_URL}/teams/${id.toLowerCase()}.html`, priority: '0.6', freq: 'daily', lastmod });
+    urls.push({ loc: `${SITE_URL}/teams/${id.toLowerCase()}.html`, priority: '0.8', freq: 'daily', lastmod });
   });
 
   const body = urls.map(u => `  <url><loc>${u.loc}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}<changefreq>${u.freq}</changefreq><priority>${u.priority}</priority></url>`).join('\n');
@@ -901,7 +1017,22 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('Static page generation failed:', err);
-  process.exit(1);
-});
+export {
+  loadSquadsData,
+  playerAvatar,
+  renderSquadSection,
+  generateTeamPage,
+  SQUADS_DATA,
+};
+
+const isDirectExecution = process.argv[1] && (
+  process.argv[1] === fileURLToPath(import.meta.url) ||
+  process.argv[1].endsWith('generate-static-pages.mjs')
+);
+
+if (isDirectExecution) {
+  main().catch(err => {
+    console.error('Static page generation failed:', err);
+    process.exit(1);
+  });
+}

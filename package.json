@@ -7,6 +7,7 @@
     "dev": "npx serve .",
     "fetch": "node --use-system-ca scripts/fetch-results.mjs",
     "update:schedule": "node scripts/update-match-schedule.mjs --write",
+    "fetch:photos": "node scripts/fetch-player-photos.mjs",
     "test:unit": "node --test",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
