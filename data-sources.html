@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', { ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', analytics_storage:'denied', wait_for_update:500 });
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MEK370XD0N"></script>
+<script>gtag('js', new Date()); gtag('config', 'G-MEK370XD0N');</script>
+<meta name="google-adsense-account" content="ca-pub-2136418741118263">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2136418741118263" crossorigin="anonymous"></script>
+<script src="/js/consent.js" defer></script>
+
+<title>Data Sources &amp; Methodology | Champions League Swiss Format Simulator</title>
+<meta name="description" content="Where this simulator's team, fixture, result, squad and standings data comes from, how often it updates, and exactly how the UEFA tiebreaker rules are applied.">
+<link rel="canonical" href="https://swissformatsim.com/data-sources.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Data Sources &amp; Methodology — Champions League Swiss Format Simulator">
+<meta property="og:description" content="Where the team, fixture, result and squad data comes from, how often it refreshes, and how standings and tiebreakers are calculated.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://swissformatsim.com/data-sources.html">
+<meta property="og:image" content="https://swissformatsim.com/og-image.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚽</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode:'class', theme:{ extend:{ fontFamily:{ sans:['Inter','sans-serif'], display:['Oswald','sans-serif'] }, colors:{ pitch:{50:'#EFF6F1',100:'#DCEBE0',500:'#0B6E4F',600:'#0A5F45',700:'#084A35',400:'#2FBE8A',300:'#5FD1A8'}, gold:{400:'#D8B84A',500:'#C9A227',600:'#A9861D'}, ink:{50:'#F6F7F2',100:'#EDEFE7',800:'#1B2A22',900:'#132119',950:'#0D1410'} } } } }
+</script>
+<style>
+  body { font-family:'Inter',system-ui,sans-serif; }
+  .font-display { font-family:'Oswald',sans-serif; letter-spacing:0.01em; }
+</style>
+<link rel="stylesheet" href="/css/styles.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Data Sources & Methodology","description":"Where this simulator's team, fixture, result, squad and standings data comes from, how often it updates, and exactly how the UEFA tiebreaker rules are applied.","url":"https://swissformatsim.com/data-sources.html","mainEntityOfPage":"https://swissformatsim.com/data-sources.html","dateModified":"2026-10-12"}</script>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-ink-50 text-ink-900 dark:bg-ink-950 dark:text-ink-50 transition-colors">
+
+<header class="sticky top-0 z-50 bg-ink-50/95 dark:bg-ink-950/95 border-b-2 border-pitch-500 dark:border-pitch-400 shadow-sm">
+  <div class="max-w-7xl mx-auto px-3 sm:px-6">
+    <div class="flex items-center justify-between py-2.5 gap-2">
+      <a href="/" class="flex items-center space-x-2.5 shrink-0">
+        <div class="w-8 h-8 rounded-full bg-pitch-500 dark:bg-pitch-400 flex items-center justify-center text-ink-50 dark:text-ink-950 font-display font-bold text-sm">26</div>
+        <div class="leading-none"><div class="font-display font-bold text-base sm:text-lg tracking-tight uppercase">UCL <span class="text-pitch-600 dark:text-pitch-300">Swiss Phase</span></div></div>
+      </a>
+      <nav class="hidden md:flex items-center space-x-5 text-sm font-semibold">
+        <a href="/" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a>
+        <a href="/guide/champions-league-swiss-format-explained.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Guides</a>
+        <a href="/stats.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Stats</a>
+        <a href="/about.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+  <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Data Sources &amp; Methodology</nav>
+
+  <h1 class="font-display font-bold text-3xl uppercase mb-1">Data Sources &amp; Methodology</h1>
+  <p class="text-xs text-ink-900/40 dark:text-ink-50/40 mb-6">Last reviewed: 12 October 2026</p>
+
+  <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Teams, pots &amp; seeding</h2>
+  <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">The 36-club field and four seeding pots are taken from the official 2026/27 league-phase draw (held 27 August 2026 in Monaco) and cross-checked against UEFA.com plus several independent football outlets before publishing. If those sources ever disagreed, we would not publish until it was resolved — as of this review, none did.</p>
+
+  <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Fixtures &amp; results</h2>
+  <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Real fixtures and match results are pulled from <a href="https://www.football-data.org" class="text-pitch-600 dark:text-pitch-300 underline" rel="noopener" target="_blank">football-data.org</a>'s free public API. An automated job checks for updates around UCL matchday kick-off/full-time windows and again the following morning, and only commits a data refresh when a score or match status actually changed — so "last updated" timestamps reflect a real change, not a fixed schedule. If a club name from the API doesn't match our internal team list, that fixture is logged and skipped rather than guessed at.</p>
+
+  <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Standings &amp; tiebreakers</h2>
+  <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Standings are computed from real results only (never from a visitor's own predictions, except as a local override for that visitor). Teams level on points are separated using UEFA's own tiebreaker order — see the full <a href="/guide/champions-league-tiebreakers-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">tiebreakers guide</a>. One honest limitation: criteria 9 (disciplinary points) and 10 (club coefficient) are not modelled, because neither can be derived from a scoreline — there's no card data or coefficient feed behind this tool. In the rare case two clubs are still level after goal- and opponent-based criteria, they're shown in a deterministic alphabetical order rather than a fabricated one, matching UEFA's own in-progress tiebreak rule.</p>
+
+  <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Squads &amp; player photos</h2>
+  <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Playing squads and player headshots are sourced from Wikimedia Commons and Wikipedia and cached locally (so pages load fast and don't depend on a third party being up). Photos fall back to a plain initials avatar for any player without a usable public photo, rather than showing a broken image or a stock placeholder.</p>
+
+  <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Club profile facts (founded, stadium, honours)</h2>
+  <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Where shown, a club's founding year, home stadium, capacity and major honours are sourced from that club's English Wikipedia article, read and cross-checked individually rather than bulk-imported. This is a slow, incremental rollout — not every club has this section yet, and we'd rather a team page be missing it than show something unverified.</p>
+
+  <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">What this site does not claim</h2>
+  <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Team-page and matchday scenario text only states things directly computable from the current standings — current rank, zone, points, next opponent — never a permutation claim like "a win guarantees top 8," which would require correctly simulating every remaining combination of results. We'd rather publish less than publish a wrong qualification claim.</p>
+
+  <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Corrections</h2>
+  <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Spotted a wrong score, a missing fixture, or a squad error? Email <a href="mailto:contact@swissformatsim.com" class="text-pitch-600 dark:text-pitch-300 underline">contact@swissformatsim.com</a> with the club and matchday and we'll check it against the sources above.</p>
+
+  <div class="mt-8 pt-6 border-t border-ink-900/10 dark:border-ink-50/10">
+    <a href="/" class="inline-block px-5 py-2.5 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">Go predict the table &rarr;</a>
+  </div>
+</main>
+
+<footer class="border-t-2 border-pitch-500 dark:border-pitch-400 mt-8 bg-white dark:bg-ink-900">
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-ink-900/50 dark:text-ink-50/50">
+    <span>Unofficial fan-made tool. Not affiliated with or endorsed by UEFA.</span>
+    <nav class="flex items-center gap-4">
+      <a href="/about.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
+      <a href="/data-sources.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Data Sources</a>
+      <a href="/privacy.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Privacy</a>
+      <a href="/terms.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Terms</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

@@ -147,20 +147,26 @@ async function main() {
   }
 
   const hasChanges = !existingData?.fixtures || !areFixturesEqual(existingData.fixtures, fixtures);
+  const now = new Date().toISOString();
 
-  if (!hasChanges && existingData?.generatedAt) {
-    console.log(`No score, status, or schedule changes detected across all ${fixtures.length} fixtures. data/real-results.json left untouched.`);
-  } else {
-    const output = {
-      generatedAt: new Date().toISOString(),
-      competition: COMPETITION_CODE,
-      source: 'football-data.org',
-      fixtureCount: fixtures.length,
-      fixtures,
-    };
+  // generatedAt only moves when the data genuinely changed; checkedAt records
+  // every successful sync, so "last checked" and "last changed" stay honest
+  // and distinct. Never backdate or fake either one.
+  const output = {
+    generatedAt: hasChanges ? now : existingData.generatedAt,
+    checkedAt: now,
+    competition: COMPETITION_CODE,
+    source: 'football-data.org',
+    fixtureCount: fixtures.length,
+    fixtures: hasChanges ? fixtures : existingData.fixtures,
+  };
 
-    writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n');
+  writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n');
+
+  if (hasChanges) {
     console.log(`Detected changes in fixtures/scores. Wrote ${fixtures.length} fixtures to ${OUTPUT_PATH.pathname}`);
+  } else {
+    console.log(`No score, status, or schedule changes detected across all ${fixtures.length} fixtures. Refreshed checkedAt only.`);
   }
 
   await downloadCrests(crestById);

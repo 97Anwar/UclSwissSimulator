@@ -37,6 +37,7 @@ import { dirname, join } from 'path';
 import { TEAMS_DATA, DATA_IS_FINAL } from '../js/data/teams.js';
 import { computeStandings } from '../js/engine/standings.js';
 import { analyzeQualification } from '../js/engine/qualification.js';
+import { TEAM_FACTS, HONOUR_ICON } from './team-facts.mjs';
 
 function writeFileIfChanged(filePath, content) {
   if (existsSync(filePath)) {
@@ -87,6 +88,26 @@ function fixturesToAppFormat(realJson) {
 
 function teamById(id) {
   return TEAMS_DATA.find(t => t.id === id);
+}
+
+function humanStamp(iso) {
+  return new Date(iso).toLocaleString('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
+  }) + ' UTC';
+}
+
+// Set once per run from real-results.json checkedAt.
+let lastCheckedHuman = '';
+
+// "Last changed" and "last checked" are different claims and are shown as
+// such — the sync runs on every matchday and weekly, but the results stamp
+// only moves when the data actually changed.
+function freshnessText(lastUpdatedHuman) {
+  if (!lastUpdatedHuman) return '';
+  const changed = `Results last changed ${escapeHtml(lastUpdatedHuman)}.`;
+  return lastCheckedHuman
+    ? `${changed} Data last checked ${escapeHtml(lastCheckedHuman)}.`
+    : changed;
 }
 
 function zoneLabel(rank) {
@@ -222,6 +243,7 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
         <nav class="hidden md:flex items-center space-x-5 text-sm font-semibold">
           <a href="/" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a>
           <a href="/guide/champions-league-swiss-format-explained.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Guides</a>
+          <a href="/stats.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Stats</a>
           <a href="/about.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
         </nav>
       </div>
@@ -237,6 +259,7 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
       <span>Unofficial fan-made tool. Not affiliated with or endorsed by UEFA.</span>
       <nav class="flex items-center gap-4">
         <a href="/about.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
+        <a href="/data-sources.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Data Sources</a>
         <a href="/privacy.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Privacy</a>
         <a href="/terms.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Terms</a>
       </nav>
@@ -366,6 +389,41 @@ function computeZoneMovers(afterRows, prevRows) {
   return { intoTop8, outOfTop8, intoDropZone };
 }
 
+// Single-matchday stats (goals, biggest win, highest-scoring match, clean
+// sheets) — scoped to just that round, distinct from the season-wide numbers
+// on stats.html. Reuses statCard(), defined further down this file (hoisted).
+function computeMatchdayStats(mdFixtures) {
+  const played = mdFixtures.filter(f => f.realHomeScore !== null && f.realAwayScore !== null);
+  if (!played.length) return null;
+  let biggestWin = null, highestScoring = null, totalGoals = 0, cleanSheets = 0;
+  played.forEach(f => {
+    const total = f.realHomeScore + f.realAwayScore;
+    totalGoals += total;
+    if (f.realHomeScore === 0 || f.realAwayScore === 0) cleanSheets += 1;
+    const margin = Math.abs(f.realHomeScore - f.realAwayScore);
+    if (margin > 0 && (!biggestWin || margin > biggestWin.margin)) biggestWin = { ...f, margin };
+    if (!highestScoring || total > highestScoring.total) highestScoring = { ...f, total };
+  });
+  return { matchesPlayed: played.length, totalGoals, avgGoalsPerMatch: totalGoals / played.length, cleanSheets, biggestWin, highestScoring };
+}
+
+function renderMatchdaySnapshot(stats) {
+  if (!stats) return '';
+  const matchLine = (f) => {
+    const home = teamById(f.homeId);
+    const away = teamById(f.awayId);
+    if (!home || !away) return '';
+    return `${teamLink(home, 16)} <span class="font-bold tabular">${f.realHomeScore}&ndash;${f.realAwayScore}</span> ${teamLink(away, 16)}`;
+  };
+  const cards = [
+    statCard('⚽', 'Goals this matchday', `${stats.totalGoals} goals &middot; ${stats.avgGoalsPerMatch.toFixed(2)}/match`),
+    stats.biggestWin ? statCard('💥', 'Biggest win margin', matchLine(stats.biggestWin)) : '',
+    stats.highestScoring ? statCard('🎯', 'Highest-scoring match', `${matchLine(stats.highestScoring)} <span class="text-ink-900/40 dark:text-ink-50/40 text-xs block mt-1">${stats.highestScoring.total} goals</span>`) : '',
+    statCard('🧤', 'Clean sheets', `${stats.cleanSheets} of ${stats.matchesPlayed} matches`),
+  ].filter(Boolean).join('');
+  return `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">${cards}</div>`;
+}
+
 // ---------------------------------------------------------------------------
 // Matchday page generation
 // ---------------------------------------------------------------------------
@@ -397,6 +455,8 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
     : null;
 
   const mdComplete = mdTotal > 0 && playedCount === mdTotal;
+  const mdStats = computeMatchdayStats(mdFixtures);
+  const snapshotHtml = renderMatchdaySnapshot(mdStats);
   const snapshotHeading = mdComplete
     ? `Standings after Matchday ${md}`
     : hasResults ? `Standings — Matchday ${md} in progress` : 'Standings so far';
@@ -432,8 +492,9 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
     <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Matchday ${md}</nav>
     <h1 class="font-display font-bold text-2xl uppercase mb-1">${h1}</h1>
     <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">${intro}</p>
-    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">Results last updated ${escapeHtml(lastUpdatedHuman)}.</p>` : '<div class="mb-6"></div>'}
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">${freshnessText(lastUpdatedHuman)}</p>` : '<div class="mb-6"></div>'}
 
+    ${snapshotHtml}
     ${moversSection}
     ${standingsSection}
 
@@ -523,6 +584,141 @@ function renderQualificationSection(team, qual) {
       <p><span class="font-semibold">Direct to the round of 16 (top 8):</span> ${top8Line}</p>
       <p><span class="font-semibold">Avoiding elimination (top 24):</span> ${top24Line}</p>
       <p class="text-xs text-ink-900/40 dark:text-ink-50/40">Based only on points still mathematically reachable — a “guarantee” holds even if every rival wins all its remaining games. Try your own results in the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a>.</p>
+    </div>`;
+}
+
+// Records & streaks, derived entirely from this team's own played results —
+// no external facts, so there's nothing here that can go stale or be wrong.
+function computeTeamRecords(results) {
+  if (!results.length) return null;
+  const last = results[results.length - 1];
+  let streakCount = 1;
+  for (let i = results.length - 2; i >= 0 && results[i].outcome === last.outcome; i--) streakCount++;
+
+  let biggestWin = null, biggestLoss = null, highestScoring = null, cleanSheets = 0;
+  results.forEach(r => {
+    if (r.ga === 0) cleanSheets++;
+    const total = r.gf + r.ga;
+    if (!highestScoring || total > highestScoring.total) highestScoring = { ...r, total };
+    if (r.outcome === 'W') {
+      const margin = r.gf - r.ga;
+      if (!biggestWin || margin > biggestWin.margin) biggestWin = { ...r, margin };
+    } else if (r.outcome === 'L') {
+      const margin = r.ga - r.gf;
+      if (!biggestLoss || margin > biggestLoss.margin) biggestLoss = { ...r, margin };
+    }
+  });
+  return { streakOutcome: last.outcome, streakCount, biggestWin, biggestLoss, highestScoring, cleanSheets };
+}
+
+function streakPhrase(outcome, count) {
+  const noun = outcome === 'W' ? 'win' : outcome === 'D' ? 'draw' : 'loss';
+  const plural = outcome === 'L' ? 'losses' : `${noun}s`;
+  return count === 1 ? `1 ${noun}` : `${count} ${plural} in a row`;
+}
+
+function matchDesc(r) {
+  const opp = teamById(r.oppId);
+  const venue = r.isHome ? 'home to' : 'away at';
+  return `${r.gf}&ndash;${r.ga} ${venue} ${opp ? teamLink(opp, 16) : 'an opponent'} (MD${r.matchday})`;
+}
+
+function renderRecordsSection(team, records) {
+  if (!records) return '';
+  const { streakOutcome, streakCount, biggestWin, biggestLoss, highestScoring, cleanSheets } = records;
+  const rows = [
+    `<div><span class="font-semibold">Current run:</span> ${streakPhrase(streakOutcome, streakCount)}</div>`,
+    biggestWin ? `<div><span class="font-semibold">Biggest win:</span> ${matchDesc(biggestWin)}</div>` : '',
+    biggestLoss ? `<div><span class="font-semibold">Heaviest defeat:</span> ${matchDesc(biggestLoss)}</div>` : '',
+    highestScoring ? `<div><span class="font-semibold">Highest-scoring match:</span> ${matchDesc(highestScoring)} &mdash; ${highestScoring.total} goals</div>` : '',
+    `<div><span class="font-semibold">Clean sheets:</span> ${cleanSheets}</div>`,
+  ].filter(Boolean).join('');
+
+  return `
+    <h2 id="records" class="font-display font-bold text-base uppercase mb-2">${escapeHtml(team.name)} records this campaign</h2>
+    <div class="mb-8 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-ink-900/80 dark:text-ink-50/80">
+      ${rows}
+    </div>`;
+}
+
+// Team-specific FAQ, answers computed from the same deterministic
+// qualification engine as the section above — doubles as visible content and
+// an FAQPage rich-result candidate (plain-text answers, no markup).
+function renderTeamFaq(team, row, qual) {
+  if (!qual) return null;
+  const { top8, top24, pointsToClinchTop8, pointsToClinchTop24, remaining } = qual;
+  const name = team.name;
+
+  const top8Answer = top8 === 'clinched'
+    ? `Yes — ${name} have already secured a top-8 finish and go straight to the round of 16.`
+    : top8 === 'eliminated'
+      ? `No — ${name} can no longer finish in the top 8 of the 2026/27 league phase.`
+      : pointsToClinchTop8 !== null
+        ? `Not yet. ${name} are still in contention — ${pointsToClinchTop8} more point${pointsToClinchTop8 === 1 ? '' : 's'} from their remaining ${remaining} game${remaining === 1 ? '' : 's'} would guarantee it.`
+        : `Not yet, but a top-8 finish is still mathematically possible for ${name}.`;
+
+  const top24Answer = top24 === 'clinched'
+    ? `No — ${name} have already secured at least a knockout play-off place and cannot be eliminated.`
+    : top24 === 'eliminated'
+      ? `Yes — ${name} have been eliminated and cannot finish in the top 24.`
+      : pointsToClinchTop24 !== null
+        ? `Not yet. ${pointsToClinchTop24} more point${pointsToClinchTop24 === 1 ? '' : 's'} from the remaining ${remaining} game${remaining === 1 ? '' : 's'} would guarantee ${name} avoid elimination.`
+        : `Not yet — avoiding elimination is still mathematically possible for ${name}.`;
+
+  const pointsAnswer = `${name} have ${row.points} point${row.points === 1 ? '' : 's'} from ${row.played} match${row.played === 1 ? '' : 'es'} played, ranked ${ordinal(row.rank)} of 36 in the 2026/27 Champions League league phase.`;
+
+  const qas = [
+    { q: `Is ${name} through to the Champions League round of 16?`, a: top8Answer },
+    { q: `Can ${name} be eliminated from the Champions League already?`, a: top24Answer },
+    { q: `How many points does ${name} have in the Champions League 2026/27 league phase?`, a: pointsAnswer },
+  ];
+
+  const html = `
+    <h2 id="faq" class="font-display font-bold text-base uppercase mb-2">${escapeHtml(name)} Champions League FAQ</h2>
+    <div class="mb-8 space-y-2">
+      ${qas.map(({ q, a }) => `
+      <details class="p-3 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
+        <summary class="text-sm font-semibold cursor-pointer">${escapeHtml(q)}</summary>
+        <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mt-2">${escapeHtml(a)}</p>
+      </details>`).join('')}
+    </div>`;
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: qas.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  };
+
+  return { html, jsonLd };
+}
+
+// Real-world club facts (founded, stadium, honours) — only rendered for the
+// subset of clubs with a verified entry in team-facts.mjs; everything else is
+// silently omitted rather than guessed.
+function renderHonoursList(honours) {
+  if (!honours || !honours.length) return '';
+  const rows = honours.map(h => {
+    const icon = HONOUR_ICON[h.type] || HONOUR_ICON.cup;
+    const yearsText = h.years && h.years.length ? ` <span class="text-ink-900/40 dark:text-ink-50/40">(${h.years.map(escapeHtml).join(', ')})</span>` : '';
+    return `<li class="flex items-center gap-2 py-0.5"><span aria-hidden="true" class="text-base shrink-0">${icon}</span><span class="font-bold tabular shrink-0">${h.count}\u00d7</span><span>${escapeHtml(h.competition)}${yearsText}</span></li>`;
+  }).join('');
+  return `<ul class="space-y-0.5 text-sm" role="list">${rows}</ul>`;
+}
+
+function renderClubProfileSection(team, facts) {
+  if (!facts) return '';
+  return `
+    <h2 id="profile" class="font-display font-bold text-base uppercase mb-2">${escapeHtml(team.name)} club profile</h2>
+    <div class="mb-8 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-3 text-sm text-ink-900/80 dark:text-ink-50/80">
+      <div><span class="font-semibold">Founded:</span> ${facts.founded}</div>
+      <div><span class="font-semibold">Stadium:</span> ${escapeHtml(facts.stadium)}${facts.stadiumCity ? `, ${escapeHtml(facts.stadiumCity)}` : ''}</div>
+      <div><span class="font-semibold">Capacity:</span> ${facts.capacity.toLocaleString()}</div>
+      <div class="sm:col-span-3">
+        <span class="font-semibold block mb-1">Honours</span>
+        ${renderHonoursList(facts.honours)}
+        ${facts.honoursNote ? `<p class="text-xs text-ink-900/50 dark:text-ink-50/50 mt-2">${escapeHtml(facts.honoursNote)}</p>` : ''}
+      </div>
+      <div class="sm:col-span-3 text-xs text-ink-900/40 dark:text-ink-50/40">Source: Wikipedia, cross-checked 12 Oct 2026. See <a href="/data-sources.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Data Sources</a>.</div>
     </div>`;
 }
 
@@ -628,6 +824,11 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
   const nameList = (arr) => arr.map(t => teamLink(t, 18)).join(', ');
   const squad = SQUADS_DATA[team.id] || [];
   const squadHtml = renderSquadSection(team);
+  const records = computeTeamRecords(results);
+  const recordsHtml = renderRecordsSection(team, records);
+  const faq = renderTeamFaq(team, row, qual);
+  const facts = TEAM_FACTS[team.id];
+  const profileHtml = renderClubProfileSection(team, facts);
 
   const fixtureRows = teamFixtures.map(f => {
     const isHome = f.homeId === team.id;
@@ -692,15 +893,18 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
 
     <h1 class="font-display font-bold text-2xl uppercase mb-1 inline-flex items-center gap-2">${logoImg(team, 30)} ${escapeHtml(team.name)} — Champions League 2026/27</h1>
     <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">${escapeHtml(team.name)}'s confirmed playing squad, fixtures, results, current standing and league-phase journey in the 2026/27 UEFA Champions League.</p>
-    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40">Results last updated ${escapeHtml(lastUpdatedHuman)}.</p>` : ''}
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40">${freshnessText(lastUpdatedHuman)}</p>` : ''}
 
     <nav class="flex flex-wrap gap-2 my-4 text-xs font-semibold" aria-label="Page sections">
       <a href="#standing" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Standing</a>
+      ${facts ? `<a href="#profile" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Profile</a>` : ''}
       ${seasonStarted ? `<a href="#qualification" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Qualification</a>` : ''}
       <a href="#opponents" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Opponents</a>
       <a href="#journey" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Form &amp; Journey</a>
+      ${records ? `<a href="#records" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Records</a>` : ''}
       <a href="#squad" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Squad</a>
       <a href="#fixtures" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Fixtures</a>
+      ${faq ? `<a href="#faq" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">FAQ</a>` : ''}
     </nav>
 
     <div id="standing" class="my-6 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
@@ -715,6 +919,8 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
       <p class="text-xs text-ink-900/40 dark:text-ink-50/40 mt-2">Zone: ${zoneDisplay}</p>
     </div>
 
+    ${profileHtml}
+
     ${seasonStarted ? renderQualificationSection(team, qual) : ''}
 
     <h2 id="how-they-got-here" class="font-display font-bold text-base uppercase mb-2">How ${escapeHtml(team.name)} got here</h2>
@@ -727,10 +933,14 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
     <h2 id="journey" class="font-display font-bold text-base uppercase mb-3">${escapeHtml(team.name)}'s league-phase journey</h2>
     <div class="mb-8">${journeyHtml}</div>
 
+    ${recordsHtml}
+
     ${squadHtml}
 
     <h2 id="fixtures" class="font-display font-bold text-base uppercase mb-3">All fixtures &amp; results</h2>
     <div class="space-y-2 mb-8">${fixtureRows}</div>
+
+    ${faq ? faq.html : ''}
 
     <a href="/" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">Open the full simulator &rarr;</a>
 
@@ -758,6 +968,10 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
         image: `${SITE_URL}/assets/logos/${team.id.toLowerCase()}.png`,
         memberOf: { '@type': 'SportsOrganization', name: 'UEFA Champions League 2026/27 League Phase' },
         ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}),
+        ...(facts ? {
+          foundingDate: String(facts.founded),
+          location: { '@type': 'StadiumOrArena', name: facts.stadium, ...(facts.stadiumCity ? { address: facts.stadiumCity } : {}) },
+        } : {}),
         ...(squad.length ? {
           athlete: squad.map(p => ({
             '@type': 'Person',
@@ -772,6 +986,7 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
         { name: 'Home', url: `${SITE_URL}/` },
         { name: team.name, url: `${SITE_URL}/teams/${team.id.toLowerCase()}.html` },
       ]),
+      ...(faq ? [faq.jsonLd] : []),
     ],
   });
 }
@@ -937,12 +1152,214 @@ function generateGuidePage(g, lastUpdatedIso) {
 }
 
 // ---------------------------------------------------------------------------
+// League-wide Stats & Records hub (computed from real results only)
+// ---------------------------------------------------------------------------
+
+// Derives every league-wide stat from the standings rows (aggregate totals)
+// and the raw fixture list (match-level stats like biggest win margin).
+// Reuses teamResults()/computeTeamRecords() so a club's streak/clean-sheet
+// figures here are always identical to what its own team page shows.
+function computeLeagueStats(fixtures, standingsRows) {
+  const played = standingsRows.filter(r => r.played > 0);
+  if (!played.length) return null;
+
+  const topN = (arr, cmp, n = 3) => [...arr].sort(cmp).slice(0, n);
+  const bestAttack = topN(played, (a, b) => b.goalsFor - a.goalsFor);
+  const bestDefense = topN(played, (a, b) => a.goalsAgainst - b.goalsAgainst);
+  const mostWins = topN(played, (a, b) => b.won - a.won);
+
+  let longestStreak = null;
+  const cleanSheetCounts = [];
+  played.forEach(row => {
+    const teamFixtures = fixtures.filter(f => f.homeId === row.id || f.awayId === row.id).sort((a, b) => a.matchday - b.matchday);
+    const records = computeTeamRecords(teamResults(row, teamFixtures));
+    if (!records) return;
+    if (records.streakOutcome === 'W' && (!longestStreak || records.streakCount > longestStreak.count)) {
+      longestStreak = { team: row, count: records.streakCount };
+    }
+    if (records.cleanSheets > 0) cleanSheetCounts.push({ team: row, count: records.cleanSheets });
+  });
+  const cleanSheetLeaders = cleanSheetCounts.sort((a, b) => b.count - a.count).slice(0, 3);
+
+  let biggestWin = null, highestScoring = null, totalGoals = 0, matchesPlayed = 0;
+  fixtures.forEach(f => {
+    if (f.realHomeScore === null || f.realAwayScore === null) return;
+    matchesPlayed += 1;
+    const total = f.realHomeScore + f.realAwayScore;
+    totalGoals += total;
+    const margin = Math.abs(f.realHomeScore - f.realAwayScore);
+    if (margin > 0 && (!biggestWin || margin > biggestWin.margin)) biggestWin = { ...f, margin };
+    if (!highestScoring || total > highestScoring.total) highestScoring = { ...f, total };
+  });
+
+  return {
+    bestAttack, bestDefense, mostWins, longestStreak, cleanSheetLeaders, biggestWin, highestScoring,
+    totals: { matchesPlayed, totalGoals, avgGoalsPerMatch: matchesPlayed ? totalGoals / matchesPlayed : 0 },
+  };
+}
+
+function statCard(icon, label, valueHtml) {
+  return `<div class="flex items-start gap-3 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
+    <span aria-hidden="true" class="text-2xl shrink-0">${icon}</span>
+    <div class="min-w-0 flex-1">
+      <div class="text-[11px] font-bold uppercase tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-1.5">${escapeHtml(label)}</div>
+      <div class="text-sm">${valueHtml}</div>
+    </div>
+  </div>`;
+}
+
+// rows: array of { team, value } — renders a ranked mini-leaderboard (1-3 clubs).
+function leaderList(rows) {
+  return rows.map((r, i) => `<div class="flex items-center justify-between gap-2 ${i ? 'mt-1.5 pt-1.5 border-t border-ink-900/5 dark:border-ink-50/5' : ''}">${teamLink(r.team, 18)}<span class="font-bold tabular">${r.value}</span></div>`).join('');
+}
+
+function generateStatsPage(fixtures, stats, lastUpdatedHuman, lastUpdatedIso) {
+  const canonical = `${SITE_URL}/stats.html`;
+  const intro = `
+    <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Stats &amp; Records</nav>
+    <h1 class="font-display font-bold text-2xl uppercase mb-1">Champions League 2026/27 Stats &amp; Records</h1>
+    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">League-wide statistics for the 36-team 2026/27 Champions League league phase, computed from every real result so far — best attack and defence, biggest wins, streaks and more.</p>
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">${freshnessText(lastUpdatedHuman)}</p>` : '<div class="mb-6"></div>'}`;
+
+  if (!stats) {
+    const bodyContent = `${intro}<p class="text-sm text-ink-900/70 dark:text-ink-50/70">The 2026/27 league phase hasn't kicked off yet, so there are no results to draw stats from. Check back once Matchday 1 is underway — or explore the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> in the meantime.</p>`;
+    return pageShell({
+      title: 'Champions League 2026/27 Stats & Records',
+      description: 'League-wide Champions League 2026/27 statistics: best attack, best defence, biggest wins and more, once the league phase begins.',
+      canonical,
+      bodyContent,
+      jsonLd: [breadcrumb([{ name: 'Home', url: `${SITE_URL}/` }, { name: 'Stats & Records', url: canonical }])],
+    });
+  }
+
+  const { bestAttack, bestDefense, mostWins, longestStreak, cleanSheetLeaders, biggestWin, highestScoring, totals } = stats;
+  const matchLine = (f) => {
+    const home = teamById(f.homeId);
+    const away = teamById(f.awayId);
+    if (!home || !away) return '';
+    return `${teamLink(home, 16)} <span class="font-bold tabular">${f.realHomeScore}&ndash;${f.realAwayScore}</span> ${teamLink(away, 16)} <span class="text-ink-900/40 dark:text-ink-50/40 text-xs">(MD${f.matchday})</span>`;
+  };
+
+  const cards = [
+    statCard('⚽', 'Best attack (goals scored)', leaderList(bestAttack.map(r => ({ team: r, value: r.goalsFor })))),
+    statCard('🧱', 'Best defence (fewest conceded)', leaderList(bestDefense.map(r => ({ team: r, value: r.goalsAgainst })))),
+    statCard('🏆', 'Most wins', leaderList(mostWins.map(r => ({ team: r, value: r.won })))),
+    cleanSheetLeaders.length ? statCard('🧤', 'Most clean sheets', leaderList(cleanSheetLeaders.map(r => ({ team: r.team, value: r.count })))) : '',
+    longestStreak ? statCard('🔥', 'Longest active winning streak', `${teamLink(longestStreak.team, 18)} <span class="font-bold tabular">${longestStreak.count}</span>`) : '',
+    biggestWin ? statCard('💥', 'Biggest win margin', matchLine(biggestWin)) : '',
+    highestScoring ? statCard('🎯', 'Highest-scoring match', `${matchLine(highestScoring)} <span class="text-ink-900/40 dark:text-ink-50/40 text-xs block mt-1">${highestScoring.total} goals</span>`) : '',
+    statCard('📊', 'League phase so far', `${totals.matchesPlayed} matches played &middot; ${totals.totalGoals} goals &middot; ${totals.avgGoalsPerMatch.toFixed(2)} goals/match`),
+  ].filter(Boolean).join('');
+
+  const bodyContent = `${intro}
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">${cards}</div>
+    <p class="text-xs text-ink-900/40 dark:text-ink-50/40 mb-6">All figures computed from real results only (never predictions). See <a href="/data-sources.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Data Sources</a> for methodology, or the <a href="/" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">live standings</a> for the full table.</p>`;
+
+  return pageShell({
+    title: 'Champions League 2026/27 Stats & Records — Best Attack, Defence & Biggest Wins',
+    description: 'League-wide Champions League 2026/27 stats: best attack and defence, most wins, biggest win margin, highest-scoring match and more, computed from every real result.',
+    canonical,
+    bodyContent,
+    jsonLd: [
+      { '@context': 'https://schema.org', '@type': 'WebPage', name: 'Champions League 2026/27 Stats & Records', url: canonical, ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}) },
+      breadcrumb([{ name: 'Home', url: `${SITE_URL}/` }, { name: 'Stats & Records', url: canonical }]),
+    ],
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Homepage no-JS fallback
+//
+// The simulator fills #fixtures-list, #standings-rows and #qual-team-select
+// client-side, so a crawler that doesn't execute JS would see an empty shell.
+// Here we inject the real current data between marker comments in index.html.
+// The app overwrites all three containers via innerHTML on load, so this is a
+// pure progressive-enhancement fallback, never a second source of truth.
+// ---------------------------------------------------------------------------
+// Lean text link — the fallback deliberately omits the inline-styled crest
+// markup the app renders, which would roughly triple the homepage's weight.
+function ssrTeamLink(team) {
+  return `<a href="/teams/${team.id.toLowerCase()}.html" class="truncate hover:text-pitch-600 dark:hover:text-pitch-300">${escapeHtml(team.name)}</a>`;
+}
+
+function ssrStandingsRows(rows, seasonStarted) {
+  return rows.map((t, idx) => {
+    const rank = idx + 1;
+    const bar = !seasonStarted ? 'bg-ink-900/15 dark:bg-ink-50/15' : zoneBarClass(rank);
+    const rankColor = !seasonStarted ? 'text-ink-900/40 dark:text-ink-50/40' : zoneTextClass(rank);
+    const gd = t.gd > 0 ? `+${t.gd}` : String(t.gd);
+    const team = teamById(t.id) || t;
+    return `<div class="flex items-stretch gap-2 py-1 pr-2">`
+      + `<span class="zone-bar ${bar}"></span>`
+      + `<div class="grid grid-cols-12 items-center flex-1 text-xs py-1">`
+      + `<div class="col-span-1 font-bold tabular ${rankColor}">${seasonStarted ? rank : '&mdash;'}</div>`
+      + `<div class="col-span-5 font-medium truncate">${ssrTeamLink(team)}</div>`
+      + `<div class="col-span-1 text-center tabular">${t.played}</div>`
+      + `<div class="col-span-1 text-center tabular">${t.won}</div>`
+      + `<div class="col-span-2 text-center tabular">${gd}</div>`
+      + `<div class="col-span-2 text-center font-extrabold tabular">${t.points}</div>`
+      + `</div></div>`;
+  }).join('');
+}
+
+function ssrFixtureCards(mdFixtures) {
+  return mdFixtures.map(f => {
+    const home = teamById(f.homeId);
+    const away = teamById(f.awayId);
+    if (!home || !away) return '';
+    const played = f.realHomeScore !== null && f.realAwayScore !== null;
+    const score = played
+      ? `<span class="font-bold text-gold-600 dark:text-gold-400 tabular">${f.realHomeScore} : ${f.realAwayScore}</span>`
+      : `<span class="text-ink-900/30 dark:text-ink-50/30 font-bold">vs</span>`;
+    return `<div class="fixture-card bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 p-2.5 rounded-xl flex items-center justify-between text-xs">`
+      + `<div class="w-5/12 text-right font-semibold truncate">${ssrTeamLink(home)}</div>`
+      + `<div class="w-3/12 text-center">${score}</div>`
+      + `<div class="w-5/12 font-semibold truncate">${ssrTeamLink(away)}</div>`
+      + `</div>`;
+  }).join('');
+}
+
+function generateHomepageFallback(fixtures, standingsRows, seasonStarted, lastUpdatedHuman) {
+  const file = join(ROOT, 'index.html');
+  if (!existsSync(file)) return false;
+  let html = readFileSync(file, 'utf8');
+
+  const playedCount = fixtures.filter(f => f.realHomeScore !== null && f.realAwayScore !== null).length;
+
+  const blocks = {
+    standings: ssrStandingsRows(standingsRows, seasonStarted),
+    fixtures: ssrFixtureCards(fixtures.filter(f => f.matchday === 1).sort((a, b) => a.id.localeCompare(b.id))),
+    teams: '<option value="">Choose your club&hellip;</option>'
+      + [...TEAMS_DATA].sort((a, b) => a.name.localeCompare(b.name))
+        .map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join(''),
+    played: `${playedCount} / ${fixtures.length} Played`,
+    updated: lastUpdatedHuman ? ` &middot; ${freshnessText(lastUpdatedHuman)}` : '',
+  };
+
+  let injected = 0;
+  for (const [key, content] of Object.entries(blocks)) {
+    const re = new RegExp(`(<!--SSR:${key}-->)[\\s\\S]*?(<!--/SSR:${key}-->)`);
+    if (!re.test(html)) {
+      console.warn(`index.html is missing the <!--SSR:${key}--> markers — skipping that fallback.`);
+      continue;
+    }
+    html = html.replace(re, `$1${content}$2`);
+    injected += 1;
+  }
+
+  if (injected) writeFileIfChanged(file, html);
+  return injected > 0;
+}
+
+// ---------------------------------------------------------------------------
 // Sitemap generation (kept in sync with whatever pages actually exist)
 // ---------------------------------------------------------------------------
 function generateSitemap(matchdayCount, teamIds, guideSlugs, lastmod) {
   const urls = [
     { loc: `${SITE_URL}/`, priority: '1.0', freq: 'daily', lastmod },
+    { loc: `${SITE_URL}/stats.html`, priority: '0.6', freq: 'daily', lastmod },
     { loc: `${SITE_URL}/about.html`, priority: '0.3', freq: 'yearly' },
+    { loc: `${SITE_URL}/data-sources.html`, priority: '0.4', freq: 'monthly' },
     { loc: `${SITE_URL}/privacy.html`, priority: '0.1', freq: 'yearly' },
     { loc: `${SITE_URL}/terms.html`, priority: '0.1', freq: 'yearly' },
   ];
@@ -975,14 +1392,13 @@ async function main() {
   const { sortedStandings, seasonStarted } = computeStandings(TEAMS_DATA, fixtures);
   const qualification = analyzeQualification(sortedStandings, fixtures);
 
-  // Freshness stamp driven by the ~6-hourly results sync (real-results.json
-  // generatedAt), used for sitemap <lastmod>, schema dateModified, and the
-  // visible "Results last updated" line on every generated page.
+  // Two distinct facts, deliberately kept separate: generatedAt moves only on a
+  // genuine data change (and so drives sitemap <lastmod> and schema
+  // dateModified), while checkedAt records every automated sync.
   const lastUpdatedIso = realJson.generatedAt || new Date().toISOString();
   const lastmodDate = lastUpdatedIso.slice(0, 10);
-  const lastUpdatedHuman = new Date(lastUpdatedIso).toLocaleString('en-GB', {
-    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
-  }) + ' UTC';
+  const lastUpdatedHuman = humanStamp(lastUpdatedIso);
+  lastCheckedHuman = realJson.checkedAt ? humanStamp(realJson.checkedAt) : '';
 
   // Matchday pages
   const matchdaysPresent = [...new Set(fixtures.map(f => f.matchday))].filter(Boolean).sort((a, b) => a - b);
@@ -1006,6 +1422,16 @@ async function main() {
     writeFileIfChanged(join(ROOT, 'guide', `${g.slug}.html`), generateGuidePage(g, lastUpdatedIso));
   });
   console.log(`Generated ${GUIDES.length} guide pages.`);
+
+  // League-wide Stats & Records hub
+  const leagueStats = computeLeagueStats(fixtures, sortedStandings);
+  writeFileIfChanged(join(ROOT, 'stats.html'), generateStatsPage(fixtures, leagueStats, lastUpdatedHuman, lastUpdatedIso));
+  console.log('Generated stats.html.');
+
+  // Homepage crawler fallback (the simulator itself is still JS-driven)
+  if (generateHomepageFallback(fixtures, sortedStandings, seasonStarted, lastUpdatedHuman)) {
+    console.log('Injected homepage no-JS fallback into index.html.');
+  }
 
   // Sitemap
   const sitemap = generateSitemap(matchdaysPresent.length, TEAMS_DATA.map(t => t.id), GUIDES.map(g => g.slug), lastmodDate);

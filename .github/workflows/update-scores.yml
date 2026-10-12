@@ -42,7 +42,10 @@ jobs:
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          # The weekly Monday run bypasses the matchday-window guard so it makes a
+          # real API check. That refreshes checkedAt, which commits, which keeps the
+          # repo active — GitHub disables cron schedules after 60 days without commits.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event.schedule }}" = "0 6 * * 1" ]; then
             node scripts/fetch-results.mjs --force
           else
             node scripts/fetch-results.mjs
@@ -56,6 +59,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/real-results.json matchday-*.html teams/ sitemap.xml
+          git add index.html stats.html
           git add assets/logos guide 2>/dev/null || true
           git diff --cached --quiet || git commit -m "chore: update real UCL results, matchday/team pages [automated]"
           git pull --rebase origin main
