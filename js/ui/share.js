@@ -143,7 +143,7 @@ export function renderShareButtons(container, getImageBlob) {
 
 function showToast(container, message) {
   const toast = document.createElement('div');
-  toast.className = 'mt-2 text-[11px] text-ink-900/60 dark:text-ink-50/60 bg-ink-900/5 dark:bg-ink-50/5 rounded-lg px-2.5 py-1.5';
+  toast.className = 'mt-2 text-[11px] text-ink-900/75 dark:text-ink-50/75 bg-ink-900/5 dark:bg-ink-50/5 rounded-lg px-2.5 py-1.5';
   toast.textContent = message;
   container.parentElement.appendChild(toast);
   setTimeout(() => toast.remove(), 6000);

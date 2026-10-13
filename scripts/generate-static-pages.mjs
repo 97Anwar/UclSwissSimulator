@@ -219,7 +219,7 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
           <div class="w-8 h-8 rounded-full bg-pitch-500 dark:bg-pitch-400 flex items-center justify-center text-ink-50 dark:text-ink-950 font-display font-bold text-sm">26</div>
           <div class="leading-none">
             <div class="font-display font-bold text-base sm:text-lg tracking-tight uppercase">Swiss Format <span class="text-pitch-600 dark:text-pitch-300">Simulator</span></div>
-            <div class="text-[10px] text-ink-900/50 dark:text-ink-50/50 font-medium hidden sm:block">Champions League 2026/27</div>
+            <div class="text-[10px] text-ink-900/70 dark:text-ink-50/70 font-medium hidden sm:block">Champions League 2026/27</div>
           </div>
         </a>
         <nav class="hidden md:flex items-center space-x-5 text-sm font-semibold">
@@ -248,10 +248,10 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
     <div class="max-w-7xl mx-auto px-3 sm:px-6 py-8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs">
       <div class="col-span-2 sm:col-span-1">
         <div class="font-display font-bold text-sm uppercase mb-2">Swiss Format Simulator</div>
-        <p class="text-ink-900/50 dark:text-ink-50/50 leading-relaxed">An independent, fan-made league-phase simulator. Not affiliated with or endorsed by UEFA.</p>
+        <p class="text-ink-900/70 dark:text-ink-50/70 leading-relaxed">An independent, fan-made league-phase simulator. Not affiliated with or endorsed by UEFA.</p>
       </div>
       <div>
-        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-2">Tool</div>
+        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/65 dark:text-ink-50/65 mb-2">Tool</div>
         <ul class="space-y-1.5">
           <li><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a></li>
           <li><a href="/stats.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Stats &amp; Records</a></li>
@@ -260,19 +260,19 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
         </ul>
       </div>
       <div>
-        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-2">Legal</div>
+        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/65 dark:text-ink-50/65 mb-2">Legal</div>
         <ul class="space-y-1.5">
           <li><a href="/privacy.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Privacy</a></li>
           <li><a href="/terms.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Terms</a></li>
         </ul>
       </div>
       <div>
-        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-2">Data</div>
-        <p class="text-ink-900/50 dark:text-ink-50/50 leading-relaxed mb-1.5">Results sync automatically from public match data as the season progresses.</p>
+        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/65 dark:text-ink-50/65 mb-2">Data</div>
+        <p class="text-ink-900/70 dark:text-ink-50/70 leading-relaxed mb-1.5">Results sync automatically from public match data as the season progresses.</p>
         <a href="/data-sources.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition font-semibold">Sources &amp; methodology &rarr;</a>
       </div>
     </div>
-    <div class="border-t border-ink-900/10 dark:border-ink-50/10 py-3 text-center text-[11px] text-ink-900/40 dark:text-ink-50/40">
+    <div class="border-t border-ink-900/10 dark:border-ink-50/10 py-3 text-center text-[11px] text-ink-900/65 dark:text-ink-50/65">
       Built for fans of the format, not for UEFA.
     </div>
   </footer>
@@ -310,7 +310,7 @@ function logoImg(team, size = 22) {
 function scoreCell(fixture) {
   const played = fixture.realHomeScore !== null && fixture.realAwayScore !== null;
   if (played) return `<span class="font-bold text-pitch-700 dark:text-pitch-300 tabular">${fixture.realHomeScore} – ${fixture.realAwayScore}</span>`;
-  return `<span class="text-ink-900/40 dark:text-ink-50/40">vs</span>`;
+  return `<span class="text-ink-900/65 dark:text-ink-50/65">vs</span>`;
 }
 
 // Internal link to a club page, logo + name (crawlable link graph between clubs).
@@ -358,9 +358,9 @@ function renderStandingsSnapshot(rows, seasonStarted) {
       <div class="flex items-stretch gap-2 py-1 pr-2 rounded-lg">
         <span class="zone-bar ${seasonStarted ? zoneBarClass(t.rank) : 'bg-ink-900/15 dark:bg-ink-50/15'}"></span>
         <div class="grid grid-cols-12 items-center flex-1 text-xs py-1">
-          <div class="col-span-1 text-left font-bold tabular ${seasonStarted ? zoneTextClass(t.rank) : 'text-ink-900/40 dark:text-ink-50/40'}">${seasonStarted ? t.rank : '&mdash;'}</div>
+          <div class="col-span-1 text-left font-bold tabular ${seasonStarted ? zoneTextClass(t.rank) : 'text-ink-900/65 dark:text-ink-50/65'}">${seasonStarted ? t.rank : '&mdash;'}</div>
           <div class="col-span-5 text-left font-medium truncate flex items-center gap-1.5">${logoImg(teamById(t.id), 18)}<a href="/teams/${t.id.toLowerCase()}.html" class="truncate hover:text-pitch-600 dark:hover:text-pitch-300 transition">${escapeHtml(t.name)}</a></div>
-          <div class="col-span-1 text-center text-ink-900/50 dark:text-ink-50/50 tabular">${t.played}</div>
+          <div class="col-span-1 text-center text-ink-900/70 dark:text-ink-50/70 tabular">${t.played}</div>
           <div class="col-span-1 text-center font-semibold text-pitch-700 dark:text-pitch-300 tabular">${t.won}</div>
           <div class="col-span-2 text-center tabular text-[11px]">${gd}</div>
           <div class="col-span-2 text-center font-extrabold text-pitch-600 dark:text-pitch-300 tabular">${t.points}</div>
@@ -374,7 +374,7 @@ function renderStandingsSnapshot(rows, seasonStarted) {
         <div class="flex items-center justify-center gap-1.5 py-1 px-1 rounded-lg bg-blue-500/10 text-blue-700 dark:text-blue-300"><span class="w-1.5 h-3.5 rounded-sm bg-blue-500"></span>9&ndash;24: Play-offs</div>
         <div class="flex items-center justify-center gap-1.5 py-1 px-1 rounded-lg bg-red-500/10 text-red-700 dark:text-red-300"><span class="w-1.5 h-3.5 rounded-sm bg-red-500"></span>25&ndash;36: Out</div>
       </div>
-      <div class="grid grid-cols-12 text-[10px] font-bold text-ink-900/40 dark:text-ink-50/40 py-1.5 px-2 uppercase text-center border-b border-ink-900/10 dark:border-ink-50/10">
+      <div class="grid grid-cols-12 text-[10px] font-bold text-ink-900/65 dark:text-ink-50/65 py-1.5 px-2 uppercase text-center border-b border-ink-900/10 dark:border-ink-50/10">
         <div class="col-span-1 text-left">#</div>
         <div class="col-span-5 text-left">Club</div>
         <div class="col-span-1">Pld</div>
@@ -429,7 +429,7 @@ function renderMatchdaySnapshot(stats) {
   const cards = [
     statCard('⚽', 'Goals this matchday', `${stats.totalGoals} goals &middot; ${stats.avgGoalsPerMatch.toFixed(2)}/match`),
     stats.biggestWin ? statCard('💥', 'Biggest win margin', matchLine(stats.biggestWin)) : '',
-    stats.highestScoring ? statCard('🎯', 'Highest-scoring match', `${matchLine(stats.highestScoring)} <span class="text-ink-900/40 dark:text-ink-50/40 text-xs block mt-1">${stats.highestScoring.total} goals</span>`) : '',
+    stats.highestScoring ? statCard('🎯', 'Highest-scoring match', `${matchLine(stats.highestScoring)} <span class="text-ink-900/65 dark:text-ink-50/65 text-xs block mt-1">${stats.highestScoring.total} goals</span>`) : '',
     statCard('🧤', 'Clean sheets', `${stats.cleanSheets} of ${stats.matchesPlayed} matches`),
   ].filter(Boolean).join('');
   return `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">${cards}</div>`;
@@ -500,10 +500,10 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
     : `All ${mdTotal} fixtures for Matchday ${md} of the 2026/27 UEFA Champions League 36-team league phase. Each club plays once per matchday. Click any club to see its full journey, or open the simulator to predict the rest.`;
 
   const bodyContent = `
-    <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Matchday ${md}</nav>
+    <nav class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Matchday ${md}</nav>
     <h1 class="font-display font-bold text-2xl uppercase mb-1">${h1}</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">${intro}</p>
-    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">${freshnessText(lastUpdatedHuman)}</p>` : '<div class="mb-6"></div>'}
+    <p class="text-sm text-ink-900/75 dark:text-ink-50/75 mb-1">${intro}</p>
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-6">${freshnessText(lastUpdatedHuman)}</p>` : '<div class="mb-6"></div>'}
 
     ${snapshotHtml}
     ${moversSection}
@@ -517,7 +517,7 @@ function generateMatchdayPage(md, fixtures, standingsRows, lastUpdatedHuman, las
     </a>
 
     <div class="mt-10 pt-6 border-t border-ink-900/10 dark:border-ink-50/10">
-      <h2 class="font-display font-bold text-sm uppercase text-ink-900/50 dark:text-ink-50/50 mb-3">Other matchdays</h2>
+      <h2 class="font-display font-bold text-sm uppercase text-ink-900/70 dark:text-ink-50/70 mb-3">Other matchdays</h2>
       <div class="flex flex-wrap gap-2">
         ${[1,2,3,4,5,6,7,8].map(n => `<a href="/matchday-${n}.html" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${n === md ? 'bg-pitch-500 dark:bg-pitch-400 text-white dark:text-ink-950' : 'bg-ink-900/5 dark:bg-ink-50/5 border border-ink-900/10 dark:border-ink-50/10 hover:bg-ink-900/10'}">MD ${n}</a>`).join('')}
       </div>
@@ -594,7 +594,7 @@ function renderQualificationSection(team, qual) {
       <p>${rankLine}</p>
       <p><span class="font-semibold">Direct to the round of 16 (top 8):</span> ${top8Line}</p>
       <p><span class="font-semibold">Avoiding elimination (top 24):</span> ${top24Line}</p>
-      <p class="text-xs text-ink-900/40 dark:text-ink-50/40">Based only on points still mathematically reachable — a “guarantee” holds even if every rival wins all its remaining games. Try your own results in the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a>.</p>
+      <p class="text-xs text-ink-900/65 dark:text-ink-50/65">Based only on points still mathematically reachable — a “guarantee” holds even if every rival wins all its remaining games. Try your own results in the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a>.</p>
     </div>`;
 }
 
@@ -710,7 +710,7 @@ function renderHonoursList(honours) {
   if (!honours || !honours.length) return '';
   const rows = honours.map(h => {
     const icon = HONOUR_ICON[h.type] || HONOUR_ICON.cup;
-    const yearsText = h.years && h.years.length ? ` <span class="text-ink-900/40 dark:text-ink-50/40">(${h.years.map(escapeHtml).join(', ')})</span>` : '';
+    const yearsText = h.years && h.years.length ? ` <span class="text-ink-900/65 dark:text-ink-50/65">(${h.years.map(escapeHtml).join(', ')})</span>` : '';
     return `<li class="flex items-center gap-2 py-0.5"><span aria-hidden="true" class="text-base shrink-0">${icon}</span><span class="font-bold tabular shrink-0">${h.count}\u00d7</span><span>${escapeHtml(h.competition)}${yearsText}</span></li>`;
   }).join('');
   return `<ul class="space-y-0.5 text-sm" role="list">${rows}</ul>`;
@@ -727,9 +727,9 @@ function renderClubProfileSection(team, facts) {
       <div class="sm:col-span-3">
         <span class="font-semibold block mb-1">Honours</span>
         ${renderHonoursList(facts.honours)}
-        ${facts.honoursNote ? `<p class="text-xs text-ink-900/50 dark:text-ink-50/50 mt-2">${escapeHtml(facts.honoursNote)}</p>` : ''}
+        ${facts.honoursNote ? `<p class="text-xs text-ink-900/70 dark:text-ink-50/70 mt-2">${escapeHtml(facts.honoursNote)}</p>` : ''}
       </div>
-      <div class="sm:col-span-3 text-xs text-ink-900/40 dark:text-ink-50/40">Source: Wikipedia, cross-checked 12 Oct 2026. See <a href="/data-sources.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Data Sources</a>.</div>
+      <div class="sm:col-span-3 text-xs text-ink-900/65 dark:text-ink-50/65">Source: Wikipedia, cross-checked 12 Oct 2026. See <a href="/data-sources.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Data Sources</a>.</div>
     </div>`;
 }
 
@@ -780,7 +780,7 @@ function renderSquadSection(team) {
             <span class="font-semibold text-sm truncate text-ink-900 dark:text-ink-50">${escapeHtml(player.name)}</span>
             ${player.captain ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wide bg-pitch-500/15 dark:bg-pitch-400/20 text-pitch-700 dark:text-pitch-300" title="Team Captain">C</span>` : ''}
           </div>
-          <div class="flex items-center gap-1.5 text-xs text-ink-900/50 dark:text-ink-50/50 mt-0.5">
+          <div class="flex items-center gap-1.5 text-xs text-ink-900/70 dark:text-ink-50/70 mt-0.5">
             ${player.number ? `<span class="font-bold tabular">#${player.number}</span> &middot;` : ''}
             <span>${escapeHtml(player.position)}</span>
             ${player.country ? `<span title="${escapeHtml(player.country)}">${player.country}</span>` : ''}
@@ -791,7 +791,7 @@ function renderSquadSection(team) {
 
     return `
       <div class="mb-6 last:mb-0">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-ink-900/50 dark:text-ink-50/50 mb-2.5 flex items-center gap-1.5">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-ink-900/70 dark:text-ink-50/70 mb-2.5 flex items-center gap-1.5">
           <span aria-hidden="true">${icon}</span> ${label} (${players.length})
         </h3>
         <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5" role="list">
@@ -854,8 +854,8 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
     }
     return `
       <div class="flex items-center justify-between py-2 px-3 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-lg text-sm">
-        <span class="text-ink-900/50 dark:text-ink-50/50 w-14 shrink-0">MD ${f.matchday}</span>
-        <span class="flex-1 min-w-0 font-semibold inline-flex items-center gap-1.5"><span class="text-ink-900/40 dark:text-ink-50/40 mr-1">${isHome ? 'vs' : '@'}</span>${teamLink(opponent)}</span>
+        <span class="text-ink-900/70 dark:text-ink-50/70 w-14 shrink-0">MD ${f.matchday}</span>
+        <span class="flex-1 min-w-0 font-semibold inline-flex items-center gap-1.5"><span class="text-ink-900/65 dark:text-ink-50/65 mr-1">${isHome ? 'vs' : '@'}</span>${teamLink(opponent)}</span>
         <span class="flex items-center gap-2 shrink-0">${badge}${scoreCell(f)}</span>
       </div>`;
   }).join('');
@@ -881,8 +881,8 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
     : '';
   const drawByPotHtml = [1, 2, 3, 4].map(p => {
     const items = drawByPot[p].map(({ opp, isHome }) =>
-      `${teamLink(opp, 16)} <span class="text-ink-900/40 dark:text-ink-50/40 text-xs">(${isHome ? 'H' : 'A'})</span>`).join(', ');
-    return `<div class="flex gap-2 py-1.5 border-b border-ink-900/5 dark:border-ink-50/5 last:border-0"><span class="w-16 shrink-0 text-xs font-bold uppercase text-ink-900/50 dark:text-ink-50/50 pt-0.5">Pot ${p}</span><span class="text-sm flex-1">${items || '&mdash;'}</span></div>`;
+      `${teamLink(opp, 16)} <span class="text-ink-900/65 dark:text-ink-50/65 text-xs">(${isHome ? 'H' : 'A'})</span>`).join(', ');
+    return `<div class="flex gap-2 py-1.5 border-b border-ink-900/5 dark:border-ink-50/5 last:border-0"><span class="w-16 shrink-0 text-xs font-bold uppercase text-ink-900/70 dark:text-ink-50/70 pt-0.5">Pot ${p}</span><span class="text-sm flex-1">${items || '&mdash;'}</span></div>`;
   }).join('');
 
   let journeyHtml;
@@ -893,18 +893,18 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
   } else {
     journeyHtml = `
       <p class="text-sm text-ink-900/70 dark:text-ink-50/70 mb-3">Across ${played} league-phase match${played === 1 ? '' : 'es'}, ${escapeHtml(team.name)} have won ${won}, drawn ${drawn} and lost ${lost}, scoring ${gf} and conceding ${ga}. They currently sit ${ordinal(row.rank)} of 36 in the &ldquo;${label}&rdquo; zone.</p>
-      <div class="flex items-center gap-2 text-sm mb-3"><span class="text-ink-900/50 dark:text-ink-50/50 font-semibold">Recent form:</span> ${form || '&mdash;'}</div>
+      <div class="flex items-center gap-2 text-sm mb-3"><span class="text-ink-900/70 dark:text-ink-50/70 font-semibold">Recent form:</span> ${form || '&mdash;'}</div>
       ${beaten.length ? `<p class="text-sm mb-1"><span class="font-semibold text-pitch-600 dark:text-pitch-300">Beaten:</span> ${nameList(beaten)}</p>` : ''}
       ${drewWith.length ? `<p class="text-sm mb-1"><span class="font-semibold">Drew with:</span> ${nameList(drewWith)}</p>` : ''}
       ${lostTo.length ? `<p class="text-sm mb-1"><span class="font-semibold text-red-500">Lost to:</span> ${nameList(lostTo)}</p>` : ''}`;
   }
 
   const bodyContent = `
-    <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; ${escapeHtml(team.name)}</nav>
+    <nav class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; ${escapeHtml(team.name)}</nav>
 
     <h1 class="font-display font-bold text-2xl uppercase mb-1 inline-flex items-center gap-2">${logoImg(team, 30)} ${escapeHtml(team.name)} — Champions League 2026/27</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">${escapeHtml(team.name)}'s confirmed playing squad, fixtures, results, current standing and league-phase journey in the 2026/27 UEFA Champions League.</p>
-    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40">${freshnessText(lastUpdatedHuman)}</p>` : ''}
+    <p class="text-sm text-ink-900/75 dark:text-ink-50/75 mb-1">${escapeHtml(team.name)}'s confirmed playing squad, fixtures, results, current standing and league-phase journey in the 2026/27 UEFA Champions League.</p>
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/65 dark:text-ink-50/65">${freshnessText(lastUpdatedHuman)}</p>` : ''}
 
     <nav class="flex flex-wrap gap-2 my-4 text-xs font-semibold" aria-label="Page sections">
       <a href="#standing" class="px-2.5 py-1 rounded-full bg-ink-900/5 dark:bg-ink-50/5 hover:bg-pitch-500/15 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Standing</a>
@@ -920,14 +920,14 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
 
     <div id="standing" class="my-6 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
       <div class="grid grid-cols-5 gap-2 text-center mb-4">
-        <div><div class="text-2xl font-black text-pitch-600 dark:text-pitch-300 tabular">${rankDisplay}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Rank</div></div>
-        <div><div class="text-2xl font-black tabular">${row.points}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Points</div></div>
-        <div><div class="text-2xl font-black tabular">${row.won}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Won</div></div>
-        <div><div class="text-2xl font-black tabular">${row.played}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">Played</div></div>
-        <div><div class="text-2xl font-black tabular">${(row.gd > 0 ? '+' : '') + row.gd}</div><div class="text-[10px] uppercase text-ink-900/40 dark:text-ink-50/40">GD</div></div>
+        <div><div class="text-2xl font-black text-pitch-600 dark:text-pitch-300 tabular">${rankDisplay}</div><div class="text-[10px] uppercase text-ink-900/65 dark:text-ink-50/65">Rank</div></div>
+        <div><div class="text-2xl font-black tabular">${row.points}</div><div class="text-[10px] uppercase text-ink-900/65 dark:text-ink-50/65">Points</div></div>
+        <div><div class="text-2xl font-black tabular">${row.won}</div><div class="text-[10px] uppercase text-ink-900/65 dark:text-ink-50/65">Won</div></div>
+        <div><div class="text-2xl font-black tabular">${row.played}</div><div class="text-[10px] uppercase text-ink-900/65 dark:text-ink-50/65">Played</div></div>
+        <div><div class="text-2xl font-black tabular">${(row.gd > 0 ? '+' : '') + row.gd}</div><div class="text-[10px] uppercase text-ink-900/65 dark:text-ink-50/65">GD</div></div>
       </div>
       <p class="text-sm">${escapeHtml(scenario)}</p>
-      <p class="text-xs text-ink-900/40 dark:text-ink-50/40 mt-2">Zone: ${zoneDisplay}</p>
+      <p class="text-xs text-ink-900/65 dark:text-ink-50/65 mt-2">Zone: ${zoneDisplay}</p>
     </div>
 
     ${profileHtml}
@@ -955,7 +955,7 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
 
     <a href="/" class="inline-block px-4 py-2 rounded-full bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-sm transition">Open the full simulator &rarr;</a>
 
-    <div class="mt-10 pt-6 border-t border-ink-900/10 dark:border-ink-50/10 text-xs text-ink-900/50 dark:text-ink-50/50">
+    <div class="mt-10 pt-6 border-t border-ink-900/10 dark:border-ink-50/10 text-xs text-ink-900/70 dark:text-ink-50/70">
       <span class="font-semibold uppercase tracking-wider">Guides:</span>
       <a href="/guide/champions-league-swiss-format-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Swiss format explained</a> &middot;
       <a href="/guide/how-teams-qualify-for-the-champions-league.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">How teams qualify</a> &middot;
@@ -1020,7 +1020,7 @@ function potListHtml(pot) {
 
 const GUIDE_LINKS = `
     <div class="mt-10 pt-6 border-t border-ink-900/10 dark:border-ink-50/10 text-sm">
-      <span class="font-semibold uppercase tracking-wider text-ink-900/50 dark:text-ink-50/50 text-xs">More guides:</span>
+      <span class="font-semibold uppercase tracking-wider text-ink-900/70 dark:text-ink-50/70 text-xs">More guides:</span>
       <a href="/guide/champions-league-swiss-format-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Swiss format</a> &middot;
       <a href="/guide/how-teams-qualify-for-the-champions-league.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">How teams qualify</a> &middot;
       <a href="/guide/champions-league-tiebreakers-explained.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Tiebreakers</a> &middot;
@@ -1134,7 +1134,7 @@ const GUIDES = [
 function generateGuidePage(g, lastUpdatedIso) {
   const canonical = `${SITE_URL}/guide/${g.slug}.html`;
   const bodyContent = `
-    <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Guides &rsaquo; ${escapeHtml(g.h1)}</nav>
+    <nav class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Guides &rsaquo; ${escapeHtml(g.h1)}</nav>
     <article>
       <h1 class="font-display font-bold text-2xl sm:text-3xl uppercase mb-4">${escapeHtml(g.h1)}</h1>
       ${g.body}
@@ -1213,7 +1213,7 @@ function statCard(icon, label, valueHtml) {
   return `<div class="flex items-start gap-3 p-4 bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-xl">
     <span aria-hidden="true" class="text-2xl shrink-0">${icon}</span>
     <div class="min-w-0 flex-1">
-      <div class="text-[11px] font-bold uppercase tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-1.5">${escapeHtml(label)}</div>
+      <div class="text-[11px] font-bold uppercase tracking-wider text-ink-900/65 dark:text-ink-50/65 mb-1.5">${escapeHtml(label)}</div>
       <div class="text-sm">${valueHtml}</div>
     </div>
   </div>`;
@@ -1227,10 +1227,10 @@ function leaderList(rows) {
 function generateStatsPage(fixtures, stats, lastUpdatedHuman, lastUpdatedIso) {
   const canonical = `${SITE_URL}/stats.html`;
   const intro = `
-    <nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Stats &amp; Records</nav>
+    <nav class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Stats &amp; Records</nav>
     <h1 class="font-display font-bold text-2xl uppercase mb-1">Champions League 2026/27 Stats &amp; Records</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">League-wide statistics for the 36-team 2026/27 Champions League league phase, computed from every real result so far — best attack and defence, biggest wins, streaks and more.</p>
-    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">${freshnessText(lastUpdatedHuman)}</p>` : '<div class="mb-6"></div>'}`;
+    <p class="text-sm text-ink-900/75 dark:text-ink-50/75 mb-1">League-wide statistics for the 36-team 2026/27 Champions League league phase, computed from every real result so far — best attack and defence, biggest wins, streaks and more.</p>
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-6">${freshnessText(lastUpdatedHuman)}</p>` : '<div class="mb-6"></div>'}`;
 
   if (!stats) {
     const bodyContent = `${intro}<p class="text-sm text-ink-900/70 dark:text-ink-50/70">The 2026/27 league phase hasn't kicked off yet, so there are no results to draw stats from. Check back once Matchday 1 is underway — or explore the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> in the meantime.</p>`;
@@ -1248,7 +1248,7 @@ function generateStatsPage(fixtures, stats, lastUpdatedHuman, lastUpdatedIso) {
     const home = teamById(f.homeId);
     const away = teamById(f.awayId);
     if (!home || !away) return '';
-    return `${teamLink(home, 16)} <span class="font-bold tabular">${f.realHomeScore}&ndash;${f.realAwayScore}</span> ${teamLink(away, 16)} <span class="text-ink-900/40 dark:text-ink-50/40 text-xs">(MD${f.matchday})</span>`;
+    return `${teamLink(home, 16)} <span class="font-bold tabular">${f.realHomeScore}&ndash;${f.realAwayScore}</span> ${teamLink(away, 16)} <span class="text-ink-900/65 dark:text-ink-50/65 text-xs">(MD${f.matchday})</span>`;
   };
 
   const cards = [
@@ -1258,13 +1258,13 @@ function generateStatsPage(fixtures, stats, lastUpdatedHuman, lastUpdatedIso) {
     cleanSheetLeaders.length ? statCard('🧤', 'Most clean sheets', leaderList(cleanSheetLeaders.map(r => ({ team: r.team, value: r.count })))) : '',
     longestStreak ? statCard('🔥', 'Longest active winning streak', `${teamLink(longestStreak.team, 18)} <span class="font-bold tabular">${longestStreak.count}</span>`) : '',
     biggestWin ? statCard('💥', 'Biggest win margin', matchLine(biggestWin)) : '',
-    highestScoring ? statCard('🎯', 'Highest-scoring match', `${matchLine(highestScoring)} <span class="text-ink-900/40 dark:text-ink-50/40 text-xs block mt-1">${highestScoring.total} goals</span>`) : '',
+    highestScoring ? statCard('🎯', 'Highest-scoring match', `${matchLine(highestScoring)} <span class="text-ink-900/65 dark:text-ink-50/65 text-xs block mt-1">${highestScoring.total} goals</span>`) : '',
     statCard('📊', 'League phase so far', `${totals.matchesPlayed} matches played &middot; ${totals.totalGoals} goals &middot; ${totals.avgGoalsPerMatch.toFixed(2)} goals/match`),
   ].filter(Boolean).join('');
 
   const bodyContent = `${intro}
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">${cards}</div>
-    <p class="text-xs text-ink-900/40 dark:text-ink-50/40 mb-6">All figures computed from real results only (never predictions). See <a href="/data-sources.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Data Sources</a> for methodology, or the <a href="/" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">live standings</a> for the full table.</p>`;
+    <p class="text-xs text-ink-900/65 dark:text-ink-50/65 mb-6">All figures computed from real results only (never predictions). See <a href="/data-sources.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Data Sources</a> for methodology, or the <a href="/" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">live standings</a> for the full table.</p>`;
 
   return pageShell({
     title: 'Champions League 2026/27 Stats & Records — Best Attack, Defence & Biggest Wins',
@@ -1297,7 +1297,7 @@ function ssrStandingsRows(rows, seasonStarted) {
   return rows.map((t, idx) => {
     const rank = idx + 1;
     const bar = !seasonStarted ? 'bg-ink-900/15 dark:bg-ink-50/15' : zoneBarClass(rank);
-    const rankColor = !seasonStarted ? 'text-ink-900/40 dark:text-ink-50/40' : zoneTextClass(rank);
+    const rankColor = !seasonStarted ? 'text-ink-900/65 dark:text-ink-50/65' : zoneTextClass(rank);
     const gd = t.gd > 0 ? `+${t.gd}` : String(t.gd);
     const team = teamById(t.id) || t;
     return `<div class="flex items-stretch gap-2 py-1 pr-2">`
@@ -1403,9 +1403,9 @@ function generateQualificationPage(standingsRows, qualification, seasonStarted, 
       title: 'Champions League 2026/27 Qualification Scenarios | All 36 Clubs',
       description: 'Mathematical qualification scenarios for all 36 Champions League 2026/27 clubs — who can still reach the top 8, who is eliminated, and the exact points needed.',
       canonical,
-      bodyContent: `<nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Qualification Scenarios</nav>
+      bodyContent: `<nav class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Qualification Scenarios</nav>
     <h1 class="font-display font-bold text-2xl uppercase mb-1">Champions League 2026/27 Qualification Scenarios</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-6">Scenarios appear once the league phase kicks off. Until then, all 36 clubs start level on zero points.</p>`,
+    <p class="text-sm text-ink-900/75 dark:text-ink-50/75 mb-6">Scenarios appear once the league phase kicks off. Until then, all 36 clubs start level on zero points.</p>`,
       jsonLd: [breadcrumb([{ name: 'Home', url: `${SITE_URL}/` }, { name: 'Qualification Scenarios', url: canonical }])],
     });
   }
@@ -1472,10 +1472,10 @@ function generateQualificationPage(standingsRows, qualification, seasonStarted, 
     };
   }).filter(Boolean);
 
-  const bodyContent = `<nav class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Qualification Scenarios</nav>
+  const bodyContent = `<nav class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Qualification Scenarios</nav>
     <h1 class="font-display font-bold text-2xl uppercase mb-1">Champions League 2026/27 Qualification Scenarios</h1>
-    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">Who can still reach the top 8, who is mathematically eliminated, and the exact number of points each of the 36 clubs needs — computed from the current table, not predicted.</p>
-    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">${freshnessText(lastUpdatedHuman)}</p>` : '<div class="mb-6"></div>'}
+    <p class="text-sm text-ink-900/75 dark:text-ink-50/75 mb-1">Who can still reach the top 8, who is mathematically eliminated, and the exact number of points each of the 36 clubs needs — computed from the current table, not predicted.</p>
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-6">${freshnessText(lastUpdatedHuman)}</p>` : '<div class="mb-6"></div>'}
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
       ${statCard('✅', 'Secured top 8', `${counts.clinched} club${counts.clinched === 1 ? '' : 's'}`)}
@@ -1487,7 +1487,7 @@ function generateQualificationPage(standingsRows, qualification, seasonStarted, 
     <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-2xl p-3 mb-6 overflow-x-auto">
       <table class="w-full text-xs">
         <thead>
-          <tr class="text-[10px] uppercase font-bold text-ink-900/40 dark:text-ink-50/40 text-center">
+          <tr class="text-[10px] uppercase font-bold text-ink-900/65 dark:text-ink-50/65 text-center">
             <th class="pb-2 pr-2">#</th><th class="pb-2 pr-2 text-left">Club</th><th class="pb-2 pr-2">Pts</th>
             <th class="pb-2 pr-2">Left</th><th class="pb-2 pr-2">Can finish</th><th class="pb-2 pr-2">To clinch top 8</th><th class="pb-2">Status</th>
           </tr>

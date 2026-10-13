@@ -90,7 +90,7 @@ export function renderFixturesList(container, fixtures, activeMatchday, onScoreC
 }
 
 function zoneStyle(rank, seasonStarted = true) {
-  if (!seasonStarted) return { bar: 'bg-ink-900/15 dark:bg-ink-50/15', rank: 'text-ink-900/40 dark:text-ink-50/40' };
+  if (!seasonStarted) return { bar: 'bg-ink-900/15 dark:bg-ink-50/15', rank: 'text-ink-900/65 dark:text-ink-50/65' };
   if (rank <= 8) return { bar: 'bg-pitch-500 dark:bg-pitch-400', rank: 'text-pitch-600 dark:text-pitch-300' };
   if (rank <= 24) return { bar: 'bg-blue-500', rank: 'text-blue-600 dark:text-blue-300' };
   return { bar: 'bg-red-500', rank: 'text-red-500 dark:text-red-400' };
@@ -121,7 +121,7 @@ export function renderStandingsTable(container, standings, seasonStarted = true)
             ${teamCrest(t)}
             <span class="truncate">${t.name}${teamBadge(t)}</span>
           </div>
-          <div class="col-span-1 text-center text-ink-900/50 dark:text-ink-50/50 tabular">${t.played}</div>
+          <div class="col-span-1 text-center text-ink-900/70 dark:text-ink-50/70 tabular">${t.played}</div>
           <div class="col-span-1 text-center font-semibold text-pitch-700 dark:text-pitch-300 tabular">${t.won}</div>
           <div class="col-span-2 text-center tabular text-[11px]">${gdFormatted}</div>
           <div class="col-span-2 text-center font-extrabold text-pitch-600 dark:text-pitch-300 tabular">${t.points}</div>
@@ -174,7 +174,7 @@ function qualShareText(team, qual) {
 
 export function renderQualificationCard(container, team, qual) {
   if (!team || !qual) {
-    container.innerHTML = `<p class="text-sm text-ink-900/50 dark:text-ink-50/50 py-2">Choose a club above (or tap any team in the standings) to see whether it can still reach the top 8 — and exactly what it needs.</p>`;
+    container.innerHTML = `<p class="text-sm text-ink-900/70 dark:text-ink-50/70 py-2">Choose a club above (or tap any team in the standings) to see whether it can still reach the top 8 — and exactly what it needs.</p>`;
     return;
   }
   const { bestRank, worstRank, remaining, points, played, top8, top24, pointsToClinchTop8, pointsToClinchTop24 } = qual;
@@ -198,7 +198,7 @@ export function renderQualificationCard(container, team, qual) {
       ${teamCrest(team, 28)}
       <div class="min-w-0">
         <div class="font-display font-bold text-base uppercase leading-none truncate">${team.name}</div>
-        <div class="text-[11px] text-ink-900/50 dark:text-ink-50/50 mt-0.5">${points} pts · ${played} played · ${remaining} to play</div>
+        <div class="text-[11px] text-ink-900/70 dark:text-ink-50/70 mt-0.5">${points} pts · ${played} played · ${remaining} to play</div>
       </div>
     </div>
     <p class="text-sm mb-3">${rankLine}</p>

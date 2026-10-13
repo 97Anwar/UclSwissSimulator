@@ -251,7 +251,7 @@ function renderModeBanner() {
     el.className = "text-[11px] sm:text-xs bg-blue-500/10 border border-blue-500/40 text-blue-700 dark:text-blue-300 rounded-lg px-3 py-2";
     el.innerHTML = `🔀 Showing a hypothetical random draw, not the real one. <button id="btn-switch-to-real" class="underline font-bold">Switch to the real draw &amp; results</button>`;
   } else {
-    el.className = "text-[11px] sm:text-xs bg-ink-900/5 dark:bg-ink-50/5 border border-ink-900/10 dark:border-ink-50/10 text-ink-900/60 dark:text-ink-50/60 rounded-lg px-3 py-2";
+    el.className = "text-[11px] sm:text-xs bg-ink-900/5 dark:bg-ink-50/5 border border-ink-900/10 dark:border-ink-50/10 text-ink-900/75 dark:text-ink-50/75 rounded-lg px-3 py-2";
     el.innerHTML = `🔀 Showing a hypothetical draw — the real 2026/27 draw hasn't been announced yet (or hasn't synced here yet).`;
   }
   el.classList.remove('hidden');
@@ -391,7 +391,7 @@ function renderUI() {
       const isActive = md === activeMatchday;
       const activeClass = isActive
         ? "bg-pitch-500 dark:bg-pitch-400 text-white dark:text-ink-950 font-black shadow-sm"
-        : "bg-ink-900/5 dark:bg-ink-50/5 border border-ink-900/10 dark:border-ink-50/10 text-ink-900/50 dark:text-ink-50/50 hover:text-ink-900 dark:hover:text-ink-50";
+        : "bg-ink-900/5 dark:bg-ink-50/5 border border-ink-900/10 dark:border-ink-50/10 text-ink-900/70 dark:text-ink-50/70 hover:text-ink-900 dark:hover:text-ink-50";
       return `<button data-md="${md}" class="md-pill py-1.5 rounded-lg text-xs font-bold transition ${activeClass}">MD ${md}</button>`;
     }).join('');
     pillsEl.querySelectorAll('.md-pill').forEach(btn => {
@@ -624,13 +624,13 @@ function bindEvents() {
       fixSec.classList.remove('hidden');
       standSec.classList.add('hidden');
       fixTab.className = "py-2 rounded-lg bg-pitch-500 dark:bg-pitch-400 text-white dark:text-ink-950 font-bold shadow transition";
-      tableTab.className = "py-2 rounded-lg text-ink-900/60 dark:text-ink-50/60 hover:text-ink-900 dark:hover:text-ink-50 transition";
+      tableTab.className = "py-2 rounded-lg text-ink-900/75 dark:text-ink-50/75 hover:text-ink-900 dark:hover:text-ink-50 transition";
     });
     tableTab.addEventListener('click', () => {
       fixSec.classList.add('hidden');
       standSec.classList.remove('hidden');
       tableTab.className = "py-2 rounded-lg bg-pitch-500 dark:bg-pitch-400 text-white dark:text-ink-950 font-bold shadow transition";
-      fixTab.className = "py-2 rounded-lg text-ink-900/60 dark:text-ink-50/60 hover:text-ink-900 dark:hover:text-ink-50 transition";
+      fixTab.className = "py-2 rounded-lg text-ink-900/75 dark:text-ink-50/75 hover:text-ink-900 dark:hover:text-ink-50 transition";
     });
   }
 }
