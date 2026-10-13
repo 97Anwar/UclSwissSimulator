@@ -47,44 +47,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['Oswald', 'sans-serif'],
-          },
-          colors: {
-            pitch: {
-              50: '#EFF6F1', 100: '#DCEBE0',
-              500: '#0B6E4F', 600: '#0A5F45', 700: '#084A35',
-              400: '#2FBE8A', 300: '#5FD1A8',
-            },
-            gold: { 400: '#D8B84A', 500: '#C9A227', 600: '#A9861D' },
-            ink: { 50: '#F6F7F2', 100: '#EDEFE7', 800: '#1B2A22', 900: '#132119', 950: '#0D1410' },
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
-    body { font-family: 'Inter', system-ui, sans-serif; }
-    .font-display { font-family: 'Oswald', sans-serif; letter-spacing: 0.01em; }
-    .tabular { font-variant-numeric: tabular-nums; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #9CAF9F; border-radius: 4px; }
-    .dark ::-webkit-scrollbar-thumb { background: #2A3B30; }
-    .fixture-card { transition: border-color 0.15s ease; }
-    .zone-bar { width: 4px; border-radius: 3px; flex-shrink: 0; }
-    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
-  </style>
-
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tailwind.css">
 
   <script type="application/ld+json">
   {

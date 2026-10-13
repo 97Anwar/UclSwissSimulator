@@ -1,0 +1,90 @@
+/* Source for the built stylesheet. Build with `npm run build:css`, which
+   writes the purged, minified result to css/tailwind.css.
+
+   Scanning scripts/ and js/ is load-bearing, not incidental: classes for
+   states that have not happened yet (an eliminated club's red chip, the
+   pre-season branches) exist only in those sources, never in today's HTML.
+   Without them those styles would be purged and break months later. */
+@import "tailwindcss";
+
+@source "../*.html";
+@source "../teams/*.html";
+@source "../guide/*.html";
+@source "../js/**/*.js";
+@source "../scripts/**/*.mjs";
+
+/* The theme toggle sets .dark on <html>, matching the old darkMode:'class'. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Oswald', sans-serif;
+
+  --color-pitch-50: #EFF6F1;
+  --color-pitch-100: #DCEBE0;
+  --color-pitch-300: #5FD1A8;
+  --color-pitch-400: #2FBE8A;
+  --color-pitch-500: #0B6E4F;
+  --color-pitch-600: #0A5F45;
+  --color-pitch-700: #084A35;
+
+  --color-gold-400: #D8B84A;
+  --color-gold-500: #C9A227;
+  --color-gold-600: #A9861D;
+
+  --color-ink-50: #F6F7F2;
+  --color-ink-100: #EDEFE7;
+  --color-ink-800: #1B2A22;
+  --color-ink-900: #132119;
+  --color-ink-950: #0D1410;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.zone-bar {
+  width: 4px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.fixture-card {
+  transition: border-color 0.15s ease;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9CAF9F;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #2A3B30;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
