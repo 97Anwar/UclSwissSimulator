@@ -237,9 +237,16 @@ function renderModeBanner() {
   if (!el) return;
 
   if (mode === 'real') {
-    const updated = realDataMeta?.generatedAt ? new Date(realDataMeta.generatedAt).toLocaleString() : 'unknown';
-    el.className = "text-[11px] sm:text-xs bg-pitch-500/10 border border-pitch-500/40 text-pitch-700 dark:text-pitch-300 rounded-lg px-3 py-2";
-    el.innerHTML = `🟢 Showing the real official draw and results (last synced ${updated}). Enter a score to override any match — Reset restores the real result.`;
+    // Real data is the normal case, so the strip earns its space by onboarding
+    // rather than restating a sync time already shown under the heading.
+    el.className = "text-[11px] sm:text-xs bg-pitch-500/5 dark:bg-pitch-400/10 border border-pitch-500/30 dark:border-pitch-400/30 text-ink-900/75 dark:text-ink-50/75 rounded-lg px-3 py-2.5";
+    el.innerHTML = `
+      <div class="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4">
+        <span class="font-bold text-pitch-700 dark:text-pitch-300 shrink-0">How it works</span>
+        <span class="flex-1"><span class="font-bold text-pitch-700 dark:text-pitch-300">1.</span> Official results are already filled in and marked <span class="px-1 py-0.5 rounded bg-gold-500/20 text-gold-600 dark:text-gold-400 font-bold text-[9px]">OFFICIAL</span>.</span>
+        <span class="flex-1"><span class="font-bold text-pitch-700 dark:text-pitch-300">2.</span> Type a score into any match to predict it, or hit <span class="font-semibold">Simulate</span>.</span>
+        <span class="flex-1"><span class="font-bold text-pitch-700 dark:text-pitch-300">3.</span> The 36-team table re-ranks instantly using UEFA's real tiebreakers. <span class="font-semibold">Reset</span> restores the official score.</span>
+      </div>`;
   } else if (realFixturesAvailable) {
     el.className = "text-[11px] sm:text-xs bg-blue-500/10 border border-blue-500/40 text-blue-700 dark:text-blue-300 rounded-lg px-3 py-2";
     el.innerHTML = `🔀 Showing a hypothetical random draw, not the real one. <button id="btn-switch-to-real" class="underline font-bold">Switch to the real draw &amp; results</button>`;
@@ -261,15 +268,20 @@ function renderModeBanner() {
   }
 }
 
-// Reflects the 6-hourly results sync (real-results.json `generatedAt`) as a
-// visible freshness line on the homepage; blank until real data has synced.
+// Keeps the homepage freshness line in step with the one the generator
+// pre-renders into every other page — same two facts, same wording, same UTC
+// formatting, so navigating between pages never shows a different timestamp.
 function renderLastUpdated() {
   const el = document.getElementById('last-updated');
   if (!el) return;
   const iso = realDataMeta?.generatedAt;
   if (!iso) { el.textContent = ''; return; }
-  const when = new Date(iso).toLocaleString(undefined, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-  el.textContent = ` · Results last updated ${when}.`;
+  const stamp = (s) => new Date(s).toLocaleString('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
+  }) + ' UTC';
+  const checked = realDataMeta?.checkedAt;
+  el.textContent = ` · Results last changed ${stamp(iso)}.`
+    + (checked ? ` Data last checked ${stamp(checked)}.` : '');
 }
 
 function showDrawError(message) {

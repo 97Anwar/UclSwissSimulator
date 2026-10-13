@@ -31,10 +31,11 @@ async function withMockedRealData(page, mockData) {
 }
 
 test.describe('Real data mode', () => {
-  test('T23: landing page shows the real draw/results banner when mock data is present', async ({ page }) => {
+  test('T23: landing page shows the real-mode how-to banner when mock data is present', async ({ page }) => {
     await withMockedRealData(page, mockRealResults());
     await page.goto('/');
-    await expect(page.locator('#mode-banner')).toContainText(/real official draw/i);
+    await expect(page.locator('#mode-banner')).toContainText(/how it works/i);
+    await expect(page.locator('#mode-banner')).not.toContainText(/hypothetical/i);
   });
 
   test('T24: a FINISHED real match shows the real score with an OFFICIAL badge', async ({ page }) => {
@@ -142,7 +143,8 @@ test.describe('Real data mode', () => {
     await page.locator('#btn-switch-to-real').click();
     await page.waitForTimeout(200);
 
-    await expect(page.locator('#mode-banner')).toContainText(/real official draw/i);
+    await expect(page.locator('#mode-banner')).toContainText(/how it works/i);
+    await expect(page.locator('#mode-banner')).not.toContainText(/hypothetical/i);
     await expect(page.locator('.fixture-card', { hasText: 'Paris Saint-Germain' })).toContainText('OFFICIAL');
   });
 });
