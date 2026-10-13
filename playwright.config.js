@@ -16,7 +16,7 @@ export default defineConfig({
     { name: 'mobile-chrome', use: { ...devices['Pixel 7'] } },
   ],
   webServer: {
-    command: 'npx serve . -l 4173 -s',
+    command: 'node scripts/dev-server.mjs --port 4173',
     url: 'http://localhost:4173',
     reuseExistingServer: !process.env.CI,
     timeout: 30000,

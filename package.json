@@ -4,7 +4,7 @@
   "description": "UEFA Champions League 36-team Swiss-format league phase simulator — static site, zero backend, zero hosting cost.",
   "type": "module",
   "scripts": {
-    "dev": "npx serve .",
+    "dev": "node scripts/dev-server.mjs",
     "build:css": "tailwindcss -i src/tailwind.css -o css/tailwind.css --minify",
     "watch:css": "tailwindcss -i src/tailwind.css -o css/tailwind.css --watch",
     "fetch": "node --use-system-ca scripts/fetch-results.mjs",

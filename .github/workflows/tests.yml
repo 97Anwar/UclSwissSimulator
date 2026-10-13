@@ -1,0 +1,77 @@
+name: Tests
+
+# Kept separate from update-scores.yml so a failing test can never block an
+# automated results sync, and a routine score commit never burns browser-install
+# minutes. The [automated] commits from that workflow are skipped below.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit:
+    if: ${{ !contains(github.event.head_commit.message, '[automated]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npm run test:unit
+
+  # Guards the one footgun of a pre-built stylesheet: editing a class in the
+  # generator without re-running the CSS build ships HTML whose styles were
+  # purged. Both outputs are deterministic, so any diff here is a real mistake.
+  generated-output-is-current:
+    if: ${{ !contains(github.event.head_commit.message, '[automated]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: node scripts/generate-static-pages.mjs
+      - run: npm run build:css
+      - name: Fail if regenerating changed any committed file
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Generated output is stale. Run 'node scripts/generate-static-pages.mjs' and 'npm run build:css', then commit."
+            git --no-pager diff --stat
+            exit 1
+          fi
+          echo "Generated pages and stylesheet are up to date."
+
+  e2e:
+    if: ${{ !contains(github.event.head_commit.message, '[automated]') }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, mobile-chrome]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=${{ matrix.project }}
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: playwright-report/
+          retention-days: 7
