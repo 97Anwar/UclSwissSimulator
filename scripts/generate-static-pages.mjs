@@ -244,6 +244,7 @@ function pageShell({ title, description, canonical, bodyContent, jsonLd }) {
           <a href="/" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a>
           <a href="/guide/champions-league-swiss-format-explained.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Guides</a>
           <a href="/stats.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Stats</a>
+          <a href="/qualification.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Qualification</a>
           <a href="/about.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
         </nav>
       </div>
@@ -1352,12 +1353,168 @@ function generateHomepageFallback(fixtures, standingsRows, seasonStarted, lastUp
 }
 
 // ---------------------------------------------------------------------------
+// Qualification scenarios hub
+//
+// Answers, for all 36 clubs at once, the questions people actually ask
+// ("can X still reach the top 8?", "how many points does X need?"). Every
+// sentence comes from the deterministic engine, so the page states only what
+// is provably true at the current points totals.
+// ---------------------------------------------------------------------------
+function qualStatusChip(status) {
+  if (status === 'clinched') return '<span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-pitch-500/15 text-pitch-700 dark:text-pitch-300">Qualified</span>';
+  if (status === 'eliminated') return '<span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-red-500/15 text-red-600 dark:text-red-400">Out</span>';
+  return '<span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-blue-500/15 text-blue-700 dark:text-blue-300">In contention</span>';
+}
+
+// Plain-prose answer, deliberately phrased as a complete sentence so it stands
+// on its own when quoted out of context. Always carries this club's own
+// numbers — early in the phase every club is still "in contention", and a
+// generic sentence repeated 36 times would be worthless.
+function qualSentence(name, qual, row) {
+  const { top8, top24, pointsToClinchTop8, remaining, bestRank, worstRank, maxPoints } = qual;
+  const games = `${remaining} remaining game${remaining === 1 ? '' : 's'}`;
+  const standing = `${name} has ${row.points} point${row.points === 1 ? '' : 's'} from ${row.played} game${row.played === 1 ? '' : 's'}`;
+  const range = bestRank === worstRank
+    ? `can now only finish ${ordinal(bestRank)}`
+    : `can still finish anywhere from ${ordinal(bestRank)} to ${ordinal(worstRank)}`;
+
+  if (top24 === 'eliminated') return `${standing} and is mathematically eliminated from the 2026/27 Champions League — it cannot finish in the top 24.`;
+  if (top8 === 'clinched') return `${standing} and has mathematically secured a top-8 finish, going straight into the round of 16.`;
+  if (top8 === 'eliminated') return `${standing} and ${range}. A top-8 place is no longer reachable, but it can still qualify for the knockout play-off round.`;
+  if (pointsToClinchTop8 !== null) return `${standing} and ${range}. ${pointsToClinchTop8} more point${pointsToClinchTop8 === 1 ? '' : 's'} from its ${games} would guarantee a top-8 finish.`;
+  return `${standing} and ${range}, with a maximum of ${maxPoints} points still reachable from its ${games} — a top-8 finish remains mathematically possible.`;
+}
+
+function generateQualificationPage(standingsRows, qualification, seasonStarted, lastUpdatedHuman, lastUpdatedIso) {
+  const canonical = `${SITE_URL}/qualification.html`;
+
+  if (!seasonStarted) {
+    return pageShell({
+      title: 'Champions League 2026/27 Qualification Scenarios | All 36 Clubs',
+      description: 'Mathematical qualification scenarios for all 36 Champions League 2026/27 clubs — who can still reach the top 8, who is eliminated, and the exact points needed.',
+      canonical,
+      bodyContent: `${breadcrumb([{ name: 'Home', url: `${SITE_URL}/` }, { name: 'Qualification Scenarios', url: canonical }])}
+    <h1 class="font-display font-bold text-2xl uppercase mb-1">Champions League 2026/27 Qualification Scenarios</h1>
+    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-6">Scenarios appear once the league phase kicks off. Until then, all 36 clubs start level on zero points.</p>`,
+      jsonLd: [breadcrumb([{ name: 'Home', url: `${SITE_URL}/` }, { name: 'Qualification Scenarios', url: canonical }])],
+    });
+  }
+
+  const rows = standingsRows.map(r => {
+    const q = qualification[r.id];
+    const team = teamById(r.id);
+    if (!q || !team) return '';
+    const range = q.bestRank === q.worstRank ? ordinal(q.bestRank) : `${ordinal(q.bestRank)}&ndash;${ordinal(q.worstRank)}`;
+    const need = q.top8 === 'clinched' ? '&mdash;'
+      : q.top8 === 'eliminated' ? 'Not possible'
+        : q.pointsToClinchTop8 !== null ? `${q.pointsToClinchTop8} pts`
+          : 'Still possible';
+    return `<tr class="border-t border-ink-900/10 dark:border-ink-50/10">
+      <td class="py-2 pr-2 text-center tabular font-bold ${zoneTextClass(r.rank)}">${r.rank}</td>
+      <td class="py-2 pr-2">${teamLink(team, 18)}</td>
+      <td class="py-2 pr-2 text-center tabular">${r.points}</td>
+      <td class="py-2 pr-2 text-center tabular">${q.remaining}</td>
+      <td class="py-2 pr-2 text-center tabular whitespace-nowrap">${range}</td>
+      <td class="py-2 pr-2 text-center whitespace-nowrap">${need}</td>
+      <td class="py-2 text-center">${qualStatusChip(q.top8)}</td>
+    </tr>`;
+  }).join('');
+
+  const counts = standingsRows.reduce((acc, r) => {
+    const q = qualification[r.id];
+    if (!q) return acc;
+    if (q.top8 === 'clinched') acc.clinched += 1;
+    else if (q.top24 === 'eliminated') acc.out += 1;
+    else acc.live += 1;
+    return acc;
+  }, { clinched: 0, out: 0, live: 0 });
+
+  // Early in the phase every club is "in contention" with a 1st-36th range, so
+  // the per-club prose would be 36 near-identical sentences. Only publish it
+  // once the engine actually separates clubs.
+  const differentiated = standingsRows.some(r => {
+    const q = qualification[r.id];
+    return q && (q.top8 !== 'contention' || q.top24 !== 'contention'
+      || q.bestRank > 1 || q.worstRank < standingsRows.length
+      || q.pointsToClinchTop8 !== null);
+  });
+
+  const prose = !differentiated ? '' : standingsRows.map(r => {
+    const q = qualification[r.id];
+    const team = teamById(r.id);
+    if (!q || !team) return '';
+    return `<li class="py-1.5 border-t border-ink-900/10 dark:border-ink-50/10">${qualSentence(escapeHtml(team.name), q, r)}</li>`;
+  }).join('');
+
+  const proseSection = prose
+    ? `<h2 class="font-display font-bold text-base uppercase mb-2">What each club needs, in words</h2>
+    <ul class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-2xl px-4 py-2 mb-6 text-sm text-ink-900/80 dark:text-ink-50/80">${prose}</ul>`
+    : '';
+
+  const faqEntries = !differentiated ? [] : standingsRows.slice(0, 12).map(r => {
+    const q = qualification[r.id];
+    const team = teamById(r.id);
+    if (!q || !team) return null;
+    return {
+      '@type': 'Question',
+      name: `Can ${team.name} still qualify for the Champions League round of 16?`,
+      acceptedAnswer: { '@type': 'Answer', text: qualSentence(team.name, q, r) },
+    };
+  }).filter(Boolean);
+
+  const bodyContent = `${breadcrumb([{ name: 'Home', url: `${SITE_URL}/` }, { name: 'Qualification Scenarios', url: canonical }])}
+    <h1 class="font-display font-bold text-2xl uppercase mb-1">Champions League 2026/27 Qualification Scenarios</h1>
+    <p class="text-sm text-ink-900/60 dark:text-ink-50/60 mb-1">Who can still reach the top 8, who is mathematically eliminated, and the exact number of points each of the 36 clubs needs — computed from the current table, not predicted.</p>
+    ${lastUpdatedHuman ? `<p class="text-[11px] text-ink-900/40 dark:text-ink-50/40 mb-6">${freshnessText(lastUpdatedHuman)}</p>` : '<div class="mb-6"></div>'}
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+      ${statCard('✅', 'Secured top 8', `${counts.clinched} club${counts.clinched === 1 ? '' : 's'}`)}
+      ${statCard('⚔️', 'Still in contention', `${counts.live} club${counts.live === 1 ? '' : 's'}`)}
+      ${statCard('❌', 'Eliminated', `${counts.out} club${counts.out === 1 ? '' : 's'}`)}
+    </div>
+
+    <h2 class="font-display font-bold text-base uppercase mb-2">Points needed, club by club</h2>
+    <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-2xl p-3 mb-6 overflow-x-auto">
+      <table class="w-full text-xs">
+        <thead>
+          <tr class="text-[10px] uppercase font-bold text-ink-900/40 dark:text-ink-50/40 text-center">
+            <th class="pb-2 pr-2">#</th><th class="pb-2 pr-2 text-left">Club</th><th class="pb-2 pr-2">Pts</th>
+            <th class="pb-2 pr-2">Left</th><th class="pb-2 pr-2">Can finish</th><th class="pb-2 pr-2">To clinch top 8</th><th class="pb-2">Status</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+
+    ${proseSection}
+    <h2 class="font-display font-bold text-base uppercase mb-2">How these numbers are calculated</h2>
+    <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-2xl p-4 mb-6 text-sm text-ink-900/75 dark:text-ink-50/75 space-y-2">
+      <p>Every verdict here uses points only. A club is called <strong>eliminated</strong> only when the most points it can still reach is lower than the points 24 rivals are already assured of — so the claim holds in every remaining combination of results.</p>
+      <p>The &ldquo;points to clinch&rdquo; figure is deliberately pessimistic: it assumes every rival wins all of its remaining matches. Because rivals also play each other and cannot all win, the real figure is often lower. The number shown is a safe upper bound — it will never tell a club it is safe when it is not.</p>
+      <p>Tiebreakers such as goal difference only decide order between clubs on equal points, so they can never overturn a points-based verdict. Full detail is in the <a href="/data-sources.html" class="text-pitch-600 dark:text-pitch-300 underline">methodology</a>, and you can test your own results in the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a>.</p>
+    </div>`;
+
+  return pageShell({
+    title: 'Champions League 2026/27 Qualification Scenarios | All 36 Clubs',
+    description: `Mathematical qualification scenarios for all 36 Champions League 2026/27 clubs — ${counts.clinched} secured, ${counts.out} eliminated, ${counts.live} still in contention, with the exact points each club needs.`,
+    canonical,
+    bodyContent,
+    jsonLd: [
+      { '@context': 'https://schema.org', '@type': 'WebPage', name: 'Champions League 2026/27 Qualification Scenarios', url: canonical, ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}) },
+      breadcrumb([{ name: 'Home', url: `${SITE_URL}/` }, { name: 'Qualification Scenarios', url: canonical }]),
+      ...(faqEntries.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqEntries }] : []),
+    ],
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Sitemap generation (kept in sync with whatever pages actually exist)
 // ---------------------------------------------------------------------------
 function generateSitemap(matchdayCount, teamIds, guideSlugs, lastmod) {
   const urls = [
     { loc: `${SITE_URL}/`, priority: '1.0', freq: 'daily', lastmod },
     { loc: `${SITE_URL}/stats.html`, priority: '0.6', freq: 'daily', lastmod },
+    { loc: `${SITE_URL}/qualification.html`, priority: '0.8', freq: 'daily', lastmod },
     { loc: `${SITE_URL}/about.html`, priority: '0.3', freq: 'yearly' },
     { loc: `${SITE_URL}/data-sources.html`, priority: '0.4', freq: 'monthly' },
     { loc: `${SITE_URL}/privacy.html`, priority: '0.1', freq: 'yearly' },
@@ -1427,6 +1584,10 @@ async function main() {
   const leagueStats = computeLeagueStats(fixtures, sortedStandings);
   writeFileIfChanged(join(ROOT, 'stats.html'), generateStatsPage(fixtures, leagueStats, lastUpdatedHuman, lastUpdatedIso));
   console.log('Generated stats.html.');
+
+  // Qualification scenarios hub
+  writeFileIfChanged(join(ROOT, 'qualification.html'), generateQualificationPage(sortedStandings, qualification, seasonStarted, lastUpdatedHuman, lastUpdatedIso));
+  console.log('Generated qualification.html.');
 
   // Homepage crawler fallback (the simulator itself is still JS-driven)
   if (generateHomepageFallback(fixtures, sortedStandings, seasonStarted, lastUpdatedHuman)) {
