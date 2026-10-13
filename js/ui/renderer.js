@@ -263,7 +263,7 @@ export function renderExportCard(container, standings, meta, seasonStarted = tru
     <div class="bg-white text-ink-900" style="font-family:'Inter',sans-serif; line-height:1.4; padding:18px; border-radius:18px; border:2px solid #0B6E4F;">
       <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; border-bottom:1px solid #E5E7E0; margin-bottom:8px;">
         <div style="font-family:'Oswald',sans-serif; font-weight:700; line-height:1.4; text-transform:uppercase; font-size:15px;">🏆 36-Team Standings</div>
-        <div style="font-size:10px; line-height:1.4; color:#0B6E4F; font-weight:700;">${meta?.subtitle || 'UCL Swiss Phase 2026/27'}</div>
+        <div style="font-size:10px; line-height:1.4; color:#0B6E4F; font-weight:700;">${meta?.subtitle || 'Champions League 2026/27'}</div>
       </div>
       <div style="display:flex; align-items:center; gap:8px; font-size:9px; line-height:1.4; font-weight:700; text-transform:uppercase; opacity:0.4; padding:0 8px 4px 0;">
         <span style="width:4px; flex-shrink:0;"></span>

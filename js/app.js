@@ -467,7 +467,7 @@ async function buildExportImageBlob() {
 
   const { sortedStandings, seasonStarted } = computeStandings(TEAMS_DATA, fixtures);
   renderExportCard(target, sortedStandings, {
-    subtitle: mode === 'real' ? 'Real Draw · UCL Swiss Phase 2026/27' : 'Hypothetical Draw · UCL Swiss Phase 2026/27',
+    subtitle: mode === 'real' ? 'Real Draw · Champions League 2026/27' : 'Hypothetical Draw · Champions League 2026/27',
   }, seasonStarted);
 
   // Wait for the actual web fonts (Oswald/Inter) to finish loading before

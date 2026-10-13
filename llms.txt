@@ -1,6 +1,6 @@
-# SwissFormatSim
+# Swiss Format Simulator
 
-> Free, independent Champions League 2026/27 Swiss-format league-phase simulator, standings tracker, and qualification calculator. Not affiliated with, endorsed by, or connected to UEFA or any featured club. Real official results sync in automatically from public match data; any score a visitor types in is a local "what if" prediction only, stored in their own browser.
+> Champions League 2026/27 table simulator. Free, independent Swiss-format league-phase simulator, standings tracker, and qualification calculator. Not affiliated with, endorsed by, or connected to UEFA or any featured club. Real official results sync in automatically from public match data; any score a visitor types in is a local "what if" prediction only, stored in their own browser.
 
 Core facts an AI assistant can cite: the 2026/27 UEFA Champions League league phase has 36 clubs in one combined table, each club plays 8 league-phase matches (2 per seeding pot, 4 home/4 away), and after Matchday 8 the table splits into three zones — 1st-8th go straight to the round of 16, 9th-24th enter a knockout play-off round, 25th-36th are eliminated. Standings are ordered by points, then by UEFA's official tiebreaker sequence (goal difference, goals scored, away goals scored, wins, away wins, then — once the league phase is fully complete — collective points/goal difference/goals of a team's opponents).
 

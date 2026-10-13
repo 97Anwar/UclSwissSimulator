@@ -32,7 +32,7 @@ export async function shareViaWebShareAPI(blob, filename) {
   try {
     await navigator.share({
       files: [file],
-      title: 'UCL Swiss Phase Standings',
+      title: 'Champions League 2026/27 Standings',
       text: SHARE_TEXT,
     });
     return true;
