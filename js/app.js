@@ -11,19 +11,16 @@ const TEAM_BY_ID = Object.fromEntries(TEAMS_DATA.map(t => [t.id, t]));
 
 const STORAGE_KEY = 'ucl_sim_v5';
 const PREDICTIONS_KEY = 'ucl_sim_predictions_v5';
-const THEME_KEY = 'ucl_sim_theme';
 
 let activeMatchday = 1;
 let fixtures = [];       // always the array actually rendered/used for standings
 let mode = 'hypothetical'; // 'real' | 'hypothetical'
 let realFixturesAvailable = false;
 let realDataMeta = null;
-let isDarkMode = false; // light is the default theme
 let selectedQualTeamId = null; // club shown in the "Can your team qualify?" calculator
 let sharedPredictionLoaded = false; // true when the page opened from a ?p= shared-prediction link
 
 async function init() {
-  applyStoredTheme();
   renderDataFreshnessBanner();
   await loadRealDataAndBuildFixtures();
   applySharedPredictionFromUrl();
@@ -107,25 +104,7 @@ function updateUrlForMatchday(md) {
   window.history.replaceState({}, '', url); // replaceState, not push — clicking through 8 matchdays shouldn't fill up back-button history
 }
 
-// ----------------------------------------------------------------------
-// Theme (light is default; dark is opt-in and persisted)
-// ----------------------------------------------------------------------
-
-function applyStoredTheme() {
-  const stored = localStorage.getItem(THEME_KEY);
-  isDarkMode = stored === 'dark'; // anything else (including "never set") -> light
-  document.documentElement.classList.toggle('dark', isDarkMode);
-  const icon = document.getElementById('theme-icon');
-  if (icon) icon.innerText = isDarkMode ? '☀️' : '🌙';
-}
-
-function toggleTheme() {
-  isDarkMode = !isDarkMode;
-  document.documentElement.classList.toggle('dark', isDarkMode);
-  localStorage.setItem(THEME_KEY, isDarkMode ? 'dark' : 'light');
-  const icon = document.getElementById('theme-icon');
-  if (icon) icon.innerText = isDarkMode ? '☀️' : '🌙';
-}
+// Theme lives in js/theme.js so it works on pages that never load this file.
 
 // ----------------------------------------------------------------------
 // Real-data loading
@@ -623,9 +602,6 @@ function bindEvents() {
       exportBtn.innerHTML = original;
     }
   });
-
-  const themeBtn = document.getElementById('btn-theme-toggle');
-  if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
 
   const fixTab = document.getElementById('tab-btn-fixtures');
   const tableTab = document.getElementById('tab-btn-table');

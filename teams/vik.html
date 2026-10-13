@@ -45,6 +45,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/tailwind.css">
+  <script src="/js/theme.js"></script>
   <script type="application/ld+json">[{"@context":"https://schema.org","@type":"SportsTeam","name":"Viking","sport":"Association football","url":"https://swissformatsim.com/teams/vik.html","logo":"https://swissformatsim.com/assets/logos/vik.png","image":"https://swissformatsim.com/assets/logos/vik.png","memberOf":{"@type":"SportsOrganization","name":"UEFA Champions League 2026/27 League Phase"},"dateModified":"2026-09-21T12:23:30.702Z","foundingDate":"1899","location":{"@type":"StadiumOrArena","name":"Viking Stadion","address":"Stavanger"},"athlete":[{"@type":"Person","name":"Arild Østbø","jobTitle":"Goalkeeper","image":"https://swissformatsim.com/assets/players/vik_arild_stb.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Sondre Langås","jobTitle":"Defender","image":"https://swissformatsim.com/assets/players/vik_sondre_langas.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Gianni Stensness","jobTitle":"Defender","image":"https://swissformatsim.com/assets/players/vik_gianni_stensness.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Jost Urbančič","jobTitle":"Defender","image":"https://swissformatsim.com/assets/players/vik_jost_urbancic.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Viljar Vevatne","jobTitle":"Defender","image":"https://swissformatsim.com/assets/players/vik_viljar_vevatne.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Joe Bell","jobTitle":"Midfielder","image":"https://swissformatsim.com/assets/players/vik_joe_bell.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Sander Svendsen","jobTitle":"Midfielder","image":"https://swissformatsim.com/assets/players/vik_sander_svendsen.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Kristoffer Løkberg","jobTitle":"Midfielder","image":"https://swissformatsim.com/assets/players/vik_kristoffer_l_kberg.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Zlatko Tripić","jobTitle":"Forward (Captain)","image":"https://swissformatsim.com/assets/players/vik_zlatko_tripic.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Lars-Jørgen Salvesen","jobTitle":"Forward","image":"https://swissformatsim.com/assets/players/vik_lars_j_rgen_salvesen.jpg","knowsAbout":"UEFA Champions League"},{"@type":"Person","name":"Peter Christiansen","jobTitle":"Forward","image":"https://swissformatsim.com/assets/players/vik_peter_christiansen.jpg","knowsAbout":"UEFA Champions League"}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://swissformatsim.com/"},{"@type":"ListItem","position":2,"name":"Viking","item":"https://swissformatsim.com/teams/vik.html"}]},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is Viking through to the Champions League round of 16?","acceptedAnswer":{"@type":"Answer","text":"Not yet, but a top-8 finish is still mathematically possible for Viking."}},{"@type":"Question","name":"Can Viking be eliminated from the Champions League already?","acceptedAnswer":{"@type":"Answer","text":"Not yet — avoiding elimination is still mathematically possible for Viking."}},{"@type":"Question","name":"How many points does Viking have in the Champions League 2026/27 league phase?","acceptedAnswer":{"@type":"Answer","text":"Viking have 0 points from 1 match played, ranked 30th of 36 in the 2026/27 Champions League league phase."}}]}]</script>
 </head>
 <body class="min-h-screen flex flex-col antialiased bg-ink-50 text-ink-900 dark:bg-ink-950 dark:text-ink-50 transition-colors">
@@ -65,6 +66,13 @@
           <a href="/qualification.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Qualification</a>
           <a href="/about.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
         </nav>
+
+        <div class="flex items-center space-x-1.5">
+          <button id="btn-theme-toggle" aria-label="Toggle dark mode" class="p-2 rounded-full border border-ink-900/15 dark:border-ink-50/15 hover:bg-ink-900/5 dark:hover:bg-ink-50/10 transition text-sm">
+            <span id="theme-icon">🌙</span>
+          </button>
+          <a href="/" class="px-3 py-1.5 bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-xs rounded-full shadow-sm transition">⚡ Simulate</a>
+        </div>
       </div>
     </div>
   </header>
@@ -429,14 +437,35 @@
   </main>
 
   <footer class="border-t-2 border-pitch-500 dark:border-pitch-400 mt-8 bg-white dark:bg-ink-900">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-ink-900/50 dark:text-ink-50/50">
-      <span>Unofficial fan-made tool. Not affiliated with or endorsed by UEFA.</span>
-      <nav class="flex items-center gap-4">
-        <a href="/about.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
-        <a href="/data-sources.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Data Sources</a>
-        <a href="/privacy.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Privacy</a>
-        <a href="/terms.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Terms</a>
-      </nav>
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs">
+      <div class="col-span-2 sm:col-span-1">
+        <div class="font-display font-bold text-sm uppercase mb-2">UCL Swiss Phase</div>
+        <p class="text-ink-900/50 dark:text-ink-50/50 leading-relaxed">An independent, fan-made league-phase simulator. Not affiliated with or endorsed by UEFA.</p>
+      </div>
+      <div>
+        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-2">Tool</div>
+        <ul class="space-y-1.5">
+          <li><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a></li>
+          <li><a href="/stats.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Stats &amp; Records</a></li>
+          <li><a href="/qualification.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Qualification</a></li>
+          <li><a href="/about.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-2">Legal</div>
+        <ul class="space-y-1.5">
+          <li><a href="/privacy.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Privacy</a></li>
+          <li><a href="/terms.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition">Terms</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="font-bold uppercase text-[10px] tracking-wider text-ink-900/40 dark:text-ink-50/40 mb-2">Data</div>
+        <p class="text-ink-900/50 dark:text-ink-50/50 leading-relaxed mb-1.5">Results sync automatically from public match data as the season progresses.</p>
+        <a href="/data-sources.html" class="hover:text-pitch-600 dark:hover:text-pitch-300 transition font-semibold">Sources &amp; methodology &rarr;</a>
+      </div>
+    </div>
+    <div class="border-t border-ink-900/10 dark:border-ink-50/10 py-3 text-center text-[11px] text-ink-900/40 dark:text-ink-50/40">
+      Built for fans of the format, not for UEFA.
     </div>
   </footer>
 </body>
