@@ -46,7 +46,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/tailwind.css">
   <script src="/js/theme.js"></script>
-  <script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Champions League Tiebreakers Explained","description":"The exact order of tiebreakers used to rank teams level on points in the Champions League 36-team league-phase table.","url":"https://swissformatsim.com/guide/champions-league-tiebreakers-explained.html","mainEntityOfPage":"https://swissformatsim.com/guide/champions-league-tiebreakers-explained.html","dateModified":"2026-10-13T23:16:01.164Z"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://swissformatsim.com/"},{"@type":"ListItem","position":2,"name":"Champions League Tiebreakers Explained","item":"https://swissformatsim.com/guide/champions-league-tiebreakers-explained.html"}]}]</script>
+  <script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"Champions League Tiebreakers Explained","description":"The exact order of tiebreakers used to rank teams level on points in the Champions League 36-team league-phase table.","url":"https://swissformatsim.com/guide/champions-league-tiebreakers-explained.html","mainEntityOfPage":"https://swissformatsim.com/guide/champions-league-tiebreakers-explained.html","dateModified":"2026-10-13T23:16:01.164Z"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://swissformatsim.com/"},{"@type":"ListItem","position":2,"name":"Champions League Tiebreakers Explained","item":"https://swissformatsim.com/guide/champions-league-tiebreakers-explained.html"}]},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is head-to-head used as a Champions League tiebreaker?","acceptedAnswer":{"@type":"Answer","text":"No. In the 36-team league phase each club plays only eight of the other 35, so two clubs level on points have usually never met. All tiebreakers are table-wide, starting with goal difference."}},{"@type":"Question","name":"What is the first tiebreaker in the Champions League league phase?","acceptedAnswer":{"@type":"Answer","text":"Goal difference, followed by goals scored, goals scored away from home, wins, and then away wins."}},{"@type":"Question","name":"What are the opponent-strength tiebreakers?","acceptedAnswer":{"@type":"Answer","text":"Once the league phase is complete, clubs still level are separated by the collective points, goal difference and goals of the eight opponents they actually played. This compensates for clubs facing harder or easier sets of fixtures."}},{"@type":"Question","name":"Do away goals still count in the Champions League?","acceptedAnswer":{"@type":"Answer","text":"Away goals no longer break ties in two-legged knockout matches, but goals scored away from home remain the third tiebreaker in the league-phase table."}},{"@type":"Question","name":"What happens if two teams are level on every tiebreaker?","acceptedAnswer":{"@type":"Answer","text":"After the opponent-strength criteria, UEFA uses disciplinary points and then the UEFA club coefficient. While the phase is still being played, clubs level on the first five criteria are simply listed alphabetically."}}]}]</script>
 </head>
 <body class="min-h-screen flex flex-col antialiased bg-ink-50 text-ink-900 dark:bg-ink-950 dark:text-ink-50 transition-colors">
 
@@ -84,7 +84,12 @@
     <article>
       <h1 class="font-display font-bold text-2xl sm:text-3xl uppercase mb-4">Champions League Tiebreakers Explained</h1>
       
-      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">With 36 clubs in one table, teams often finish level on points — and a single place can be the difference between a direct round-of-16 spot, the play-offs, or elimination. UEFA separates level clubs using a fixed order of criteria.</p>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">With 36 clubs in one table, teams often finish level on points — and a single place can be the difference between a direct round-of-16 spot, the play-offs, or elimination. In a traditional group of four, ties were rare and usually settled by the head-to-head record. In a 36-team league where most clubs never meet, head-to-head is impossible, so UEFA separates level clubs using a fixed order of criteria applied to the whole table.</p>
+
+      <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Why head-to-head cannot be used</h2>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">This is the single biggest departure from the old format, and it catches people out. Under the group stage, two clubs level on points were separated first by the results of the two matches they played against each other. In the Swiss league phase, each club plays only eight of the other 35, so two clubs tied on points have most likely never faced one another — there is no head-to-head record to consult.</p>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">UEFA therefore went the other way: every criterion is <strong>table-wide</strong>, measured across all eight of a club's matches. It also means a club cannot engineer its position by targeting one specific rival. Every goal in every match counts the same.</p>
+
       <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">The tiebreaker order</h2>
       <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">UEFA separates level clubs in two stages. <strong>While the league phase is still being played</strong>, only the first five criteria are used, and any clubs still level are shown in alphabetical order:</p>
       <ol class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-decimal pl-5 space-y-1">
@@ -102,9 +107,48 @@
         <li>Fewest disciplinary points</li>
         <li>Highest UEFA club coefficient</li>
       </ol>
-      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> applies the goal- and result-based criteria as you enter scores, and the opponent-strength criteria once every match has been played, so the table ranks just as UEFA's would. (Disciplinary points and club coefficient aren't modelled, since they depend on data outside the scoreline.)</p>
+
+      <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">What the opponent-strength criteria actually do</h2>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Criteria six to eight are the format's fairness mechanism, and they have no equivalent in the old group stage. Because the draw gives every club a different set of eight opponents, two clubs can finish on identical points having faced very different schedules. One might have drawn four Pot 1 sides; another might have had a markedly kinder run.</p>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">These criteria measure the <strong>collective strength of the opponents each club actually played</strong> — their combined points, goal difference and goals. A club that earned its total against a tougher set of fixtures is ranked above one that did not. They only apply once the phase is complete, because an opponent's final record is not known until then.</p>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 p-4 rounded-xl bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10">This is why our simulator applies criteria one to five while matches are outstanding, and only brings in the opponent-strength criteria once all 144 matches have a result. Applying them mid-phase would produce rankings that silently change as other clubs played, which would be misleading rather than helpful.</p>
+
+      <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Why goal difference matters more than it used to</h2>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Because goal difference sits at the very top of the order and head-to-head has been removed entirely, it does more work here than in any previous Champions League format. Across a 36-team table, clubs cluster tightly on points — a single goal can be worth several places.</p>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Two practical consequences follow. A late consolation goal in a match already lost has genuine value, and so does continuing to attack when a game is already won. Under the old format a 1–0 win and a 4–0 win were often interchangeable; in this table they frequently are not.</p>
+
+      <h3 class="font-display font-bold text-base uppercase mt-5 mb-2">Away goals are still a tiebreaker — but not in knockouts</h3>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Goals scored away from home appear third in the list, which surprises people who remember UEFA abolishing the away-goals rule in 2021. Both are true: away goals no longer break ties in two-legged knockout matches, but they remain a ranking criterion in the league-phase table, where they reward teams that perform on the road.</p>
+
+      <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">The two criteria we do not model</h2>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> applies criteria one to eight exactly as UEFA does. The last two — disciplinary points and UEFA club coefficient — are deliberately not modelled, because neither can be derived from a scoreline.</p>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Disciplinary points depend on cards and sanctions issued during matches, and the club coefficient is an external ranking published by UEFA. In practice, ties surviving all eight preceding criteria are vanishingly rare. We document this openly in our <a href="/data-sources.html" class="text-pitch-600 dark:text-pitch-300 underline">methodology</a> rather than guessing at numbers we cannot know.</p>
+
       <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Why it matters</h2>
-      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Because goal difference and goals scored come so early in the order, a heavy win or a late consolation goal can swing a club several places — and across a shared 36-team table, that can decide who reaches the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">round of 16 directly versus the play-offs</a>.</p>
+      <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4">Because the table is shared, the tiebreakers decide far more than bragging rights. They determine who takes the eighth place and skips two knockout legs, who lands ninth and faces a seeded play-off, and who finishes 24th rather than 25th — the line between staying in Europe and leaving it. See how those thresholds work in our <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">Swiss format guide</a>, or check what your club still needs on the <a href="/qualification.html" class="text-pitch-600 dark:text-pitch-300 underline">qualification scenarios page</a>.</p>
+      
+      <h2 class="font-display font-bold text-lg uppercase mt-6 mb-2">Frequently asked questions</h2>
+      <div class="space-y-3 mb-4">
+      <div class="p-4 rounded-xl bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10">
+        <h3 class="font-bold text-sm mb-1">Is head-to-head used as a Champions League tiebreaker?</h3>
+        <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed">No. In the 36-team league phase each club plays only eight of the other 35, so two clubs level on points have usually never met. All tiebreakers are table-wide, starting with goal difference.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10">
+        <h3 class="font-bold text-sm mb-1">What is the first tiebreaker in the Champions League league phase?</h3>
+        <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed">Goal difference, followed by goals scored, goals scored away from home, wins, and then away wins.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10">
+        <h3 class="font-bold text-sm mb-1">What are the opponent-strength tiebreakers?</h3>
+        <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed">Once the league phase is complete, clubs still level are separated by the collective points, goal difference and goals of the eight opponents they actually played. This compensates for clubs facing harder or easier sets of fixtures.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10">
+        <h3 class="font-bold text-sm mb-1">Do away goals still count in the Champions League?</h3>
+        <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed">Away goals no longer break ties in two-legged knockout matches, but goals scored away from home remain the third tiebreaker in the league-phase table.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10">
+        <h3 class="font-bold text-sm mb-1">What happens if two teams are level on every tiebreaker?</h3>
+        <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed">After the opponent-strength criteria, UEFA uses disciplinary points and then the UEFA club coefficient. While the phase is still being played, clubs level on the first five criteria are simply listed alphabetically.</p>
+      </div></div>
       
     <div class="mt-10 pt-6 border-t border-ink-900/10 dark:border-ink-50/10 text-sm">
       <span class="font-semibold uppercase tracking-wider text-ink-900/70 dark:text-ink-50/70 text-xs">More guides:</span>

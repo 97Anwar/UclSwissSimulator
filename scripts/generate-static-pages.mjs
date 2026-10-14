@@ -1007,6 +1007,37 @@ function generateTeamPage(team, fixtures, standingsRows, lastUpdatedHuman, lastU
 // ---------------------------------------------------------------------------
 const P = 'class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4"';
 const H2 = 'class="font-display font-bold text-lg uppercase mt-6 mb-2"';
+const H3 = 'class="font-display font-bold text-base uppercase mt-5 mb-2"';
+const UL = 'class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-disc pl-5 space-y-1"';
+const OL = 'class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-decimal pl-5 space-y-1"';
+const CALLOUT = 'class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 p-4 rounded-xl bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10"';
+
+// Guide FAQs are rendered as visible content and as FAQPage schema from the
+// same source, so the two can never drift apart.
+function renderGuideFaq(faq) {
+  if (!faq || !faq.length) return '';
+  const items = faq.map(({ q, a }) => `
+      <div class="p-4 rounded-xl bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10">
+        <h3 class="font-bold text-sm mb-1">${escapeHtml(q)}</h3>
+        <p class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed">${a}</p>
+      </div>`).join('');
+  return `
+      <h2 ${H2}>Frequently asked questions</h2>
+      <div class="space-y-3 mb-4">${items}</div>`;
+}
+
+function guideFaqSchema(faq) {
+  if (!faq || !faq.length) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, '') },
+    })),
+  };
+}
 
 // Real pot breakdown from the dataset — powers the seeding guide and links all 36 clubs.
 const POT_GROUPS = { 1: [], 2: [], 3: [], 4: [] };
@@ -1036,20 +1067,74 @@ const GUIDES = [
     description: 'A clear explanation of the UEFA Champions League Swiss-style league phase: 36 teams, 8 games, one table, and how the top 8, play-off and elimination places work.',
     h1: 'Champions League Swiss Format Explained',
     body: `
-      <p ${P}>Since 2024/25 the UEFA Champions League has used a <strong>Swiss-style league phase</strong> in place of the old eight groups of four. For 2026/27 it again features <strong>36 clubs in a single combined table</strong>. This guide explains exactly how it works and what each position means.</p>
+      <p ${P}>Since 2024/25 the UEFA Champions League has used a <strong>Swiss-style league phase</strong> in place of the old eight groups of four. For 2026/27 it again features <strong>36 clubs in a single combined table</strong>. It is the biggest structural change the competition has made since the Champions League was created in 1992, and it changes not just the fixture list but the entire logic of how a club progresses. This guide explains exactly how it works, what each position means, and why the format rewards very different things from the old group stage.</p>
+
+      <h2 ${H2}>Why UEFA replaced the group stage</h2>
+      <p ${P}>The old format had a predictable flaw: a strong club drawn into a weak group could effectively qualify by October, and the final matchday often featured dead rubbers where nothing was at stake. With only six matches against three opponents, the sample was small and the variety limited — the same handful of fixtures recurred season after season.</p>
+      <p ${P}>The Swiss model, borrowed from chess tournaments, addresses both complaints. Every club plays <strong>eight different opponents</strong> instead of three repeated ones, and because all 36 share one table, a result in a match you are not involved in can still move you up or down. There are no dead rubbers in a single table, because there is almost always a place to gain or lose.</p>
+
       <h2 ${H2}>36 teams, one table</h2>
-      <p ${P}>All 36 qualified clubs are seeded into four pots of nine by UEFA coefficient. Instead of being split into groups, every club sits in one 36-team table and plays <strong>eight matches</strong> — two opponents from each of the four pots, four at home and four away. No club plays the same opponent twice, and a team can face at most two clubs from any one country.</p>
-      <h2 ${H2}>Eight matchdays</h2>
-      <p ${P}>The eight fixtures are spread across eight matchdays between September and January. Because it is one shared table, results elsewhere constantly change a club's ranking — which is what makes the final matchday so tense.</p>
+      <p ${P}>All 36 qualified clubs are seeded into four pots of nine by UEFA club coefficient. Instead of being split into groups, every club sits in one 36-team table and plays <strong>eight matches</strong> — two opponents from each of the four pots, four at home and four away.</p>
+      <p ${P}>Two constraints shape the draw. No club plays the same opponent twice, and <strong>no club can face more than two opponents from any single country</strong>. Clubs from the same association are never drawn against each other at all. Because satisfying every constraint by hand would be impractical, UEFA runs the draw with software: a physical ball is drawn for each club, and the system then allocates the eight valid opponents.</p>
+
+      <h2 ${H2}>Eight matchdays, and one synchronised finale</h2>
+      <p ${P}>The eight fixtures are spread across eight matchdays between September and January. Matchdays one to seven are split across two nights, typically Tuesday and Wednesday, with matches at staggered kick-off times.</p>
+      <p ${P}>The final matchday is different: <strong>all 18 matches kick off simultaneously</strong>. With one shared table, a club can move several places during stoppage time in a game happening hundreds of miles away, and simultaneous kick-offs prevent any side from knowing exactly what result it needs while still playing.</p>
+
       <h2 ${H2}>How clubs advance</h2>
-      <p ${P}>After all matches, the single table decides everything:</p>
-      <ul class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-disc pl-5 space-y-1">
+      <p ${P}>After all 144 matches, the single table decides everything:</p>
+      <ul ${UL}>
         <li><strong>1st&ndash;8th:</strong> qualify directly for the round of 16.</li>
         <li><strong>9th&ndash;24th:</strong> enter a two-legged knockout play-off round for the remaining round-of-16 places.</li>
         <li><strong>25th&ndash;36th:</strong> are eliminated, with no drop into the Europa League.</li>
       </ul>
-      <p ${P}>You can try it yourself in our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">Champions League simulator</a>: enter scores for any match and watch the 36-team table, top-8 line and play-off cut-off update live. Level teams are separated by a set order of criteria — see our <a href="/guide/champions-league-tiebreakers-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">tiebreakers guide</a>.</p>
-      ${GUIDE_LINKS}`,
+      <p ${CALLOUT}><strong>The most common misconception:</strong> finishing 25th or below does <em>not</em> send a club into the Europa League. Under the old format, third place in a group meant a parachute into the second-tier competition. That no longer exists — in the current structure, elimination from the Champions League league phase means elimination from Europe for that season.</p>
+
+      <h3 ${H3}>Why the top eight is worth so much</h3>
+      <p ${P}>The gap between 8th and 9th is the widest in the competition. Finishing eighth means skipping two knockout legs entirely, arriving in the round of 16 rested, and avoiding any chance of a February exit. Finishing ninth means two extra matches against a seeded opponent before the round of 16 even begins. The same one-point margin that separates those two positions can therefore be worth a fortnight of fixtures and a materially easier route.</p>
+      <p ${P}>Position also shapes the bracket. Higher-ranked clubs are seeded through the knockout rounds, so a strong league-phase finish keeps a club away from other high seeds for longer. You can read the detail in our <a href="/guide/champions-league-knockout-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">knockout format guide</a>.</p>
+
+      <h2 ${H2}>How many points do you actually need?</h2>
+      <p ${P}>Because the table is shared, there is no fixed qualifying score — it depends on how the other 35 clubs perform. As a rough guide from the format's first seasons, <strong>around 16 points has typically been enough for the top eight</strong>, and <strong>around 11 points enough to stay inside the top 24</strong>. Clubs on 8 points or fewer have generally gone out.</p>
+      <p ${P}>Those are historical patterns, not rules. Rather than relying on rules of thumb, our <a href="/qualification.html" class="text-pitch-600 dark:text-pitch-300 underline">qualification scenarios page</a> computes the exact figure for every club from the current table: how many further points would mathematically guarantee a top-eight place, and whether a club is already safe or already out.</p>
+
+      <h2 ${H2}>How level clubs are separated</h2>
+      <p ${P}>With 36 clubs on one table, points ties are frequent. UEFA separates level clubs by goal difference first, then goals scored, then away goals, then wins, then away wins. Once the phase is complete, a further set of criteria based on the collective strength of each club's eight opponents comes into play.</p>
+      <p ${P}>This ordering has a practical consequence: because goal difference sits at the top, a late consolation goal in a lost match can be worth as much as a point come January. Our <a href="/guide/champions-league-tiebreakers-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">tiebreakers guide</a> sets out the full order.</p>
+
+      <h2 ${H2}>Swiss league phase vs the old group stage</h2>
+      <ul ${UL}>
+        <li><strong>Opponents:</strong> eight different clubs, rather than three played twice.</li>
+        <li><strong>Matches:</strong> eight instead of six, so two extra fixtures for every club.</li>
+        <li><strong>Table:</strong> one combined table of 36, rather than eight separate tables of four.</li>
+        <li><strong>Qualification:</strong> 24 of 36 continue, rather than 16 of 32.</li>
+        <li><strong>Safety net:</strong> none — there is no longer a drop into the Europa League.</li>
+        <li><strong>Home and away:</strong> each club plays four at home and four away, but never the same opponent twice.</li>
+      </ul>
+
+      <p ${P}>The clearest way to understand the format is to play with it. Open the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">Champions League simulator</a>, enter scores for any match, and watch the 36-team table, the top-eight line and the play-off cut-off move in real time.</p>`,
+    faq: [
+      {
+        q: 'How many games does each team play in the Champions League league phase?',
+        a: 'Eight. Every club plays two opponents from each of the four seeding pots — four matches at home and four away — against eight different clubs. No opponent is faced twice.',
+      },
+      {
+        q: 'Do teams eliminated from the Champions League drop into the Europa League?',
+        a: 'No. Clubs finishing 25th to 36th are eliminated from European competition for that season. The old third-place parachute into the Europa League no longer exists under this format.',
+      },
+      {
+        q: 'How many points are needed to reach the Champions League round of 16?',
+        a: 'There is no fixed total, because the cut-off depends on how all 36 clubs perform. Historically around 16 points has secured a top-eight place and around 11 points has been enough to avoid elimination, but the exact figure is only knowable from the live table.',
+      },
+      {
+        q: 'Why do all the final matchday games kick off at the same time?',
+        a: 'Because all 36 clubs share one table, a result in any match can change another club\'s position. Simultaneous kick-offs on the final matchday stop any side from knowing precisely what result it needs while the games are still being played.',
+      },
+      {
+        q: 'Can two clubs from the same country play each other in the league phase?',
+        a: 'No. Clubs from the same association are never drawn against one another, and no club can face more than two opponents from any single country.',
+      },
+    ],
   },
   {
     slug: 'how-teams-qualify-for-the-champions-league',
@@ -1057,15 +1142,57 @@ const GUIDES = [
     description: 'How the 36 Champions League teams are decided: domestic league places, association coefficients, the champions and league paths, and the European Performance Spots.',
     h1: 'How Teams Qualify for the Champions League',
     body: `
-      <p ${P}>The 36 clubs in the Champions League league phase reach it through a mix of automatic domestic places and summer qualifying rounds. Here is how the field is built.</p>
+      <p ${P}>The 36 clubs in the Champions League league phase reach it through a mix of automatic domestic places and summer qualifying rounds. Roughly four in five arrive automatically by finishing high enough in their own league; the rest fight through up to four qualifying rounds across July and August. Here is how the field is built, and why two clubs finishing in the same league position can end up with completely different European fates.</p>
+
       <h2 ${H2}>Domestic league places</h2>
-      <p ${P}>Most places go to clubs based on where they finish in their <strong>domestic league</strong>. How many automatic places each country gets depends on its <strong>UEFA association coefficient</strong> — a rolling five-year measure of that country's clubs in Europe. The strongest leagues (England, Spain, Italy, Germany) receive up to four automatic league-phase places, while smaller associations receive fewer, or none, and must qualify.</p>
+      <p ${P}>Most places go to clubs based on where they finish in their <strong>domestic league</strong>. How many automatic places each country gets depends on its <strong>UEFA association coefficient</strong> — a rolling five-year measure of how that country's clubs have performed in Europe.</p>
+      <p ${P}>The practical effect is a sliding scale. The strongest associations receive up to four automatic league-phase places, mid-ranked associations receive one or two, and the lowest-ranked receive none at all — their champions must qualify through the summer rounds. This is why finishing fourth in a top-ranked league can be worth more than winning a smaller one.</p>
+
+      <h3 ${H3}>How the association coefficient is calculated</h3>
+      <p ${P}>Each season, a country earns points based on the results of all its clubs across the Champions League, Europa League and Conference League. The total is divided by the number of clubs that association entered, so a country is not rewarded simply for entering more teams. The five most recent seasons are summed to give the coefficient used for allocating places.</p>
+      <p ${P}>Because it is a five-year rolling measure, it moves slowly. One exceptional season rarely changes a country's allocation, and one poor season rarely costs it — which is deliberate, since clubs need to plan years ahead.</p>
+
       <h2 ${H2}>Champions Path and League Path</h2>
-      <p ${P}>Clubs that do not qualify automatically enter <strong>qualifying rounds</strong> over the summer, split into a <strong>Champions Path</strong> (for domestic title winners of lower-ranked associations) and a <strong>League Path</strong> (for high-placed clubs from stronger associations). This keeps more national champions in the competition.</p>
+      <p ${P}>Clubs that do not qualify automatically enter <strong>qualifying rounds</strong> over the summer. These are split into two separate brackets, which is one of the most misunderstood parts of the competition.</p>
+      <ul ${UL}>
+        <li><strong>Champions Path:</strong> for domestic title winners from lower-ranked associations. They only face other national champions.</li>
+        <li><strong>League Path:</strong> for high-placed clubs from stronger associations that did not qualify automatically.</li>
+      </ul>
+      <p ${P}>Splitting the paths protects smaller nations. Without it, the champions of a modest league would routinely be drawn against the fourth-placed club from a major one and almost never get through. By keeping champions in their own bracket, UEFA guarantees a number of league winners reach the league phase each season — preserving the competition's original idea of being a tournament of champions.</p>
+
       <h2 ${H2}>The European Performance Spots</h2>
-      <p ${P}>Under the current format, the <strong>two associations whose clubs performed best across all UEFA competitions the previous season</strong> each earn one extra Champions League place — the "European Performance Spots". The reigning Champions League and Europa League winners also qualify automatically.</p>
-      <p ${P}>Once this settles, the 36 clubs are seeded into four pots and drawn into the league phase. Explore every club in the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">2026/27 simulator</a>, or read how the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">Swiss league phase</a> then plays out.</p>
-      ${GUIDE_LINKS}`,
+      <p ${P}>Under the current format, the <strong>two associations whose clubs performed best across all UEFA competitions the previous season</strong> each earn one extra Champions League place. These are known as the European Performance Spots, and they are the newest route into the competition.</p>
+      <p ${P}>They are awarded on a <em>single</em> season's results, not the five-year coefficient, which makes them unusually volatile. A country whose clubs have an outstanding year in Europe can gain an additional place for the following season even if its long-term ranking has not changed. The extra place goes to the next-best-placed club in that country's league that has not already qualified.</p>
+
+      <h2 ${H2}>The title-holder routes</h2>
+      <p ${P}>The reigning <strong>Champions League</strong> and <strong>Europa League</strong> winners both qualify automatically for the following season's league phase, regardless of where they finish domestically. This guarantees the defending champion a chance to defend the trophy, and gives the Europa League a meaningful prize beyond its own silverware.</p>
+      <p ${CALLOUT}>If a title-holder also qualifies through its domestic league — which is the usual outcome — the place is not wasted. It passes down, typically to the next-highest-placed club in that country, so the total always comes to 36.</p>
+
+      <h2 ${H2}>Putting the 36 together</h2>
+      <p ${P}>The field is therefore assembled from several streams: automatic domestic places allocated by coefficient, the two title-holder places, the two European Performance Spots, and the winners of the Champions Path and League Path qualifiers. Once settled, the 36 clubs are seeded into four pots of nine by club coefficient and drawn into the league phase.</p>
+      <p ${P}>You can see this season's full field, sorted by pot, in our <a href="/guide/champions-league-2026-27-pots-and-seeding.html" class="text-pitch-600 dark:text-pitch-300 underline">pots and seeding guide</a> — or explore every club in the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">2026/27 simulator</a> and read how the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">Swiss league phase</a> then plays out.</p>`,
+    faq: [
+      {
+        q: 'How many teams qualify for the Champions League from each country?',
+        a: 'It depends on the country\'s UEFA association coefficient, a rolling five-year measure of its clubs\' European results. The strongest associations receive up to four automatic league-phase places; the lowest-ranked receive none and must come through qualifying.',
+      },
+      {
+        q: 'What is the difference between the Champions Path and the League Path?',
+        a: 'The Champions Path is a separate qualifying bracket for domestic title winners from lower-ranked associations, who only face other champions. The League Path is for high-placed clubs from stronger associations. Splitting them guarantees that a number of national champions reach the league phase each season.',
+      },
+      {
+        q: 'What are the European Performance Spots?',
+        a: 'Two extra Champions League places awarded to the associations whose clubs performed best across all UEFA competitions in the previous season. Unlike the standard allocation, they are based on a single season rather than the five-year coefficient.',
+      },
+      {
+        q: 'Does the Europa League winner qualify for the Champions League?',
+        a: 'Yes. The reigning Europa League winner qualifies automatically for the following season\'s Champions League league phase, as does the reigning Champions League winner.',
+      },
+      {
+        q: 'What happens if the defending champion also qualifies through its league?',
+        a: 'The place is not lost. It passes down, usually to the next-highest-placed club in that country that has not already qualified, so the league phase always contains exactly 36 clubs.',
+      },
+    ],
   },
   {
     slug: 'champions-league-tiebreakers-explained',
@@ -1073,10 +1200,15 @@ const GUIDES = [
     description: 'The exact order of tiebreakers used to rank teams level on points in the Champions League 36-team league-phase table.',
     h1: 'Champions League Tiebreakers Explained',
     body: `
-      <p ${P}>With 36 clubs in one table, teams often finish level on points — and a single place can be the difference between a direct round-of-16 spot, the play-offs, or elimination. UEFA separates level clubs using a fixed order of criteria.</p>
+      <p ${P}>With 36 clubs in one table, teams often finish level on points — and a single place can be the difference between a direct round-of-16 spot, the play-offs, or elimination. In a traditional group of four, ties were rare and usually settled by the head-to-head record. In a 36-team league where most clubs never meet, head-to-head is impossible, so UEFA separates level clubs using a fixed order of criteria applied to the whole table.</p>
+
+      <h2 ${H2}>Why head-to-head cannot be used</h2>
+      <p ${P}>This is the single biggest departure from the old format, and it catches people out. Under the group stage, two clubs level on points were separated first by the results of the two matches they played against each other. In the Swiss league phase, each club plays only eight of the other 35, so two clubs tied on points have most likely never faced one another — there is no head-to-head record to consult.</p>
+      <p ${P}>UEFA therefore went the other way: every criterion is <strong>table-wide</strong>, measured across all eight of a club's matches. It also means a club cannot engineer its position by targeting one specific rival. Every goal in every match counts the same.</p>
+
       <h2 ${H2}>The tiebreaker order</h2>
       <p ${P}>UEFA separates level clubs in two stages. <strong>While the league phase is still being played</strong>, only the first five criteria are used, and any clubs still level are shown in alphabetical order:</p>
-      <ol class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-decimal pl-5 space-y-1">
+      <ol ${OL}>
         <li>Goal difference</li>
         <li>Goals scored</li>
         <li>Goals scored away from home</li>
@@ -1084,17 +1216,54 @@ const GUIDES = [
         <li>Away wins</li>
       </ol>
       <p ${P}><strong>After the final matchday</strong>, any clubs still level are then separated by five further criteria, in order:</p>
-      <ol start="6" class="text-sm text-ink-900/75 dark:text-ink-50/75 leading-relaxed mb-4 list-decimal pl-5 space-y-1">
+      <ol start="6" ${OL}>
         <li>Highest collective points of a club's eight league-phase opponents</li>
         <li>Best collective goal difference of those opponents</li>
         <li>Most goals scored collectively by those opponents</li>
         <li>Fewest disciplinary points</li>
         <li>Highest UEFA club coefficient</li>
       </ol>
-      <p ${P}>Our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> applies the goal- and result-based criteria as you enter scores, and the opponent-strength criteria once every match has been played, so the table ranks just as UEFA's would. (Disciplinary points and club coefficient aren't modelled, since they depend on data outside the scoreline.)</p>
+
+      <h2 ${H2}>What the opponent-strength criteria actually do</h2>
+      <p ${P}>Criteria six to eight are the format's fairness mechanism, and they have no equivalent in the old group stage. Because the draw gives every club a different set of eight opponents, two clubs can finish on identical points having faced very different schedules. One might have drawn four Pot 1 sides; another might have had a markedly kinder run.</p>
+      <p ${P}>These criteria measure the <strong>collective strength of the opponents each club actually played</strong> — their combined points, goal difference and goals. A club that earned its total against a tougher set of fixtures is ranked above one that did not. They only apply once the phase is complete, because an opponent's final record is not known until then.</p>
+      <p ${CALLOUT}>This is why our simulator applies criteria one to five while matches are outstanding, and only brings in the opponent-strength criteria once all 144 matches have a result. Applying them mid-phase would produce rankings that silently change as other clubs played, which would be misleading rather than helpful.</p>
+
+      <h2 ${H2}>Why goal difference matters more than it used to</h2>
+      <p ${P}>Because goal difference sits at the very top of the order and head-to-head has been removed entirely, it does more work here than in any previous Champions League format. Across a 36-team table, clubs cluster tightly on points — a single goal can be worth several places.</p>
+      <p ${P}>Two practical consequences follow. A late consolation goal in a match already lost has genuine value, and so does continuing to attack when a game is already won. Under the old format a 1–0 win and a 4–0 win were often interchangeable; in this table they frequently are not.</p>
+
+      <h3 ${H3}>Away goals are still a tiebreaker — but not in knockouts</h3>
+      <p ${P}>Goals scored away from home appear third in the list, which surprises people who remember UEFA abolishing the away-goals rule in 2021. Both are true: away goals no longer break ties in two-legged knockout matches, but they remain a ranking criterion in the league-phase table, where they reward teams that perform on the road.</p>
+
+      <h2 ${H2}>The two criteria we do not model</h2>
+      <p ${P}>Our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> applies criteria one to eight exactly as UEFA does. The last two — disciplinary points and UEFA club coefficient — are deliberately not modelled, because neither can be derived from a scoreline.</p>
+      <p ${P}>Disciplinary points depend on cards and sanctions issued during matches, and the club coefficient is an external ranking published by UEFA. In practice, ties surviving all eight preceding criteria are vanishingly rare. We document this openly in our <a href="/data-sources.html" class="text-pitch-600 dark:text-pitch-300 underline">methodology</a> rather than guessing at numbers we cannot know.</p>
+
       <h2 ${H2}>Why it matters</h2>
-      <p ${P}>Because goal difference and goals scored come so early in the order, a heavy win or a late consolation goal can swing a club several places — and across a shared 36-team table, that can decide who reaches the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">round of 16 directly versus the play-offs</a>.</p>
-      ${GUIDE_LINKS}`,
+      <p ${P}>Because the table is shared, the tiebreakers decide far more than bragging rights. They determine who takes the eighth place and skips two knockout legs, who lands ninth and faces a seeded play-off, and who finishes 24th rather than 25th — the line between staying in Europe and leaving it. See how those thresholds work in our <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">Swiss format guide</a>, or check what your club still needs on the <a href="/qualification.html" class="text-pitch-600 dark:text-pitch-300 underline">qualification scenarios page</a>.</p>`,
+    faq: [
+      {
+        q: 'Is head-to-head used as a Champions League tiebreaker?',
+        a: 'No. In the 36-team league phase each club plays only eight of the other 35, so two clubs level on points have usually never met. All tiebreakers are table-wide, starting with goal difference.',
+      },
+      {
+        q: 'What is the first tiebreaker in the Champions League league phase?',
+        a: 'Goal difference, followed by goals scored, goals scored away from home, wins, and then away wins.',
+      },
+      {
+        q: 'What are the opponent-strength tiebreakers?',
+        a: 'Once the league phase is complete, clubs still level are separated by the collective points, goal difference and goals of the eight opponents they actually played. This compensates for clubs facing harder or easier sets of fixtures.',
+      },
+      {
+        q: 'Do away goals still count in the Champions League?',
+        a: 'Away goals no longer break ties in two-legged knockout matches, but goals scored away from home remain the third tiebreaker in the league-phase table.',
+      },
+      {
+        q: 'What happens if two teams are level on every tiebreaker?',
+        a: 'After the opponent-strength criteria, UEFA uses disciplinary points and then the UEFA club coefficient. While the phase is still being played, clubs level on the first five criteria are simply listed alphabetically.',
+      },
+    ],
   },
   {
     slug: 'champions-league-knockout-format-explained',
@@ -1102,14 +1271,66 @@ const GUIDES = [
     description: 'How the Champions League knockout stage works after the league phase: the play-off round, round of 16 seeding, and the two-legged path to the 2027 final.',
     h1: 'Champions League Knockout Stage Explained',
     body: `
-      <p ${P}>Once the 36-team <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">league phase</a> ends, the Champions League switches to a familiar two-legged knockout — but with a twist that rewards finishing high in the table.</p>
+      <p ${P}>Once the 36-team <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">league phase</a> ends in late January, the Champions League switches to a familiar two-legged knockout — but with an extra round, and a seeding system that makes your final league position matter long after the table is finished.</p>
+
       <h2 ${H2}>The knockout play-off round</h2>
-      <p ${P}>The eight clubs finishing <strong>1st&ndash;8th</strong> skip this round entirely and go straight to the round of 16. The 16 clubs finishing <strong>9th&ndash;24th</strong> contest a two-legged play-off for the remaining eight round-of-16 places. Finishing 9th&ndash;16th earns a seeding advantage: those clubs are seeded and play the second leg at home against a club that finished 17th&ndash;24th.</p>
+      <p ${P}>The eight clubs finishing <strong>1st&ndash;8th</strong> skip this round entirely and go straight to the round of 16. The 16 clubs finishing <strong>9th&ndash;24th</strong> contest a two-legged play-off in February for the remaining eight round-of-16 places.</p>
+      <p ${P}>The pairings are seeded by league-phase position. Clubs finishing <strong>9th&ndash;16th</strong> are seeded and face a club that finished <strong>17th&ndash;24th</strong>. Seeded clubs play the <strong>second leg at home</strong> — the advantage of finishing the tie on your own ground, with the tie's decisive moments in front of your own crowd.</p>
+      <p ${CALLOUT}>Clubs eliminated in the play-off round are out of Europe altogether. There is no transfer to the Europa League at any stage of the Champions League knockouts.</p>
+
       <h2 ${H2}>Round of 16 and beyond</h2>
-      <p ${P}>The eight league-phase qualifiers meet the eight play-off winners in the round of 16. From there it is a standard bracket — round of 16, quarter-finals and semi-finals are all two-legged (home and away), and the <strong>final is a single match</strong> at a neutral venue. A club's league-phase ranking also shapes which side of the bracket it lands on, so those top-eight places are worth far more than just skipping a round.</p>
-      <h2 ${H2}>Why the top 8 matters so much</h2>
-      <p ${P}>Finishing in the top eight means two fewer knockout legs, a kinder seeded path, and no risk of a February exit before the round of 16 even begins. That is exactly the line our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> highlights as you predict the table.</p>
-      ${GUIDE_LINKS}`,
+      <p ${P}>The eight league-phase qualifiers meet the eight play-off winners in the round of 16. From there it is a standard bracket: round of 16, quarter-finals and semi-finals are all two-legged home and away, and the <strong>final is a single match</strong> at a neutral venue selected years in advance.</p>
+      <p ${P}>League-phase position continues to apply. The clubs that finished 1st&ndash;8th are seeded in the round of 16 and again play the second leg at home. They also cannot face each other in that round, which keeps the highest-ranked sides apart for longer.</p>
+
+      <h3 ${H3}>The bracket is fixed in advance</h3>
+      <p ${P}>Unlike the old format, where each round was drawn fresh, the knockout bracket is determined once and then followed through to the final. The path from the round of 16 onwards is therefore known as soon as the play-offs are complete — a club can see its potential quarter-final and semi-final opponents immediately.</p>
+      <p ${P}>This is a meaningful change. It rewards finishing high in the league phase twice over: once with a seeding advantage, and again with a bracket position that keeps the other strongest clubs on the opposite side for as long as possible.</p>
+
+      <h2 ${H2}>How extra time and penalties work</h2>
+      <p ${P}>Two-legged ties are decided on aggregate score across both matches. If the aggregate is level after the second leg, the tie goes to <strong>extra time</strong>, and then to a <strong>penalty shoot-out</strong> if still level.</p>
+      <p ${P}>Away goals do <em>not</em> break ties. UEFA abolished the away-goals rule in 2021, so a 2–1 away win followed by a 1–0 home defeat is simply 2–2 on aggregate and proceeds to extra time. The final, being a single match, goes straight to extra time and penalties if level after 90 minutes.</p>
+
+      <h2 ${H2}>Why the top eight matters so much</h2>
+      <p ${P}>The difference between eighth and ninth is the largest single step in the competition. Eighth place means:</p>
+      <ul ${UL}>
+        <li><strong>Two fewer matches</strong> — no February play-off, in a month already crowded with domestic fixtures.</li>
+        <li><strong>A seeded round-of-16 tie</strong>, with the second leg at home.</li>
+        <li><strong>No risk of a February exit</strong> before the round of 16 has even started.</li>
+        <li><strong>A kinder bracket position</strong>, kept away from the other top seeds.</li>
+        <li><strong>Roughly a month of extra recovery</strong> at the sharp end of the domestic season.</li>
+      </ul>
+      <p ${P}>That is exactly why our <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">simulator</a> marks the top-eight line so prominently, and why the <a href="/qualification.html" class="text-pitch-600 dark:text-pitch-300 underline">qualification scenarios page</a> computes the precise number of points each club still needs to reach it.</p>
+
+      <h2 ${H2}>The knockout calendar</h2>
+      <ul ${UL}>
+        <li><strong>Knockout play-off round:</strong> February, two legs.</li>
+        <li><strong>Round of 16:</strong> March, two legs.</li>
+        <li><strong>Quarter-finals:</strong> April, two legs.</li>
+        <li><strong>Semi-finals:</strong> late April to early May, two legs.</li>
+        <li><strong>Final:</strong> late May or early June, one match at a neutral venue.</li>
+      </ul>`,
+    faq: [
+      {
+        q: 'Which teams skip the Champions League knockout play-off round?',
+        a: 'The eight clubs finishing 1st to 8th in the league phase go directly to the round of 16. Clubs finishing 9th to 24th contest the two-legged play-off round in February.',
+      },
+      {
+        q: 'Do away goals count in the Champions League knockout stage?',
+        a: 'No. UEFA abolished the away-goals rule in 2021. If a two-legged tie is level on aggregate after the second leg, it goes to extra time and then a penalty shoot-out.',
+      },
+      {
+        q: 'Is the Champions League knockout bracket drawn round by round?',
+        a: 'No. The bracket is determined once and followed through to the final, so clubs can see their potential quarter-final and semi-final opponents as soon as the play-off round is complete.',
+      },
+      {
+        q: 'What happens to teams knocked out in the Champions League play-off round?',
+        a: 'They are eliminated from European competition for that season. There is no transfer into the Europa League at any stage of the Champions League knockouts.',
+      },
+      {
+        q: 'Which team plays the second leg at home in the knockout rounds?',
+        a: 'The seeded club, determined by league-phase position. Clubs finishing 9th to 16th are seeded in the play-off round, and clubs finishing 1st to 8th are seeded in the round of 16.',
+      },
+    ],
   },
   {
     slug: 'champions-league-2026-27-pots-and-seeding',
@@ -1117,7 +1338,26 @@ const GUIDES = [
     description: 'The four seeding pots for the 2026/27 UEFA Champions League league phase, with all 36 clubs listed by pot and how UEFA coefficient seeding works.',
     h1: 'Champions League 2026/27 Pots & Seeding',
     body: `
-      <p ${P}>Before the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">league-phase draw</a>, the 36 clubs are seeded into four pots of nine, ranked by <strong>UEFA club coefficient</strong>. Pot 1 holds the highest-ranked sides (the reigning champions are placed in Pot 1); Pot 4 the lowest-ranked. In the draw, every club is paired with two opponents from each of the four pots — so even a Pot 1 side still has to face two other Pot 1 clubs.</p>
+      <p ${P}>Before the <a href="/guide/champions-league-swiss-format-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">league-phase draw</a>, the 36 clubs are seeded into four pots of nine, ranked by <strong>UEFA club coefficient</strong>. Pot 1 holds the highest-ranked sides; Pot 4 the lowest. In the draw, every club is paired with two opponents from each of the four pots — so even a Pot 1 side still has to face two other Pot 1 clubs.</p>
+
+      <h2 ${H2}>How the pots are decided</h2>
+      <p ${P}>Seeding uses the <strong>UEFA club coefficient</strong>, which measures a club's own results in European competition over the previous five seasons — not its domestic league position, and not its reputation. A club that wins its domestic title for the first time in decades will still land in Pot 4 if it has little recent European history.</p>
+      <p ${P}>There is one exception: the <strong>reigning Champions League winner is automatically placed in Pot 1</strong>, regardless of coefficient. The remaining Pot 1 places go to the highest-ranked clubs by coefficient.</p>
+      <p ${CALLOUT}>Because the coefficient is built from five years of European results, it lags reality. A club in sharp decline can carry a high seeding for a season or two, and a rapidly improving club can be under-seeded. This is why Pot 3 and Pot 4 often contain sides capable of beating Pot 1 opposition.</p>
+
+      <h2 ${H2}>What your pot actually determines</h2>
+      <p ${P}>A common misreading is that Pot 1 guarantees an easy draw. It does not. Every club — Pot 1 included — plays <strong>two opponents from each of the four pots</strong>. The real advantage of a high seeding is narrower than it looks: a Pot 1 club faces two other Pot 1 sides, while a Pot 4 club faces two Pot 4 sides, which are on paper the weakest in the competition.</p>
+      <p ${P}>So the benefit is at the bottom of your fixture list, not the top. Every club gets heavyweight fixtures; what differs is the quality of the two easiest ones.</p>
+
+      <h2 ${H2}>The draw constraints</h2>
+      <ul ${UL}>
+        <li>Two opponents from each of the four pots — eight matches in total.</li>
+        <li>Four matches at home and four away, with one home and one away fixture against each pot.</li>
+        <li>No club may face more than two opponents from the same country.</li>
+        <li>Clubs from the same association are never drawn against each other.</li>
+      </ul>
+      <p ${P}>Satisfying all of these simultaneously across 36 clubs is not feasible by hand, which is why UEFA runs the draw with software: a ball is drawn physically for each club, and the system then allocates a valid set of eight opponents.</p>
+
       <h2 ${H2}>Pot 1</h2>
       ${potListHtml(1)}
       <h2 ${H2}>Pot 2</h2>
@@ -1126,8 +1366,26 @@ const GUIDES = [
       ${potListHtml(3)}
       <h2 ${H2}>Pot 4</h2>
       ${potListHtml(4)}
-      <p ${P}>Because opponents are spread across all four pots, the strongest clubs can meet early and the smallest clubs are guaranteed some heavyweight fixtures. Want to see how the matchups play out? Pick any club above, or head to the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">full simulator</a> and predict the 36-team table yourself.</p>
-      ${GUIDE_LINKS}`,
+
+      <p ${P}>Because opponents are spread across all four pots, the strongest clubs can meet early and the smallest clubs are guaranteed some heavyweight fixtures. Pick any club above to see its full fixture list, current position and qualification outlook — or head to the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">full simulator</a> and predict the 36-team table yourself.</p>`,
+    faq: [
+      {
+        q: 'How are Champions League pots decided?',
+        a: 'By UEFA club coefficient, which measures each club\'s own results in European competition over the previous five seasons. The reigning Champions League winner is automatically placed in Pot 1 regardless of coefficient.',
+      },
+      {
+        q: 'Does being in Pot 1 mean an easier Champions League draw?',
+        a: 'Only slightly. Every club plays two opponents from each of the four pots, so all clubs face Pot 1 opposition. The advantage of a high seeding is that your two easiest fixtures come against Pot 4 clubs.',
+      },
+      {
+        q: 'Can two teams from the same country be drawn together?',
+        a: 'No. Clubs from the same association are never drawn against each other, and no club can face more than two opponents from any single country.',
+      },
+      {
+        q: 'How many home and away games does each team get?',
+        a: 'Four at home and four away — one home fixture and one away fixture against a club from each of the four pots.',
+      },
+    ],
   },
 ];
 
@@ -1138,7 +1396,10 @@ function generateGuidePage(g, lastUpdatedIso) {
     <article>
       <h1 class="font-display font-bold text-2xl sm:text-3xl uppercase mb-4">${escapeHtml(g.h1)}</h1>
       ${g.body}
+      ${renderGuideFaq(g.faq)}
+      ${GUIDE_LINKS}
     </article>`;
+  const faqSchema = guideFaqSchema(g.faq);
   return pageShell({
     title: g.title,
     description: g.description,
@@ -1158,6 +1419,7 @@ function generateGuidePage(g, lastUpdatedIso) {
         { name: 'Home', url: `${SITE_URL}/` },
         { name: g.h1, url: canonical },
       ]),
+      ...(faqSchema ? [faqSchema] : []),
     ],
   });
 }
@@ -1264,6 +1526,23 @@ function generateStatsPage(fixtures, stats, lastUpdatedHuman, lastUpdatedIso) {
 
   const bodyContent = `${intro}
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">${cards}</div>
+
+    <h2 class="font-display font-bold text-base uppercase mb-2">How to read these numbers</h2>
+    <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-2xl p-4 mb-6 text-sm text-ink-900/75 dark:text-ink-50/75 space-y-3">
+      <p><strong>Best attack and best defence</strong> count goals scored and conceded across league-phase matches only. They are raw totals, not per-game averages, so early in the phase a club that has played its fixtures against weaker opposition can lead on volume alone. Read them alongside the <a href="/" class="text-pitch-600 dark:text-pitch-300 underline">table</a> rather than on their own.</p>
+      <p><strong>Goal difference is not just a curiosity here.</strong> In the 36-team league phase it is the first tiebreaker, ahead of goals scored and away goals, and head-to-head records are not used at all. A club leading the goals-scored chart may therefore be several places higher in the real table than its points alone suggest. The full order is in our <a href="/guide/champions-league-tiebreakers-explained.html" class="text-pitch-600 dark:text-pitch-300 underline">tiebreakers guide</a>.</p>
+      <p><strong>Clean sheets</strong> count matches in which a club conceded nothing. With only eight fixtures per club, a single clean sheet is worth proportionally far more than across a 38-game domestic league — which is why the leaderboard tends to move sharply after every matchday.</p>
+      <p><strong>The winning streak</strong> counts consecutive league-phase victories that are still running. It resets on a draw or defeat, and ignores domestic results, so a club in excellent league form at home may not appear here at all.</p>
+      <p><strong>Biggest win margin and highest-scoring match</strong> are different measures and often different fixtures. A 4&ndash;0 has a larger margin; a 3&ndash;4 has more goals. Both are listed with the matchday they occurred on so you can trace them back.</p>
+    </div>
+
+    <h2 class="font-display font-bold text-base uppercase mb-2">Where these figures come from</h2>
+    <div class="bg-white dark:bg-ink-900 border border-ink-900/10 dark:border-ink-50/10 rounded-2xl p-4 mb-6 text-sm text-ink-900/75 dark:text-ink-50/75 space-y-3">
+      <p>Every number on this page is computed from <strong>real, official results only</strong>. Predictions entered in the simulator are stored in your own browser and never affect these totals — if they did, the page would describe your guesses rather than the competition.</p>
+      <p>Matches that have not been played are excluded entirely rather than counted as 0&ndash;0, which is why the averages stay meaningful mid-phase. Results sync automatically from public match data on a schedule tied to the matchday calendar, so figures can briefly trail a live scoreline. Full detail is in our <a href="/data-sources.html" class="text-pitch-600 dark:text-pitch-300 underline">methodology</a>.</p>
+      <p>Want to know what these numbers mean for a specific club's chances? The <a href="/qualification.html" class="text-pitch-600 dark:text-pitch-300 underline">qualification scenarios page</a> turns the same data into the exact points each club still needs for the top eight.</p>
+    </div>
+
     <p class="text-xs text-ink-900/65 dark:text-ink-50/65 mb-6">All figures computed from real results only (never predictions). See <a href="/data-sources.html" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">Data Sources</a> for methodology, or the <a href="/" class="underline hover:text-pitch-600 dark:hover:text-pitch-300">live standings</a> for the full table.</p>`;
 
   return pageShell({
