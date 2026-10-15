@@ -46,6 +46,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/tailwind.css">
   <script src="/js/theme.js"></script>
+  <script src="/js/nav.js" defer></script>
   <script type="application/ld+json">[{"@context":"https://schema.org","@type":"Article","headline":"How Teams Qualify for the Champions League","description":"How the 36 Champions League teams are decided: domestic league places, association coefficients, the champions and league paths, and the European Performance Spots.","url":"https://swissformatsim.com/guide/how-teams-qualify-for-the-champions-league.html","mainEntityOfPage":"https://swissformatsim.com/guide/how-teams-qualify-for-the-champions-league.html","dateModified":"2026-10-14"},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://swissformatsim.com/"},{"@type":"ListItem","position":2,"name":"How Teams Qualify for the Champions League","item":"https://swissformatsim.com/guide/how-teams-qualify-for-the-champions-league.html"}]},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many teams qualify for the Champions League from each country?","acceptedAnswer":{"@type":"Answer","text":"It depends on the country's UEFA association coefficient, a rolling five-year measure of its clubs' European results. The strongest associations receive up to four automatic league-phase places; the lowest-ranked receive none and must come through qualifying."}},{"@type":"Question","name":"What is the difference between the Champions Path and the League Path?","acceptedAnswer":{"@type":"Answer","text":"The Champions Path is a separate qualifying bracket for domestic title winners from lower-ranked associations, who only face other champions. The League Path is for high-placed clubs from stronger associations. Splitting them guarantees that a number of national champions reach the league phase each season."}},{"@type":"Question","name":"What are the European Performance Spots?","acceptedAnswer":{"@type":"Answer","text":"Two extra Champions League places awarded to the associations whose clubs performed best across all UEFA competitions in the previous season. Unlike the standard allocation, they are based on a single season rather than the five-year coefficient."}},{"@type":"Question","name":"Does the Europa League winner qualify for the Champions League?","acceptedAnswer":{"@type":"Answer","text":"Yes. The reigning Europa League winner qualifies automatically for the following season's Champions League league phase, as does the reigning Champions League winner."}},{"@type":"Question","name":"What happens if the defending champion also qualifies through its league?","acceptedAnswer":{"@type":"Answer","text":"The place is not lost. It passes down, usually to the next-highest-placed club in that country that has not already qualified, so the league phase always contains exactly 36 clubs."}}]}]</script>
 </head>
 <body class="min-h-screen flex flex-col antialiased bg-ink-50 text-ink-900 dark:bg-ink-950 dark:text-ink-50 transition-colors">
@@ -53,27 +54,94 @@
   <header class="sticky top-0 z-50 bg-ink-50/95 dark:bg-ink-950/95 border-b-2 border-pitch-500 dark:border-pitch-400 shadow-sm">
     <div class="max-w-7xl mx-auto px-3 sm:px-6">
       <div class="flex items-center justify-between py-2.5 gap-2">
-        <a href="/" class="flex items-center space-x-2.5 shrink-0">
-          <div class="w-8 h-8 rounded-full bg-pitch-500 dark:bg-pitch-400 flex items-center justify-center text-ink-50 dark:text-ink-950 font-display font-bold text-sm">26</div>
-          <div class="leading-none">
-            <div class="font-display font-bold text-base sm:text-lg tracking-tight uppercase">Swiss Format <span class="text-pitch-600 dark:text-pitch-300">Simulator</span></div>
+        <a href="/" class="flex items-center space-x-2.5 min-w-0">
+          <div class="w-8 h-8 shrink-0 rounded-full bg-pitch-500 dark:bg-pitch-400 flex items-center justify-center text-ink-50 dark:text-ink-950 font-display font-bold text-sm">26</div>
+          <div class="leading-none min-w-0">
+            <div class="font-display font-bold text-sm sm:text-lg tracking-tight uppercase leading-tight">Swiss Format <span class="text-pitch-600 dark:text-pitch-300">Simulator</span></div>
             <div class="text-[10px] text-ink-900/70 dark:text-ink-50/70 font-medium hidden sm:block">Champions League 2026/27</div>
           </div>
         </a>
         <nav class="hidden md:flex items-center space-x-5 text-sm font-semibold">
           <a href="/" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Simulator</a>
-          <a href="/guide/champions-league-swiss-format-explained.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Guides</a>
+          <div class="relative group">
+            <button type="button" data-guides-toggle aria-expanded="false" aria-haspopup="true" class="flex items-center gap-1 text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition font-semibold">
+              Guides
+              <span aria-hidden="true" class="text-[9px]">&#9660;</span>
+            </button>
+            <div data-guides-menu class="hidden group-hover:block absolute left-0 top-full pt-2 z-50">
+              <div class="w-72 rounded-xl border border-ink-900/10 dark:border-ink-50/10 bg-white dark:bg-ink-900 shadow-lg py-1.5">
+                
+                <a href="/guide/champions-league-swiss-format-explained.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">Swiss format explained</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">How the 36-team league phase works</span>
+                </a>
+                <a href="/guide/how-teams-qualify-for-the-champions-league.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">How teams qualify</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">League places, coefficients and the paths</span>
+                </a>
+                <a href="/guide/champions-league-tiebreakers-explained.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">Tiebreakers explained</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">How level clubs are separated</span>
+                </a>
+                <a href="/guide/champions-league-knockout-format-explained.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">Knockout format</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">Play-offs, round of 16 and the final</span>
+                </a>
+                <a href="/guide/champions-league-2026-27-pots-and-seeding.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">Pots & seeding</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">All 36 clubs by pot</span>
+                </a>
+              </div>
+            </div>
+          </div>
           <a href="/stats.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Stats</a>
           <a href="/qualification.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">Qualification</a>
           <a href="/about.html" class="text-ink-900/70 dark:text-ink-50/70 hover:text-pitch-600 dark:hover:text-pitch-300 transition">About</a>
         </nav>
 
-        <div class="flex items-center space-x-1.5">
+        <div class="flex items-center space-x-1.5 shrink-0">
           <button id="btn-theme-toggle" aria-label="Toggle dark mode" class="p-2 rounded-full border border-ink-900/15 dark:border-ink-50/15 hover:bg-ink-900/5 dark:hover:bg-ink-50/10 transition text-sm">
             <span id="theme-icon">🌙</span>
           </button>
-          <a href="/" class="px-3 py-1.5 bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-xs rounded-full shadow-sm transition">⚡ Simulate</a>
+          <a href="/" class="hidden sm:inline-block px-3 py-1.5 bg-pitch-500 hover:bg-pitch-600 dark:bg-pitch-400 dark:hover:bg-pitch-300 text-white dark:text-ink-950 font-bold text-xs rounded-full shadow-sm transition">⚡ Simulate</a>
+          <button type="button" data-mobile-toggle aria-expanded="false" aria-label="Open menu" class="md:hidden p-2 rounded-full border border-ink-900/15 dark:border-ink-50/15 hover:bg-ink-900/5 dark:hover:bg-ink-50/10 transition text-sm leading-none">
+            <span aria-hidden="true">&#9776;</span>
+          </button>
         </div>
+      </div>
+
+      
+      <div data-mobile-menu class="hidden md:hidden pb-3">
+        <nav class="rounded-xl border border-ink-900/10 dark:border-ink-50/10 bg-white dark:bg-ink-900 p-2 text-sm font-semibold">
+          <a href="/" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">Simulator</a>
+          <a href="/stats.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">Stats &amp; Records</a>
+          <a href="/qualification.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">Qualification</a>
+          <a href="/about.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">About</a>
+          <div class="mt-1 pt-2 border-t border-ink-900/10 dark:border-ink-50/10">
+            <div class="px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-ink-900/65 dark:text-ink-50/65">Guides</div>
+            
+                <a href="/guide/champions-league-swiss-format-explained.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">Swiss format explained</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">How the 36-team league phase works</span>
+                </a>
+                <a href="/guide/how-teams-qualify-for-the-champions-league.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">How teams qualify</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">League places, coefficients and the paths</span>
+                </a>
+                <a href="/guide/champions-league-tiebreakers-explained.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">Tiebreakers explained</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">How level clubs are separated</span>
+                </a>
+                <a href="/guide/champions-league-knockout-format-explained.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">Knockout format</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">Play-offs, round of 16 and the final</span>
+                </a>
+                <a href="/guide/champions-league-2026-27-pots-and-seeding.html" class="block px-3 py-2 rounded-lg hover:bg-ink-900/5 dark:hover:bg-ink-50/5 transition">
+                  <span class="block font-semibold text-sm">Pots & seeding</span>
+                  <span class="block text-[11px] text-ink-900/65 dark:text-ink-50/65">All 36 clubs by pot</span>
+                </a>
+          </div>
+        </nav>
       </div>
     </div>
   </header>
