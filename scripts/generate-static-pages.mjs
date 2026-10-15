@@ -1063,6 +1063,7 @@ const GUIDE_LINKS = `
 const GUIDES = [
   {
     slug: 'champions-league-swiss-format-explained',
+    updated: '2026-10-14',
     title: 'Champions League Swiss Format Explained (2026/27 League Phase)',
     description: 'A clear explanation of the UEFA Champions League Swiss-style league phase: 36 teams, 8 games, one table, and how the top 8, play-off and elimination places work.',
     h1: 'Champions League Swiss Format Explained',
@@ -1138,6 +1139,7 @@ const GUIDES = [
   },
   {
     slug: 'how-teams-qualify-for-the-champions-league',
+    updated: '2026-10-14',
     title: 'How Do Teams Qualify for the Champions League? (2026/27)',
     description: 'How the 36 Champions League teams are decided: domestic league places, association coefficients, the champions and league paths, and the European Performance Spots.',
     h1: 'How Teams Qualify for the Champions League',
@@ -1196,6 +1198,7 @@ const GUIDES = [
   },
   {
     slug: 'champions-league-tiebreakers-explained',
+    updated: '2026-10-14',
     title: 'Champions League Tiebreakers Explained (League Phase)',
     description: 'The exact order of tiebreakers used to rank teams level on points in the Champions League 36-team league-phase table.',
     h1: 'Champions League Tiebreakers Explained',
@@ -1267,6 +1270,7 @@ const GUIDES = [
   },
   {
     slug: 'champions-league-knockout-format-explained',
+    updated: '2026-10-14',
     title: 'Champions League Knockout Stage Explained (Round of 16 & Play-offs)',
     description: 'How the Champions League knockout stage works after the league phase: the play-off round, round of 16 seeding, and the two-legged path to the 2027 final.',
     h1: 'Champions League Knockout Stage Explained',
@@ -1334,6 +1338,7 @@ const GUIDES = [
   },
   {
     slug: 'champions-league-2026-27-pots-and-seeding',
+    updated: '2026-10-14',
     title: 'Champions League 2026/27 Pots & Seeding — All 36 Teams',
     description: 'The four seeding pots for the 2026/27 UEFA Champions League league phase, with all 36 clubs listed by pot and how UEFA coefficient seeding works.',
     h1: 'Champions League 2026/27 Pots & Seeding',
@@ -1390,8 +1395,7 @@ const GUIDES = [
 ];
 
 function generateGuidePage(g, lastUpdatedIso) {
-  const canonical = `${SITE_URL}/guide/${g.slug}.html`;
-  const bodyContent = `
+  const canonical = `${SITE_URL}/guide/${g.slug}.html`;  const bodyContent = `
     <nav class="text-[11px] text-ink-900/65 dark:text-ink-50/65 mb-3"><a href="/" class="hover:text-pitch-600 dark:hover:text-pitch-300">Home</a> &rsaquo; Guides &rsaquo; ${escapeHtml(g.h1)}</nav>
     <article>
       <h1 class="font-display font-bold text-2xl sm:text-3xl uppercase mb-4">${escapeHtml(g.h1)}</h1>
@@ -1413,7 +1417,7 @@ function generateGuidePage(g, lastUpdatedIso) {
         description: g.description,
         url: canonical,
         mainEntityOfPage: canonical,
-        ...(lastUpdatedIso ? { dateModified: lastUpdatedIso } : {}),
+        ...(g.updated ? { dateModified: g.updated } : {}),
       },
       breadcrumb([
         { name: 'Home', url: `${SITE_URL}/` },
@@ -1799,7 +1803,7 @@ function generateQualificationPage(standingsRows, qualification, seasonStarted, 
 // ---------------------------------------------------------------------------
 // Sitemap generation (kept in sync with whatever pages actually exist)
 // ---------------------------------------------------------------------------
-function generateSitemap(matchdayCount, teamIds, guideSlugs, lastmod) {
+function generateSitemap(matchdayCount, teamIds, guides, lastmod) {
   const urls = [
     { loc: `${SITE_URL}/`, priority: '1.0', freq: 'daily', lastmod },
     { loc: `${SITE_URL}/stats.html`, priority: '0.6', freq: 'daily', lastmod },
@@ -1809,8 +1813,10 @@ function generateSitemap(matchdayCount, teamIds, guideSlugs, lastmod) {
     { loc: `${SITE_URL}/privacy.html`, priority: '0.1', freq: 'yearly' },
     { loc: `${SITE_URL}/terms.html`, priority: '0.1', freq: 'yearly' },
   ];
-  (guideSlugs || []).forEach(slug => {
-    urls.push({ loc: `${SITE_URL}/guide/${slug}.html`, priority: '0.5', freq: 'monthly' });
+  // Guides carry their own updated date, not the results timestamp: their text
+  // changes when someone edits it, not when a score comes in.
+  (guides || []).forEach(g => {
+    urls.push({ loc: `${SITE_URL}/guide/${g.slug}.html`, priority: '0.5', freq: 'monthly', ...(g.updated ? { lastmod: g.updated } : {}) });
   });
   for (let md = 1; md <= matchdayCount; md++) {
     urls.push({ loc: `${SITE_URL}/matchday-${md}.html`, priority: '0.8', freq: 'daily', lastmod });
@@ -1884,7 +1890,7 @@ async function main() {
   }
 
   // Sitemap
-  const sitemap = generateSitemap(matchdaysPresent.length, TEAMS_DATA.map(t => t.id), GUIDES.map(g => g.slug), lastmodDate);
+  const sitemap = generateSitemap(matchdaysPresent.length, TEAMS_DATA.map(t => t.id), GUIDES, lastmodDate);
   writeFileIfChanged(join(ROOT, 'sitemap.xml'), sitemap);
   console.log('Regenerated sitemap.xml.');
 
