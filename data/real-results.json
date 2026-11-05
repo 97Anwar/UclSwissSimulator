@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-03T23:57:26.724Z",
-  "checkedAt": "2026-11-04T13:19:08.883Z",
+  "generatedAt": "2026-11-05T00:20:31.541Z",
+  "checkedAt": "2026-11-05T00:20:31.541Z",
   "competition": "CL",
   "source": "football-data.org",
   "fixtureCount": 144,
@@ -640,9 +640,9 @@
       "matchday": 4,
       "homeId": "AEK",
       "awayId": "RMA",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 2,
+      "awayScore": 3,
+      "status": "FINISHED",
       "utcDate": "2026-11-04T17:45:00Z"
     },
     {
@@ -650,9 +650,9 @@
       "matchday": 4,
       "homeId": "FEN",
       "awayId": "LIV",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 3,
+      "awayScore": 2,
+      "status": "FINISHED",
       "utcDate": "2026-11-04T17:45:00Z"
     },
     {
@@ -660,9 +660,9 @@
       "matchday": 4,
       "homeId": "RBL",
       "awayId": "MCI",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 2,
+      "awayScore": 3,
+      "status": "FINISHED",
       "utcDate": "2026-11-04T20:00:00Z"
     },
     {
@@ -670,9 +670,9 @@
       "matchday": 4,
       "homeId": "SLA",
       "awayId": "ARS",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 1,
+      "awayScore": 2,
+      "status": "FINISHED",
       "utcDate": "2026-11-04T20:00:00Z"
     },
     {
@@ -680,9 +680,9 @@
       "matchday": 4,
       "homeId": "PSV",
       "awayId": "BRU",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 1,
+      "awayScore": 2,
+      "status": "FINISHED",
       "utcDate": "2026-11-04T20:00:00Z"
     },
     {
@@ -690,9 +690,9 @@
       "matchday": 4,
       "homeId": "DOR",
       "awayId": "BET",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 2,
+      "awayScore": 1,
+      "status": "FINISHED",
       "utcDate": "2026-11-04T20:00:00Z"
     },
     {
@@ -700,9 +700,9 @@
       "matchday": 4,
       "homeId": "POR",
       "awayId": "NAP",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 4,
+      "awayScore": 1,
+      "status": "FINISHED",
       "utcDate": "2026-11-04T20:00:00Z"
     },
     {
@@ -710,9 +710,9 @@
       "matchday": 4,
       "homeId": "LEN",
       "awayId": "COM",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 1,
+      "awayScore": 9,
+      "status": "FINISHED",
       "utcDate": "2026-11-04T20:00:00Z"
     },
     {
@@ -720,9 +720,9 @@
       "matchday": 4,
       "homeId": "VIK",
       "awayId": "SAB",
-      "homeScore": null,
-      "awayScore": null,
-      "status": "TIMED",
+      "homeScore": 4,
+      "awayScore": 1,
+      "status": "FINISHED",
       "utcDate": "2026-11-04T20:00:00Z"
     },
     {
